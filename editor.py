@@ -1,14 +1,14 @@
-from PyQt import PyQtApp
-from PyQt5.QtWidgets import QGraphicsScene, QGraphicsView, QGraphicsRectItem, QApplication, QSplashScreen
-from PyQt5.QtWidgets import QDialog, QPushButton, QLineEdit
-from PyQt5.QtGui import QBrush, QPen
+from tkinter import E
+from PyQt5.QtWidgets import QGraphicsScene, QGraphicsRectItem, QSplashScreen, QGraphicsEllipseItem
+from PyQt5.QtGui import QBrush, QPen, QFont
 from PyQt5.QtCore import Qt
-from PyQt5 import QtGui
 import os
 from time import sleep
-from boxes import entryWindow
+from game.dialogs.qt_app import PyQtApp
+from game.dialogs.boxes import entryWindow
+# from game.control.track_segment import trackSegment
 
-app = PyQtApp("layout_editor/main.ui")
+app = PyQtApp("assets/main.ui")
 assets_path = (os.getcwd() + "/assets/").replace("\\", "/")
 tool = None
 map = dict()
@@ -45,10 +45,10 @@ def selectTrack():
     tool = "track"
 
 def addTrack(x,y):
-    entry = entryWindow()
+    entry = entryWindow("Define platform lenght")
     while True:
-        entry.showWindow("Enter track segments count:")
-        lenght = entry.getText()
+        entry.showWindow("Enter track segments count")
+        lenght = entry.getText()[0]
         if lenght is None:
             break
         try:
@@ -58,28 +58,35 @@ def addTrack(x,y):
         else:
             break
     if lenght:
+        pen = QPen(Qt.black)
+        pen.setWidth(4)
         for i in range(lenght):
             rect = QGraphicsRectItem(x - 80 + (i * 60), y - 30, 50, 20)
             rect.setPos(20,20)
-            brush = QBrush(Qt.gray)
-            rect.setBrush(brush)
-            pen = QPen(Qt.black)
-            pen.setWidth(5)
-            rect.setPen(pen)
+            rect.setBrush(QBrush(Qt.gray))            
+            rect.setPen(pen)            
             scene.addItem(rect)
+        start = QGraphicsEllipseItem(x - 80, y - 30, 15, 15)
+        start.setPen(pen)
+        start.setBrush(QBrush(Qt.green))
+        end = QGraphicsEllipseItem(x - 80 + (lenght * 60) + 15, y - 30, 15, 15)
+        end.setPen(pen)
+        end.setBrush(QBrush(Qt.red))
+        scene.addItem(end)
+        scene.addItem(start)
 
-def addStation():
-    entry = entryWindow()
+def addStation(): # add entry to config file
+    entry = entryWindow("Creating station")
     while True:
-        entry.showWindow("Enter number of stations")
+        entry.showWindow("Set name of station")
         try:
-            nr = int(entry.getText())
+            stationName = entry.getText()
         except ValueError:
             app.window.statusBar.showMessage("Invalid input!")
         else:
             break
-
-    print(nr)
+    text = scene.addText(stationName[0], QFont("Arial", 20))
+    text.setPos(450,0)
 
 
 def onClick(event):

@@ -1,4 +1,7 @@
 .vscode/
 splash.xcf
 pyqt5tutorial.pdf
-layout_editor/__pycache__/
+game/layout_editor/__pycache__/
+game/dialogs/__pycache__/
+game/control/__pycache__/
+game/__pycache__/
