@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1120</width>
-    <height>710</height>
+    <width>1366</width>
+    <height>701</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -61,13 +61,39 @@
      <string>[0,0]</string>
     </property>
    </widget>
+   <widget class="QListWidget" name="listWidget1">
+    <property name="geometry">
+     <rect>
+      <x>1120</x>
+      <y>0</y>
+      <width>250</width>
+      <height>570</height>
+     </rect>
+    </property>
+    <property name="verticalScrollBarPolicy">
+     <enum>Qt::ScrollBarAlwaysOn</enum>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="Button1">
+    <property name="geometry">
+     <rect>
+      <x>1120</x>
+      <y>570</y>
+      <width>100</width>
+      <height>28</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Delete selected</string>
+    </property>
+   </widget>
   </widget>
   <widget class="QMenuBar" name="menubar">
    <property name="geometry">
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>1120</width>
+     <width>1366</width>
      <height>26</height>
     </rect>
    </property>
@@ -91,6 +117,7 @@
      <addaction name="actionStation"/>
      <addaction name="actionTrack"/>
      <addaction name="actionShunt_track"/>
+     <addaction name="actionSwitch"/>
      <addaction name="actionPlatform"/>
      <addaction name="actionSignal"/>
      <addaction name="actionCrossing"/>
@@ -133,6 +160,9 @@
   <action name="actionRemove">
    <property name="text">
     <string>Clear all</string>
+   </property>
+   <property name="shortcut">
+    <string>Shift+Del</string>
    </property>
   </action>
   <action name="actionStation">
@@ -179,6 +209,9 @@
    <property name="text">
     <string>Exit</string>
    </property>
+   <property name="shortcut">
+    <string>Ctrl+Q</string>
+   </property>
   </action>
   <action name="actionTest">
    <property name="text">
@@ -188,6 +221,14 @@
   <action name="actionRemove_element">
    <property name="text">
     <string>Remove element</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+Del</string>
+   </property>
+  </action>
+  <action name="actionSwitch">
+   <property name="text">
+    <string>Switch</string>
    </property>
   </action>
  </widget>

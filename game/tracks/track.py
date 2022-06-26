@@ -1,40 +1,30 @@
 from PyQt5.QtCore import Qt
-from PyQt5.QtGui import QBrush, QPen
+from PyQt5.QtGui import QBrush, QPen, QColor
 from PyQt5.QtWidgets import QGraphicsScene
+
+from game.tracks.track_segment import TrackSegment
 from game.dialogs.qt_app import addShape
 
-class Track: # maybe create base class track segment and then inherit from it
+class Track(TrackSegment): # inherits properties from TrackSegment
     def __init__(self, x : int, y : int, nrSegments : int, scene : QGraphicsScene, **kwargs):
         self.x = x
         self.y = y
         self.segments = nrSegments
         self.segmentsObj = []
         self.canvas = scene
-        self.occupied = False
-        self.occupiedBy = "free"
+
+    def returnPosition(self):
+        return self.x, self.y
 
     @property
-    def isOccupied(self):
-        return self.occupied
-
-    def occupiedBy(self):
-        return self.occupiedBy
-
-    def occupy(self, train : str):
-        self.occupied = True
-        self.occupiedBy = train
-        self._changeState(self.occupied)
-
-    def free(self):
-        self.occupied = False
-        self.occupiedBy = "free"
-        self._changeState(self.occupied)
+    def length(self):
+        return self.segments
 
     def _changeState(self, state : bool):
         self.occupied = state
-        if self.occupied: # set color to red
+        if self.occupied: # set color to orange
             for segment in self.segmentsObj:
-                segment.setBrush(QBrush(Qt.red))
+                segment.setBrush(QBrush(QColor(255,127,0))) # RGB values for orange color
         else: # set color to gray 
             for segment in self.segmentsObj:
                 segment.setBrush(QBrush(Qt.gray))
@@ -43,7 +33,7 @@ class Track: # maybe create base class track segment and then inherit from it
         pen = QPen(Qt.black)
         pen.setWidth(5)
         for i in range(self.segments):
-            rect = addShape("rect", self.x - 80 + (i * 60), self.y - 30, 50, 20, pen, QBrush(Qt.gray))          
+            rect = addShape("rect", self.x - 80 + (i * 60), self.y - 30, 50, 20, pen, QBrush(Qt.gray))               
             self.segmentsObj.append(rect)
             self.canvas.addItem(rect)            
         if game:
@@ -56,3 +46,10 @@ class Track: # maybe create base class track segment and then inherit from it
             self.canvas.addItem(shunt[0])
             self.canvas.addItem(shunt[1])
             self.canvas.addItem(start)
+        
+    def removeTrack(self, **kwargs): # will be probably used only in editor
+        items = self.canvas.items()
+        for item in items:
+            for obj in self.segmentsObj:
+                if obj.x == item.x and obj.y == item.y:
+                    self.canvas.removeItem(item)

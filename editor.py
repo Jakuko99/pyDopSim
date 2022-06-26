@@ -1,15 +1,17 @@
-from PyQt5.QtWidgets import QGraphicsScene, QGraphicsRectItem, QSplashScreen, QGraphicsEllipseItem
+from PyQt5.QtWidgets import QGraphicsScene, QGraphicsRectItem, QSplashScreen, QGraphicsEllipseItem, QListWidgetItem
 from PyQt5.QtGui import QBrush, QPen, QFont
 from PyQt5.QtCore import Qt
 import os
 from time import sleep
 from game.dialogs.qt_app import PyQtApp
 from game.dialogs.boxes import entryWindow
-from game.control.track_segment import Track
+from game.tracks.track import Track
+from game.tracks.switch import Switch
 
 app = PyQtApp("assets/editor.ui")
 assets_path = (os.getcwd() + "/assets/").replace("\\", "/")
 tool = None
+tracks : list[Track] = []
 map = dict()
 
 def exit() -> None:
@@ -25,7 +27,7 @@ def createScene():
     return scene
 
 def testGraphics(x,y, scene):
-    app.window.statusBar.showMessage("Not used")
+    pass
 
 def onHover(event):
     x, y = event.pos().x(), event.pos().y()
@@ -35,23 +37,18 @@ def selectTool(toolName):
     global tool
     tool = toolName
 
-def deleteObject(x,y):
-    for item in scene.items():
-        if item.rect().x() == x and item.rect().y() == y:
-            scene.removeItem(item)
-            break
-
-def addShape(type, x, y, xSize, ySize, pen, brush=QBrush(Qt.white)):
-    if type == "rect":
-        rect = QGraphicsRectItem(x, y, xSize, ySize)
-        rect.setBrush(brush)
-        rect.setPen(pen)
-        return rect
-    elif type == "ellipse":
-        ellipse = QGraphicsEllipseItem(x, y, xSize, ySize)
-        ellipse.setBrush(brush)
-        ellipse.setPen(pen)
-        return ellipse
+def deleteSelected():
+    item : QListWidgetItem = app.window.listWidget1.currentItem()
+    itemText = item.text() # needs to be done this way for some reason
+    a,b = itemText.find("[") + 1, itemText.find("]")
+    position = (itemText[a:b].replace(" ","").split(","))
+    global tracks
+    for track in tracks:
+        pos = track.returnPosition()
+        if (pos[0] == int(position[0]) and pos[1] == int(position[1])):
+            track.removeTrack()
+            app.window.listWidget1.takeItem(app.window.listWidget1.currentRow())
+            tracks.remove(track)
 
 def addTrack(x,y):
     entry = entryWindow("Define platform length")
@@ -67,27 +64,33 @@ def addTrack(x,y):
         else:
             break
     if lenght:
+        global tracks
+        x, y = x - (x % 10), y - (y % 10) # grid correction
         track = Track(x,y,lenght, scene=scene)
         track.drawTrack(game=False)
-        # print(x,y)
-        # pen = QPen(Qt.black)
-        # pen.setWidth(4)
-        # for i in range(lenght):
-        #     rect = addShape("rect", x - 80 + (i * 60), y - 30, 50, 20, pen, QBrush(Qt.gray))          
-        #     scene.addItem(rect)
-        # start = addShape("ellipse", x - 105, y - 45, 15, 15, pen, QBrush(Qt.green))
-        # end = addShape("ellipse", x - 80 + (lenght * 60), y - 45, 15, 15, pen, QBrush(Qt.red))
-        # shunt = []        
-        # shunt.append(addShape("ellipse", x - 125, y - 45, 15, 15, pen, QBrush(Qt.white)))
-        # shunt.append(addShape("ellipse", x - 60 + (lenght * 60), y - 45, 15, 15, pen, QBrush(Qt.white)))
-        # scene.addItem(end)
-        # scene.addItem(shunt[0])
-        # scene.addItem(shunt[1])
-        # scene.addItem(start)
-        # if map.get("tracks"):
-        #     map["tracks"].append({"x": x, "y": y, "lenght": lenght})
-        # else:
-        #     map["tracks"] = [{"x": x, "y": y, "lenght": lenght}]
+        app.window.listWidget1.addItem(f"Track at [{track.x}, {track.y}], lenght: {lenght}") #add object to list
+        tracks.append(track)
+    
+def addSwitch(x,y):
+    entry = entryWindow("Define switch orientation")
+    while True:
+        entry.selectionWindow(Orientation=["0","180"], Segments=["1","2","3"])
+        orientation = entry.getText()
+        if orientation is None:
+            break
+        try:
+            orientation = int(orientation[0])
+        except ValueError:
+            app.window.statusBar.showMessage("Invalid input!")
+        else:
+            break
+    if orientation:
+        global tracks
+        x, y = x - (x % 10), y - (y % 10)
+        switch = Switch(x,y,orientation, scene=scene)
+        switch.drawSwitch(game=False)
+        app.window.listWidget1.addItem(f"Switch at [{switch.x}, {switch.y}], orientation: {orientation}")
+        tracks.append(switch)
 
 def addStation(): # add entry to config file
     entry = entryWindow("New station")
@@ -105,14 +108,12 @@ def addStation(): # add entry to config file
 
 def onClick(event):
     global tool
+    x, y = event.pos().x(), event.pos().y()
     if tool == "track":
-        x, y = event.pos().x(), event.pos().y()
         addTrack(x,y)
-    if tool == "delete":
-        x, y = event.pos().x(), event.pos().y()
-        deleteObject(x,y)
-    if tool == "label":
-        x, y = event.pos().x(), event.pos().y()
+    elif tool == "switch":
+        addSwitch(x,y)
+    elif tool == "label":
         t = scene.addText("here", QFont("Arial", 20))
         t.setPos(x-80,y-30) # calibration for click position
         a = scene.addEllipse(x-60,y-10,10,10,QPen(Qt.black),QBrush(Qt.red))
@@ -129,8 +130,10 @@ def main():
     app.window.actionExit.setShortcut("Ctrl+Q")
     app.window.actionRemove.triggered.connect(message)
     app.window.actionTest.triggered.connect(lambda: testGraphics(100,100, scene))
-    app.window.actionRemove_element.triggered.connect(lambda: selectTool("delete"))
+    app.window.actionRemove_element.triggered.connect(deleteSelected)
+    app.window.Button1.clicked.connect(deleteSelected)
     app.window.actionTrack.triggered.connect(lambda: selectTool("track"))
+    app.window.actionSwitch.triggered.connect(lambda: selectTool("switch"))
     app.window.graphicsView.mousePressEvent = lambda event: onClick(event)
     app.window.graphicsView.mouseMoveEvent = lambda event: onHover(event)
     app.window.actionStation.triggered.connect(addStation)

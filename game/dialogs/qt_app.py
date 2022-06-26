@@ -1,5 +1,5 @@
-from PyQt5 import QtWidgets, uic
-from PyQt5.QtWidgets import QGraphicsRectItem, QGraphicsEllipseItem
+from PyQt5 import QtWidgets, uic, QtGui, QtCore
+from PyQt5.QtWidgets import QGraphicsRectItem, QGraphicsEllipseItem, QMessageBox
 from PyQt5.QtGui import QBrush, QPen
 from PyQt5.QtCore import Qt
 import sys
@@ -7,8 +7,22 @@ import sys
 class PyQt(QtWidgets.QMainWindow):
     def __init__(self, layout):
         super(PyQt, self).__init__()
-        uic.loadUi(layout, self)
+        self.ui = uic.loadUi(layout, self)
+        self.ui.closeEvent = self.closeEvent
         self.show()
+    
+    def closeEvent(self, event) -> None:
+        reply = QMessageBox.warning(self, 'Message',
+            "Are you sure to quit?\nUnsaved changes will be lost!", QMessageBox.Yes, QMessageBox.No)
+
+        if reply == QMessageBox.Yes:
+            event.accept()
+        else:
+            event.ignore()
+    
+    def keyPressEvent(self, event) -> None: # trigger event when any key is pressed
+        if event.key() == QtGui.QKeySequence(QtCore.Qt.Key_Escape): # show prompt when ESC key is pressed
+            self.close() 
 
 class PyQtApp:
     def __init__(self, layout : str) -> None:
