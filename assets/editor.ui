@@ -117,6 +117,7 @@
      <addaction name="actionStation"/>
      <addaction name="actionTrack"/>
      <addaction name="actionShunt_track"/>
+     <addaction name="actionTrack_connector"/>
      <addaction name="actionSwitch"/>
      <addaction name="actionPlatform"/>
      <addaction name="actionSignal"/>
@@ -229,6 +230,11 @@
   <action name="actionSwitch">
    <property name="text">
     <string>Switch</string>
+   </property>
+  </action>
+  <action name="actionTrack_connector">
+   <property name="text">
+    <string>Track Connector</string>
    </property>
   </action>
  </widget>

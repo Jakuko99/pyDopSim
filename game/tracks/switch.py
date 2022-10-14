@@ -29,10 +29,32 @@ class Switch(TrackSegment):
     def drawSwitch(self, game : bool = True):
         pen = QPen(Qt.black)
         pen.setWidth(5)
-        main_rect = addShape("rect", self.x - 80, self.y - 30, 50, 20, pen, QBrush(Qt.gray))
-        self.segmentsObj.append(main_rect)
+        if self.rotation == 45:
+            main_rect = addShape("rect", self.x - 80, self.y - 30, 50, 20, pen, QBrush(Qt.gray))
+            main_segment = addShape("rect", self.x - 20, self.y - 30, 50, 20, pen, QBrush(Qt.gray))
+            blade_rect = addShape("rect", self.x - 70, self.y, 50, 20, pen, QBrush(Qt.gray), rotation=30)
+            blade_segment = addShape("rect", self.x - 20, self.y + 20, 50, 20, pen, QBrush(Qt.gray))
+        elif self.rotation == -45:
+            main_rect = addShape("rect", self.x - 80, self.y - 30, 50, 20, pen, QBrush(Qt.gray))
+            main_segment = addShape("rect", self.x - 20, self.y - 30, 50, 20, pen, QBrush(Qt.gray))
+            blade_rect = addShape("rect", self.x - 20, self.y + 25, 50, 20, pen, QBrush(Qt.gray), rotation=-30)
+            blade_segment = addShape("rect", self.x - 80, self.y + 20, 50, 20, pen, QBrush(Qt.gray))
+        elif self.rotation == 135:
+            main_rect = addShape("rect", self.x - 80, self.y + 20, 50, 20, pen, QBrush(Qt.gray))
+            main_segment = addShape("rect", self.x - 20, self.y + 20, 50, 20, pen, QBrush(Qt.gray))
+            blade_rect = addShape("rect", self.x - 30, self.y - 15, 50, 20, pen, QBrush(Qt.gray), rotation=150)
+            blade_segment = addShape("rect", self.x - 20, self.y - 30, 50, 20, pen, QBrush(Qt.gray))
+        elif self.rotation == -135:
+            main_rect = addShape("rect", self.x - 80, self.y + 20, 50, 20, pen, QBrush(Qt.gray))
+            main_segment = addShape("rect", self.x - 20, self.y + 20, 50, 20, pen, QBrush(Qt.gray))
+            blade_rect = addShape("rect", self.x + 25, self.y + 10, 50, 20, pen, QBrush(Qt.gray), rotation=-150)
+            blade_segment = addShape("rect", self.x - 80, self.y - 30, 50, 20, pen, QBrush(Qt.gray))
+        
+        self.segmentsObj += [main_rect, blade_rect, main_segment, blade_segment] # add all segments to the list
         self.canvas.addItem(main_rect)
-        blade_section = None
+        self.canvas.addItem(main_segment)
+        self.canvas.addItem(blade_rect)
+        self.canvas.addItem(blade_segment)
 
     def removeTrack(self, **kwargs): # will be probably used only in editor
         items = self.canvas.items()

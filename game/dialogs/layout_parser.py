@@ -1,4 +1,3 @@
-from unicodedata import name
 from lxml import etree
 
 class loadLayout:

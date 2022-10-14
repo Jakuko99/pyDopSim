@@ -52,7 +52,7 @@ class entryWindow(QDialog):
             x += 1
         submit = QPushButton("Submit", self.dialog)
         submit.move(0,45 + self.entryCount * 30)
-        submit.clicked.connect(lambda: self.getText()) # create a function that will return the selected values
+        submit.clicked.connect(lambda: self.getSelection()) # create a function that will return the selected values
         cancel = QPushButton("Cancel", self.dialog)
         cancel.move(100,45 + self.entryCount * 30)
         cancel.clicked.connect(lambda: self.exit())
@@ -70,3 +70,13 @@ class entryWindow(QDialog):
             self.text = [x.text() for x in self.entries]
             self.dialog.close()
         return self.text
+
+    def getSelection(self):
+        if self.exitFlag:
+            return dict()
+        else:
+            self.selecion = dict()
+            for x in range(len(self.entries)):
+                self.selecion[self.entryTexts[x]] = self.entries[x].currentText()
+            self.dialog.close()
+        return self.selecion

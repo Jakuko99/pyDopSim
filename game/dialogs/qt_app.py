@@ -39,11 +39,13 @@ class PyQtApp:
     def getDialog(self) -> QtWidgets.QApplication:
         return self.Dialog
 
-def addShape(type, x, y, xSize, ySize, pen=QPen(Qt.black), brush=QBrush(Qt.white)):
+def addShape(type: str, x: int, y: int, xSize:int , ySize:int , pen: QPen =QPen(Qt.black), brush: QBrush =QBrush(Qt.white), rotation: float = 0.0) -> QGraphicsRectItem:
     if type == "rect":
         rect = QGraphicsRectItem(x, y, xSize, ySize)
         rect.setBrush(brush)
         rect.setPen(pen)
+        rect.setTransformOriginPoint(x,y)
+        rect.setRotation(rotation) # does funky things (incosistent rotation and position of rectangle)
         return rect
     elif type == "ellipse":
         ellipse = QGraphicsEllipseItem(x, y, xSize, ySize)

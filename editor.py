@@ -17,8 +17,9 @@ map = dict()
 def exit() -> None:
     app.window.close()
 
-def message():
+def delete_all_objects():
     # app.window.statusBar.showMessage("Hello World!")
+    app.window.listWidget1.clear()
     scene.clear()
 
 def createScene():
@@ -39,16 +40,19 @@ def selectTool(toolName):
 
 def deleteSelected():
     item : QListWidgetItem = app.window.listWidget1.currentItem()
-    itemText = item.text() # needs to be done this way for some reason
-    a,b = itemText.find("[") + 1, itemText.find("]")
-    position = (itemText[a:b].replace(" ","").split(","))
-    global tracks
-    for track in tracks:
-        pos = track.returnPosition()
-        if (pos[0] == int(position[0]) and pos[1] == int(position[1])):
-            track.removeTrack()
-            app.window.listWidget1.takeItem(app.window.listWidget1.currentRow())
-            tracks.remove(track)
+    if item is not None:
+        itemText = item.text() # needs to be done this way for some reason
+        a,b = itemText.find("[") + 1, itemText.find("]")
+        position = (itemText[a:b].replace(" ","").split(","))
+        global tracks
+        for track in tracks:
+            pos = track.returnPosition()
+            if (pos[0] == int(position[0]) and pos[1] == int(position[1])):
+                track.removeTrack()
+                app.window.listWidget1.takeItem(app.window.listWidget1.currentRow())
+                tracks.remove(track)
+    else:
+        app.window.statusBar.showMessage("Nothing selected!")
 
 def addTrack(x,y):
     entry = entryWindow("Define platform length")
@@ -74,12 +78,10 @@ def addTrack(x,y):
 def addSwitch(x,y):
     entry = entryWindow("Define switch orientation")
     while True:
-        entry.selectionWindow(Orientation=["0","180"], Segments=["1","2","3"])
-        orientation = entry.getText()
-        if orientation is None:
-            break
+        entry.selectionWindow(Orientation=["45","-45","135","-135"])
+        orientation = entry.getSelection()
         try:
-            orientation = int(orientation[0])
+            orientation = int(orientation["Orientation"])
         except ValueError:
             app.window.statusBar.showMessage("Invalid input!")
         else:
@@ -89,7 +91,7 @@ def addSwitch(x,y):
         x, y = x - (x % 10), y - (y % 10)
         switch = Switch(x,y,orientation, scene=scene)
         switch.drawSwitch(game=False)
-        app.window.listWidget1.addItem(f"Switch at [{switch.x}, {switch.y}], orientation: {orientation}")
+        app.window.listWidget1.addItem(f"Switch at [{switch.x}, {switch.y}], type: {orientation}")
         tracks.append(switch)
 
 def addStation(): # add entry to config file
@@ -128,7 +130,7 @@ def main():
     # splash.finish(app.window)
     app.window.actionExit.triggered.connect(exit)
     app.window.actionExit.setShortcut("Ctrl+Q")
-    app.window.actionRemove.triggered.connect(message)
+    app.window.actionRemove.triggered.connect(delete_all_objects)
     app.window.actionTest.triggered.connect(lambda: testGraphics(100,100, scene))
     app.window.actionRemove_element.triggered.connect(deleteSelected)
     app.window.Button1.clicked.connect(deleteSelected)
