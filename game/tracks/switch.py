@@ -2,17 +2,23 @@ from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QBrush, QPen, QColor
 from PyQt5.QtWidgets import QGraphicsScene
 
+
 from game.tracks.track_segment import TrackSegment
 from game.dialogs.qt_app import addShape
 
 class Switch(TrackSegment):
     def __init__(self, x : int, y : int , rotation : int, scene : QGraphicsScene, **kwargs):
+        super().__init__(x, y)
         self.x = x
         self.y = y
         self.rotation = rotation
         self.segmentsObj = []
         self.canvas = scene
         self.position = 0 # 0 - straight, 1 - switched (direction depending on the orientation)
+
+    @property
+    def as_dict(self):
+        return {"type":"switch","x": self.x, "y": self.y, "rotation": self.rotation}
 
     def _changeState(self, state : bool):
         self.occupied = state

@@ -1,10 +1,13 @@
+from uuid import uuid4
+
 class TrackSegment:
     occupied = False
     occupied_by = "free"
     
     def __init__(self, x, y):
         self.x = x
-        self.y = y        
+        self.y = y
+        self.uuid = uuid4()        
     
     @property
     def isOccupied(self):

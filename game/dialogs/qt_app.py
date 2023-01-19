@@ -13,7 +13,7 @@ class PyQt(QtWidgets.QMainWindow):
     
     def closeEvent(self, event) -> None:
         reply = QMessageBox.warning(self, 'Message',
-            "Are you sure to quit?\nUnsaved changes will be lost!", QMessageBox.Yes, QMessageBox.No)
+            "Are you sure to quit?\nUnsaved progress will be lost!", QMessageBox.Yes, QMessageBox.No)
 
         if reply == QMessageBox.Yes:
             event.accept()

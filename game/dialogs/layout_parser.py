@@ -1,9 +1,13 @@
 from lxml import etree
+import json
 
 class loadLayout:
     def __init__(self, filename):
-        self.layout = etree.parse(filename)
-        self.root = self.layout.getroot()
+        with open(filename, "r") as file:
+            self.file_content = json.load(file)
+        
+
+        
 
 class createLayout:
     def __init__(self):
