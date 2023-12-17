@@ -1,6 +1,6 @@
-from PyQt5.QtWidgets import QGraphicsScene, QGraphicsRectItem, QSplashScreen, QGraphicsEllipseItem, QListWidgetItem, QFileDialog
-from PyQt5.QtGui import QBrush, QPen, QFont
-from PyQt5.QtCore import Qt
+from PyQt5.QtWidgets import QGraphicsScene, QGraphicsRectItem, QSplashScreen, QGraphicsEllipseItem, QListWidgetItem, QFileDialog, QGraphicsPixmapItem
+from PyQt5.QtGui import QBrush, QPen, QFont, QPixmap
+from PyQt5.QtCore import Qt, QSize
 import json
 from uuid import uuid4, UUID
 import os
@@ -190,6 +190,15 @@ def main():
     app.window.actionStation.triggered.connect(addStation)
     app.window.actionLabel.triggered.connect(lambda: selectTool("label"))
     app.window.actionSave.triggered.connect(save)
+
+    # add image to graphics view
+    # image = QPixmap()
+    # image.load("assets/splash.png")
+    # imageItem = QGraphicsPixmapItem()
+    # imageItem.setPixmap(image)
+    # imageItem.mousePressEvent = lambda event: app.window.statusBar.showMessage("Clicked!") # define click event on image
+    # scene.addItem(imageItem)
+
     app.execute()
 
 
