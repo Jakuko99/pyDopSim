@@ -68,7 +68,41 @@ class AbstractSignal(QWidget):
                 self.lamps[2].setStyleSheet(
                     "background-color: red; border-radius: 5px;"
                 )
+            elif sign == SignalSign.SUMMON:
+                self.lamps[2].setStyleSheet("background-color: red; border-radius: 5px;")
+                self.lamps[3].setStyleSheet("background-color: white; border-radius: 5px;")
+                self.timer.start(500)
+                self.blinking_lamp = [self.lamps[3], "white"]
+            elif sign == SignalSign.WARN:
+                self.lamps[0].setStyleSheet(
+                    "background-color: yellow; border-radius: 5px;"
+                )
             elif sign == SignalSign.EXP40:
+                self.lamps[0].setStyleSheet(
+                    "background-color: yellow; border-radius: 5px;"
+                )
+                self.timer.start(500)
+                self.blinking_lamp = [self.lamps[0], "yellow"]
+            elif sign == SignalSign.EXP60:
+                self.lamps[0].setStyleSheet(
+                    "background-color: yellow; border-radius: 5px;"
+                )
+                self.timer.start(250)
+                self.blinking_lamp = [self.lamps[0], "yellow"]
+            elif sign == SignalSign.EXP80:
+                self.lamps[1].setStyleSheet(
+                    "background-color: lime; border-radius: 5px;"
+                )
+                self.timer.start(500)
+                self.blinking_lamp = [self.lamps[1], "lime"]
+            elif sign == SignalSign.SDP40_FREE:
+                self.lamps[1].setStyleSheet(
+                    "background-color: lime; border-radius: 5px;"
+                )
+                self.lamps[4].setStyleSheet(
+                    "background-color: yellow; border-radius: 5px;"
+                )
+            elif sign == SignalSign.WARN_40:
                 self.lamps[0].setStyleSheet(
                     "background-color: yellow; border-radius: 5px;"
                 )
@@ -86,8 +120,22 @@ class AbstractSignal(QWidget):
                 self.lamps[4].setStyleSheet(
                     "background-color: yellow; border-radius: 5px;"
                 )
-                self.timer.start(1000)
+                self.timer.start(500)
                 self.blinking_lamp = [self.lamps[0], "yellow"]
+            elif sign == SignalSign.EXP40_60:
+                self.lamps[0].setStyleSheet(
+                    "background-color: yellow; border-radius: 5px;"
+                )
+                self.lamps[4].setStyleSheet(
+                    "background-color: yellow; border-radius: 5px;"
+                )
+                self.timer.start(250)
+                self.blinking_lamp = [self.lamps[0], "yellow"]
+            else: # invalid state
+                self.lamps[2].setStyleSheet(
+                    "background-color: red; border-radius: 5px;"
+                )
+
         elif self.num_lamps == 2:
             if sign == SignalSign.SHUNT_PROHIBITED:
                 self.lamps[1].setStyleSheet(
@@ -97,6 +145,11 @@ class AbstractSignal(QWidget):
                 self.lamps[0].setStyleSheet(
                     "background-color: white; border-radius: 5px;"
                 )
+            else:
+                self.lamps[1].setStyleSheet(
+                    "background-color: #1799E7; border-radius: 5px;"
+                )
+
         elif self.num_lamps == 3:
             if sign == SignalSign.AB_FREE:
                 self.lamps[1].setStyleSheet(
@@ -109,6 +162,28 @@ class AbstractSignal(QWidget):
             elif sign == SignalSign.AB_WARN:
                 self.lamps[0].setStyleSheet(
                     "background-color: yellow; border-radius: 5px;"
+                )
+            elif sign == SignalSign.AB_EXP40:
+                self.lamps[0].setStyleSheet(
+                    "background-color: yellow; border-radius: 5px;"
+                )
+                self.timer.start(500)
+                self.blinking_lamp = [self.lamps[0], "yellow"]
+            elif sign == SignalSign.AB_EXP60:
+                self.lamps[0].setStyleSheet(
+                    "background-color: yellow; border-radius: 5px;"
+                )
+                self.timer.start(250)
+                self.blinking_lamp = [self.lamps[0], "yellow"]
+            elif sign == SignalSign.AB_EXP80:
+                self.lamps[1].setStyleSheet(
+                    "background-color: lime; border-radius: 5px;"
+                )
+                self.timer.start(500)
+                self.blinking_lamp = [self.lamps[1], "lime"]
+            else:
+                self.lamps[2].setStyleSheet(
+                    "background-color: red; border-radius: 5px;"
                 )
 
     def update(self):
