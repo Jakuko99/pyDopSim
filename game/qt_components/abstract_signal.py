@@ -69,8 +69,12 @@ class AbstractSignal(QWidget):
                     "background-color: red; border-radius: 5px;"
                 )
             elif sign == SignalSign.SUMMON:
-                self.lamps[2].setStyleSheet("background-color: red; border-radius: 5px;")
-                self.lamps[3].setStyleSheet("background-color: white; border-radius: 5px;")
+                self.lamps[2].setStyleSheet(
+                    "background-color: red; border-radius: 5px;"
+                )
+                self.lamps[3].setStyleSheet(
+                    "background-color: white; border-radius: 5px;"
+                )
                 self.timer.start(500)
                 self.blinking_lamp = [self.lamps[3], "white"]
             elif sign == SignalSign.WARN:
@@ -131,7 +135,7 @@ class AbstractSignal(QWidget):
                 )
                 self.timer.start(250)
                 self.blinking_lamp = [self.lamps[0], "yellow"]
-            else: # invalid state
+            else:  # invalid state
                 self.lamps[2].setStyleSheet(
                     "background-color: red; border-radius: 5px;"
                 )

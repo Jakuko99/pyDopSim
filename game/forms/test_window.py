@@ -1,7 +1,8 @@
-from PyQt5.QtWidgets import QMainWindow, QLabel, QPushButton, QComboBox
+from PyQt5.QtWidgets import QMainWindow, QLabel, QPushButton, QComboBox, QLineEdit
+from PyQt5.QtGui import QIcon
 
-from game.qt_components.api_package import AbstractSignal, AbstractTrack
-from game.data_types.api_package import SignalSign, TrackState
+from game.qt_components.api_package import AbstractSignal, AbstractTrack, AbstractSwitch
+from game.data_types.api_package import SignalSign, TrackState, SwitchType
 
 
 class TestWindow(QMainWindow):
@@ -40,15 +41,22 @@ class TestWindow(QMainWindow):
         self.button2.move(240, 125)
         self.button2.clicked.connect(self.change_signal2)
 
-        self.track = AbstractTrack(200, self)
+        self.track = AbstractTrack(300, self)
         self.track.move(5, 180)
 
         self.combo3 = QComboBox(self)
         self.combo3.addItems([item for item in TrackState.__members__])
-        self.combo3.move(50, 210)
+        self.combo3.move(5, 210)
+        self.label = QLabel("Train ID:", self)
+        self.label.move(110, 210)
+        self.train_id = QLineEdit("1234", self)
+        self.train_id.move(165, 210)
         self.button3 = QPushButton("Change state", self)
         self.button3.move(50, 245)
         self.button3.clicked.connect(self.change_state)
+
+        self.switch = AbstractSwitch(100, SwitchType.DOWN_45_LEFT, self)
+        self.switch.move(5, 300)
 
     def change_signal(self):
         self.signal.set_sign(SignalSign[self.combo.currentText()])
@@ -60,4 +68,6 @@ class TestWindow(QMainWindow):
         self.signal2.set_sign(SignalSign[self.combo2.currentText()])
 
     def change_state(self):
-        self.track.set_state(TrackState[self.combo3.currentText()], 1234)
+        self.track.set_state(
+            TrackState[self.combo3.currentText()], int(self.train_id.text())
+        )
