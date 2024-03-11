@@ -31,7 +31,7 @@ class AbstractSignal(QWidget):
             self.stripe3.setStyleSheet("background-color: red")
 
         self.timer = QTimer(self)
-        self.timer.timeout.connect(self.update)
+        self.timer.timeout.connect(self._update)
         self.blinking_lamp: list = None
         self.lamp_state: bool = True
 
@@ -190,7 +190,7 @@ class AbstractSignal(QWidget):
                     "background-color: red; border-radius: 5px;"
                 )
 
-    def update(self):
+    def _update(self):
         if self.lamp_state:
             self.blinking_lamp[0].setStyleSheet(
                 f"background-color: black; border-radius: 5px;"

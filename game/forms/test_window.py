@@ -1,8 +1,20 @@
 from PyQt5.QtWidgets import QMainWindow, QLabel, QPushButton, QComboBox, QLineEdit
 from PyQt5.QtGui import QIcon
 
-from game.qt_components.api_package import AbstractSignal, AbstractTrack, AbstractSwitch
-from game.data_types.api_package import SignalSign, TrackState, SwitchType
+from game.qt_components.api_package import (
+    AbstractSignal,
+    AbstractTrack,
+    AbstractSwitch,
+    AbstractIndicator,
+    AbstractLever,
+)
+from game.data_types.api_package import (
+    SignalSign,
+    TrackState,
+    SwitchType,
+    IndicatorState,
+    LeverState,
+)
 
 
 class TestWindow(QMainWindow):
@@ -10,6 +22,7 @@ class TestWindow(QMainWindow):
         super().__init__()
         self.setGeometry(0, 0, 800, 600)
         self.setWindowTitle("Component test window")
+        self.setStyleSheet("background-color: lightgray")
 
         self.signal = AbstractSignal(5, self)
         self.signal.move(40, 5)
@@ -55,8 +68,18 @@ class TestWindow(QMainWindow):
         self.button3.move(50, 245)
         self.button3.clicked.connect(self.change_state)
 
-        self.switch = AbstractSwitch(100, SwitchType.DOWN_45_LEFT, self)
-        self.switch.move(5, 300)
+        self.indicator = AbstractIndicator("white", "Voľnosť\ntrate", self)
+        self.indicator.move(75, 280)
+
+        self.combo4 = QComboBox(self)
+        self.combo4.addItems([item for item in IndicatorState.__members__])
+        self.combo4.move(5, 345)
+        self.button4 = QPushButton("Change signal", self)
+        self.button4.move(110, 345)
+        self.button4.clicked.connect(self.change_state1)
+
+        self.lever = AbstractLever("+ 1/3 -", self.change_lever, self)
+        self.lever.move(5, 400)
 
     def change_signal(self):
         self.signal.set_sign(SignalSign[self.combo.currentText()])
@@ -71,3 +94,18 @@ class TestWindow(QMainWindow):
         self.track.set_state(
             TrackState[self.combo3.currentText()], int(self.train_id.text())
         )
+
+    def change_state1(self):
+        self.indicator.set_state(IndicatorState[self.combo4.currentText()])
+
+    def change_lever(self, state: LeverState):
+        self.lever.set_light(1, "gray")  # reset lights
+        self.lever.set_light(2, "gray")
+        self.lever.set_light(3, "gray")
+
+        if state == LeverState.LEFT:
+            self.lever.set_light(1, "lime")
+        elif state == LeverState.MIDDLE:
+            self.lever.set_light(2, "red")
+        elif state == LeverState.RIGHT:
+            self.lever.set_light(3, "yellow")
