@@ -21,6 +21,15 @@
             "cwd": "${workspaceFolder}",
             "console": "integratedTerminal",
             "justMyCode": false            
-        }  
+        },
+        {
+            "name": "Run station test",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "test_station.py",
+            "cwd": "${workspaceFolder}",
+            "console": "integratedTerminal",
+            "justMyCode": false            
+        }
     ]
 }
