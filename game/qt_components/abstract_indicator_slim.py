@@ -5,7 +5,7 @@ from game.data_types.api_package import IndicatorState
 
 
 class AbstractIndicatorSlim(QWidget):
-    def __init__(self, indicator_color: str, text: str, parent=None):
+    def __init__(self, indicator_color: str, parent=None):
         QWidget.__init__(self, parent=parent)
         self.color: str = indicator_color
         self.setGeometry(0, 0, 60, 60)
@@ -15,10 +15,8 @@ class AbstractIndicatorSlim(QWidget):
         self.timer.timeout.connect(self._update)
 
         self.body = QLabel("", self)
-        self.body.setGeometry(15, 0, 22, 22)
-        self.body.setStyleSheet(
-            "border: 4px solid black; background-color: gray; border-radius: 11px"
-        )
+        self.body.setGeometry(15, 0, 16, 16)
+        self.body.setStyleSheet("background-color: gray; border-radius: 8px")
 
     def set_state(self, state: IndicatorState):  # TODO: finish ids
         self.timer.stop()
@@ -26,28 +24,24 @@ class AbstractIndicatorSlim(QWidget):
         if state == IndicatorState.ON:
             self.state = IndicatorState.ON
             self.body.setStyleSheet(
-                f"border: 4px solid black; background-color: {self.color}; border-radius: 11px"
+                f"background-color: {self.color}; border-radius: 8px"
             )
         elif state == IndicatorState.OFF:
             self.state = IndicatorState.OFF
-            self.body.setStyleSheet(
-                f"border: 4px solid black; background-color: gray; border-radius: 11px"
-            )
+            self.body.setStyleSheet(f"background-color: gray; border-radius: 8px")
         elif state == IndicatorState.BLINKING:
             self.timer.start(1000)
             self.state = IndicatorState.ON
             self.body.setStyleSheet(
-                f"border: 4px solid black; background-color: {self.color}; border-radius: 11px"
+                f"background-color: {self.color}; border-radius: 8px"
             )
 
     def _update(self):
         if self.state == IndicatorState.OFF:
             self.state = IndicatorState.ON
             self.body.setStyleSheet(
-                f"border: 4px solid black; background-color: {self.color}; border-radius: 11px"
+                f"background-color: {self.color}; border-radius: 8px"
             )
         else:
             self.state = IndicatorState.OFF
-            self.body.setStyleSheet(
-                f"border: 4px solid black; background-color: gray; border-radius: 11px"
-            )
+            self.body.setStyleSheet(f"background-color: gray; border-radius: 8px")
