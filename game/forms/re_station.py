@@ -31,7 +31,7 @@ class REStation(QMainWindow):
         self.font_obj = QFont("Arial", 20)
 
         self.background = QLabel(self)
-        self.background.setPixmap(QPixmap("assets/reliefRE.bmp"))
+        self.background.setPixmap(QPixmap("assets/reliefRE_uzol.bmp"))
         self.background.setScaledContents(True)
         self.background.setGeometry(0, 0, 1100, 780)
 
@@ -44,6 +44,15 @@ class REStation(QMainWindow):
 
         self.path_build = AbstractIndicatorSlim("red", self)
         self.path_build.move(391, 196)
+
+        self.path_build_cancel = AbstractButton(self)
+        self.path_build_cancel.move(465, 184)
+
+        self.check_switch_positions = AbstractButton(self)
+        self.check_switch_positions.move(540, 184)
+
+        self.check_track_segments = AbstractButton(self)
+        self.check_track_segments.move(615, 184)
 
         self.switch_cut_L = AbstractIndicatorSlim("red", self)
         self.switch_cut_L.move(91, 293)
@@ -64,46 +73,46 @@ class REStation(QMainWindow):
         self.switch_cut_disable_S.move(1038, 280)
 
         self.switch_1_3 = AbstractLeverSlim(
-            lambda state: self.switch_1_3.set_light(state.value, "blue"), self
+            lambda state: self.switch_1_3.set_light(state.value, "lightblue"), self
         )
         self.switch_1_3.move(12, 35)
 
         self.switch_2 = AbstractLeverSlim(
-            lambda state: self.switch_2.set_light(state.value, "blue"), self
+            lambda state: self.switch_2.set_light(state.value, "lightblue"), self
         )
         self.switch_2.move(82, 35)
 
         self.switch_4_vk2 = AbstractLeverSlim(
-            lambda state: self.switch_4_vk2.set_light(state.value, "blue"), self
+            lambda state: self.switch_4_vk2.set_light(state.value, "lightblue"), self
         )
         self.switch_4_vk2.move(152, 35)
 
         self.switch_5 = AbstractLeverSlim(
-            lambda state: self.switch_5.set_light(state.value, "blue"), self
+            lambda state: self.switch_5.set_light(state.value, "lightblue"), self
         )
         self.switch_5.move(225, 35)
 
         self.vk_1 = AbstractLeverSlim(
-            lambda state: self.vk_1.set_light(state.value, "blue"), self
+            lambda state: self.vk_1.set_light(state.value, "lightblue"), self
         )
         self.vk_1.move(295, 35)
 
         self.switch_6_7 = AbstractLeverSlim(
-            lambda state: self.switch_6_7.set_light(state.value, "blue"), self
+            lambda state: self.switch_6_7.set_light(state.value, "lightblue"), self
         )
         self.switch_6_7.move(814, 35)
 
         self.switch_8 = AbstractLeverSlim(
-            lambda state: self.switch_8.set_light(state.value, "blue"), self
+            lambda state: self.switch_8.set_light(state.value, "lightblue"), self
         )
         self.switch_8.move(885, 35)
 
         self.switch_9 = AbstractLeverSlim(
-            lambda state: self.switch_9.set_light(state.value, "blue"), self
+            lambda state: self.switch_9.set_light(state.value, "lightblue"), self
         )
         self.switch_9.move(955, 35)
 
         self.switch_10 = AbstractLeverSlim(
-            lambda state: self.switch_10.set_light(state.value, "blue"), self
+            lambda state: self.switch_10.set_light(state.value, "lightblue"), self
         )
         self.switch_10.move(1027, 35)

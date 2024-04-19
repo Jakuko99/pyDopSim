@@ -6,6 +6,7 @@ class AbstractButton(QWidget):
     def __init__(self, parent=None):
         QWidget.__init__(self, parent=parent)
         self.setGeometry(0, 0, 60, 60)
+        self.right_click_function = lambda: None
 
         self.button = QPushButton(self)
         self.button.setFixedSize(40, 40)
