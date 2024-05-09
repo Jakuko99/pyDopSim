@@ -1,23 +1,40 @@
 from PyQt5.QtWidgets import QWidget, QLabel, QPushButton
-from PyQt5.QtCore import Qt, QTimer
+from PyQt5.QtCore import Qt, QTimer, QSize
+from PyQt5.QtGui import QIcon
+
+from game.data_types.api_package import ButtonType
 
 
 class AbstractButton(QWidget):
-    def __init__(self, parent=None):
+    def __init__(self, button_type: ButtonType = ButtonType.NORMAL, parent=None):
         QWidget.__init__(self, parent=parent)
         self.setGeometry(0, 0, 60, 60)
         self.right_click_function = lambda: None
+        self.middle_click_function = lambda: None
 
         self.button = QPushButton(self)
         self.button.setFixedSize(40, 40)
-        self.button.setStyleSheet(
-            "background-color: rgb(175, 169, 153); border-radius: 20px; border: 5px solid black;"
+        self.button.setStyleSheet("border-radius: 20px;")
+        icon = (
+            QIcon("assets/normal_button.png")
+            if button_type == ButtonType.NORMAL
+            else QIcon("assets/safety_button.png")
         )
+        self.button.setIcon(icon)
+        self.button.setIconSize(QSize(40, 40))
 
-    def setFunctions(self, left_click_function, right_click_function):
+    def setFunctions(
+        self,
+        left_click_function,
+        right_click_function,
+        middle_click_function=lambda: None,
+    ):
         self.button.clicked.connect(left_click_function)
         self.right_click_function = right_click_function
+        self.middle_click_function = middle_click_function
 
     def mousePressEvent(self, QMouseEvent):
         if QMouseEvent.button() == Qt.RightButton:
             self.right_click_function()
+        if QMouseEvent.button() == Qt.MiddleButton:
+            self.middle_click_function()

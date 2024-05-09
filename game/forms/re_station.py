@@ -46,6 +46,11 @@ class REStation(QMainWindow):
         self.path_build.move(391, 196)
 
         self.path_build_cancel = AbstractButton(self)
+        self.path_build_cancel.setFunctions(
+            lambda: print("left click"),
+            lambda: print("right click"),
+            lambda: print("middle click"),
+        )  # refuses to work
         self.path_build_cancel.move(465, 184)
 
         self.check_switch_positions = AbstractButton(self)

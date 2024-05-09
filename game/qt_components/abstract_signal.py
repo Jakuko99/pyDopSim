@@ -15,18 +15,24 @@ class AbstractSignal(QWidget):
         self.background.setGeometry(0, 0, 20, (num_lamps * 15) + 5)
         self.background.setStyleSheet("background-color: black")
 
-       if num_lamps == 5:
+        if num_lamps == 5:
             self.stripe1 = QLabel(self)
             self.stripe1.setGeometry(20, 0, 8, int(((num_lamps * 15) + 5) * 0.4))
             self.stripe1.setStyleSheet("background-color: red")
             self.stripe2 = QLabel(self)
             self.stripe2.setGeometry(
-                20, int(((num_lamps * 15) + 5) * 0.4), 8, int(((num_lamps * 15) + 5) * 0.2)
+                20,
+                int(((num_lamps * 15) + 5) * 0.4),
+                8,
+                int(((num_lamps * 15) + 5) * 0.2),
             )
             self.stripe2.setStyleSheet("background-color: white")
             self.stripe3 = QLabel(self)
             self.stripe3.setGeometry(
-                20, int(((num_lamps * 15) + 5) * 0.6), 8, int(((num_lamps * 15) + 5) * 0.4)
+                20,
+                int(((num_lamps * 15) + 5) * 0.6),
+                8,
+                int(((num_lamps * 15) + 5) * 0.4),
             )
             self.stripe3.setStyleSheet("background-color: red")
 
