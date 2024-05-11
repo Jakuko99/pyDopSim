@@ -1,5 +1,5 @@
-from PyQt5.QtWidgets import QWidget, QLabel, QPushButton
-from PyQt5.QtCore import Qt, QTimer, QSize
+from PyQt5.QtWidgets import QWidget, QPushButton
+from PyQt5.QtCore import Qt, QSize
 from PyQt5.QtGui import QIcon
 
 from game.data_types.api_package import ButtonType
@@ -8,7 +8,7 @@ from game.data_types.api_package import ButtonType
 class AbstractButton(QWidget):
     def __init__(self, button_type: ButtonType = ButtonType.NORMAL, parent=None):
         QWidget.__init__(self, parent=parent)
-        self.setGeometry(0, 0, 60, 60)
+        self.setGeometry(0, 0, 40, 40)
         self.right_click_function = lambda: None
         self.middle_click_function = lambda: None
 

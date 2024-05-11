@@ -18,6 +18,7 @@ from game.data_types.api_package import (
     SwitchType,
     IndicatorState,
     LeverState,
+    IndicatorColor,
 )
 
 
@@ -42,8 +43,8 @@ class REStation(QMainWindow):
         self.title.setFixedSize(356, 55)
         self.title.setFont(self.font_obj)
 
-        self.path_build = AbstractIndicatorSlim("red", self)
-        self.path_build.move(391, 196)
+        self.path_build = AbstractIndicatorSlim(indicator_color=IndicatorColor.RED, parent=self)
+        self.path_build.move(397, 187)
 
         self.path_build_cancel = AbstractButton(self)
         self.path_build_cancel.setFunctions(
@@ -59,11 +60,11 @@ class REStation(QMainWindow):
         self.check_track_segments = AbstractButton(self)
         self.check_track_segments.move(615, 184)
 
-        self.switch_cut_L = AbstractIndicatorSlim("red", self)
-        self.switch_cut_L.move(91, 293)
+        self.switch_cut_L = AbstractIndicatorSlim(IndicatorColor.RED, self)
+        self.switch_cut_L.move(97, 284)
 
-        self.switch_cut_S = AbstractIndicatorSlim("red", self)
-        self.switch_cut_S.move(964, 293)
+        self.switch_cut_S = AbstractIndicatorSlim(IndicatorColor.RED, self)
+        self.switch_cut_S.move(970, 284)
 
         self.announce_disable_L = AbstractButton(self)
         self.announce_disable_L.move(24, 200)

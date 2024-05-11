@@ -6,14 +6,18 @@ from game.qt_components.api_package import (
     AbstractTrack,
     AbstractSwitch,
     AbstractIndicator,
+    AbstractIndicatorSlim,
     AbstractLever,
+    AbstractButton,
 )
 from game.data_types.api_package import (
     SignalSign,
     TrackState,
     SwitchType,
     IndicatorState,
+    IndicatorColor,
     LeverState,
+    ButtonType,
 )
 
 
@@ -71,6 +75,15 @@ class TestWindow(QMainWindow):
         self.indicator = AbstractIndicator("white", "Voľnosť\ntrate", self)
         self.indicator.move(75, 280)
 
+        self.indicator1 = AbstractIndicatorSlim(IndicatorColor.RED, self)
+        self.indicator1.move(150, 275)
+
+        self.indicator2 = AbstractIndicatorSlim(IndicatorColor.GREEN, self)
+        self.indicator2.move(190, 275)
+
+        self.indicator3 = AbstractIndicatorSlim(IndicatorColor.WHITE, self)
+        self.indicator3.move(230, 275)
+
         self.combo4 = QComboBox(self)
         self.combo4.addItems([item for item in IndicatorState.__members__])
         self.combo4.move(5, 345)
@@ -80,6 +93,17 @@ class TestWindow(QMainWindow):
 
         self.lever = AbstractLever("+ 1/3 -", self.change_lever, self)
         self.lever.move(5, 400)
+
+        self.abstrack_button = AbstractButton(ButtonType.NORMAL, self)
+        self.abstrack_button.move(75, 400)
+
+        self.abs_label = QLabel("Button", self)
+        self.abs_label.move(75, 440)
+        self.abstrack_button.setFunctions(
+            left_click_function=lambda: self.abs_label.setText("Left click"),
+            right_click_function=lambda: self.abs_label.setText("Right click"),
+            middle_click_function=lambda: self.abs_label.setText("Middle click"),
+        )
 
     def change_signal(self):
         self.signal.set_sign(SignalSign[self.combo.currentText()])
@@ -97,6 +121,9 @@ class TestWindow(QMainWindow):
 
     def change_state1(self):
         self.indicator.set_state(IndicatorState[self.combo4.currentText()])
+        self.indicator1.set_state(IndicatorState[self.combo4.currentText()])
+        self.indicator2.set_state(IndicatorState[self.combo4.currentText()])
+        self.indicator3.set_state(IndicatorState[self.combo4.currentText()])
 
     def change_lever(self, state: LeverState):
         self.lever.set_light(1, "gray")  # reset lights
