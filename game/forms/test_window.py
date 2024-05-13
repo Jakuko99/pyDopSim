@@ -72,7 +72,7 @@ class TestWindow(QMainWindow):
         self.button3.move(50, 245)
         self.button3.clicked.connect(self.change_state)
 
-        self.indicator = AbstractIndicator("white", "Voľnosť\ntrate", self)
+        self.indicator = AbstractIndicator(IndicatorColor.WHITE, "Voľnosť\ntrate", self)
         self.indicator.move(75, 280)
 
         self.indicator1 = AbstractIndicatorSlim(IndicatorColor.RED, self)
@@ -94,12 +94,12 @@ class TestWindow(QMainWindow):
         self.lever = AbstractLever("+ 1/3 -", self.change_lever, self)
         self.lever.move(5, 400)
 
-        self.abstrack_button = AbstractButton(ButtonType.NORMAL, self)
-        self.abstrack_button.move(75, 400)
+        self.abstract_button = AbstractButton(ButtonType.NORMAL, self)
+        self.abstract_button.move(75, 400)
 
         self.abs_label = QLabel("Button", self)
         self.abs_label.move(75, 440)
-        self.abstrack_button.setFunctions(
+        self.abstract_button.setFunctions(
             left_click_function=lambda: self.abs_label.setText("Left click"),
             right_click_function=lambda: self.abs_label.setText("Right click"),
             middle_click_function=lambda: self.abs_label.setText("Middle click"),

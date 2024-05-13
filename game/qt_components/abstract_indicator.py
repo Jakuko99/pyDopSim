@@ -1,25 +1,27 @@
 from PyQt5.QtWidgets import QWidget, QLabel
-from PyQt5.QtGui import QFont
+from PyQt5.QtGui import QFont, QPixmap
 from PyQt5.QtCore import Qt, QTimer
 
-from game.data_types.api_package import IndicatorState
+from game.data_types.api_package import IndicatorState, IndicatorColor
 
 
 class AbstractIndicator(QWidget):
-    def __init__(self, indicator_color: str, text: str, parent=None):
+    def __init__(self, indicator_color: IndicatorColor, text: str, parent=None):
         QWidget.__init__(self, parent=parent)
         self.color: str = indicator_color
         self.setGeometry(0, 0, 60, 60)
         self.state: IndicatorState = IndicatorState.OFF
 
+        self.off_pixmap = QPixmap("assets/indicator_off.png")        
+        self.on_pixmap = QPixmap(f"assets/indicator_on_{indicator_color.name.lower()}.png")
+
         self.timer = QTimer(self)
         self.timer.timeout.connect(self._update)
 
         self.body = QLabel("", self)
-        self.body.setGeometry(15, 0, 22, 22)
-        self.body.setStyleSheet(
-            "border: 4px solid black; background-color: gray; border-radius: 11px"
-        )
+        self.body.setGeometry(15, 0, 22, 22)        
+        self.body.setPixmap(self.off_pixmap)
+        self.body.setScaledContents(True)
 
         self.label = QLabel(text, self)
         self.label.setAlignment(Qt.AlignmentFlag.AlignCenter)
@@ -32,29 +34,19 @@ class AbstractIndicator(QWidget):
 
         if state == IndicatorState.ON:
             self.state = IndicatorState.ON
-            self.body.setStyleSheet(
-                f"border: 4px solid black; background-color: {self.color}; border-radius: 11px"
-            )
+            self.body.setPixmap(self.on_pixmap)
         elif state == IndicatorState.OFF:
             self.state = IndicatorState.OFF
-            self.body.setStyleSheet(
-                f"border: 4px solid black; background-color: gray; border-radius: 11px"
-            )
+            self.body.setPixmap(self.off_pixmap)
         elif state == IndicatorState.BLINKING:
             self.timer.start(1000)
             self.state = IndicatorState.ON
-            self.body.setStyleSheet(
-                f"border: 4px solid black; background-color: {self.color}; border-radius: 11px"
-            )
+            self.body.setPixmap(self.on_pixmap)
 
     def _update(self):
         if self.state == IndicatorState.OFF:
             self.state = IndicatorState.ON
-            self.body.setStyleSheet(
-                f"border: 4px solid black; background-color: {self.color}; border-radius: 11px"
-            )
+            self.body.setPixmap(self.on_pixmap)
         else:
             self.state = IndicatorState.OFF
-            self.body.setStyleSheet(
-                f"border: 4px solid black; background-color: gray; border-radius: 11px"
-            )
+            self.body.setPixmap(self.off_pixmap)

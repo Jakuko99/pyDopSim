@@ -13,14 +13,11 @@ class AbstractButton(QWidget):
         self.middle_click_function = lambda: None
 
         self.button = QPushButton(self)
+        icon = QIcon("assets/normal_button.png")
+        self.button.setIcon(icon)
+        self.button.move(0, 0)        
         self.button.setFixedSize(40, 40)
         self.button.setStyleSheet("border-radius: 20px;")
-        icon = (
-            QIcon("assets/normal_button.png")
-            if button_type == ButtonType.NORMAL
-            else QIcon("assets/safety_button.png")
-        )
-        self.button.setIcon(icon)
         self.button.setIconSize(QSize(40, 40))
 
     def setFunctions(

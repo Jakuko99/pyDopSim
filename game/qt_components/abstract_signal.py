@@ -141,6 +141,22 @@ class AbstractSignal(QWidget):
                 )
                 self.timer.start(250)
                 self.blinking_lamp = [self.lamps[0], "yellow"]
+            elif sign == SignalSign.TEST:
+                self.lamps[0].setStyleSheet(
+                    "background-color: yellow; border-radius: 5px;"
+                )
+                self.lamps[1].setStyleSheet(
+                    "background-color: lime; border-radius: 5px;"
+                )
+                self.lamps[2].setStyleSheet(
+                    "background-color: red; border-radius: 5px;"
+                )
+                self.lamps[3].setStyleSheet(
+                    "background-color: white; border-radius: 5px;"
+                )
+                self.lamps[4].setStyleSheet(
+                    "background-color: yellow; border-radius: 5px;"
+                )
             else:  # invalid state
                 self.lamps[2].setStyleSheet(
                     "background-color: red; border-radius: 5px;"
@@ -152,6 +168,13 @@ class AbstractSignal(QWidget):
                     "background-color: #1799E7; border-radius: 5px;"
                 )
             elif sign == SignalSign.SHUNT:
+                self.lamps[0].setStyleSheet(
+                    "background-color: white; border-radius: 5px;"
+                )
+            elif sign == SignalSign.TEST:
+                self.lamps[1].setStyleSheet(
+                    "background-color: #1799E7; border-radius: 5px;"
+                )
                 self.lamps[0].setStyleSheet(
                     "background-color: white; border-radius: 5px;"
                 )
@@ -191,6 +214,16 @@ class AbstractSignal(QWidget):
                 )
                 self.timer.start(500)
                 self.blinking_lamp = [self.lamps[1], "lime"]
+            elif sign == SignalSign.TEST:
+                self.lamps[0].setStyleSheet(
+                    "background-color: yellow; border-radius: 5px;"
+                )
+                self.lamps[1].setStyleSheet(
+                    "background-color: lime; border-radius: 5px;"
+                )
+                self.lamps[2].setStyleSheet(
+                    "background-color: red; border-radius: 5px;"
+                )
             else:
                 self.lamps[2].setStyleSheet(
                     "background-color: red; border-radius: 5px;"

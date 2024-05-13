@@ -23,3 +23,6 @@ class SignalSign(Enum):
     AB_EXP40 = auto()
     AB_EXP60 = auto()
     AB_EXP80 = auto()
+
+    # ----- TEST signal -----
+    TEST = auto()
