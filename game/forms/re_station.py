@@ -53,7 +53,9 @@ class REStation(QMainWindow):
 
         self.server_menu = self.menu_bar.addMenu("Server")
         self.connect_action = QAction("Pripojiť", self)
-        self.connect_action.triggered.connect(lambda: ConnectDialog(self).exec_()) # TODO: pass values back to window
+        self.connect_action.triggered.connect(
+            lambda: ConnectDialog(self).exec_()
+        )  # TODO: pass values back to window
         self.server_menu.addAction(self.connect_action)
 
         self.disconnect_action = QAction("Odpojiť", self)

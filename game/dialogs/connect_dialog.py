@@ -26,7 +26,7 @@ class ConnectDialog(QDialog):
         self.player_label.setFont(self.font_obj)
         self.player_label.move(10, 10)
 
-        self.player_name = QLineEdit(os.getlogin(), self)
+        self.player_name = QLineEdit(os.getlogin().capitalize(), self)
         self.player_name.setFont(self.font_obj)
         self.player_name.move(75, 10)
 
