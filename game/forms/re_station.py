@@ -44,28 +44,25 @@ class REStation(QMainWindow):
         # ----- menu items -----
         self.menu_bar = self.menuBar()
         self.client_menu = self.menu_bar.addMenu("Klient")
-        refresh_action = QAction("Obnoviť", self)
-        self.client_menu.addAction(refresh_action)
+        self.refresh_action = QAction("Obnoviť", self)
+        self.client_menu.addAction(self.refresh_action)
 
         exit_action = QAction("Ukončiť", self)
         exit_action.triggered.connect(self.close)
         self.client_menu.addAction(exit_action)
 
         self.server_menu = self.menu_bar.addMenu("Server")
-        connect_action = QAction("Pripojiť", self)
-        connect_action.triggered.connect(lambda: ConnectDialog(self).exec_())
-        self.server_menu.addAction(connect_action)
+        self.connect_action = QAction("Pripojiť", self)
+        self.connect_action.triggered.connect(lambda: ConnectDialog(self).exec_()) # TODO: pass values back to window
+        self.server_menu.addAction(self.connect_action)
 
-        disconnect_action = QAction("Odpojiť", self)
-        self.server_menu.addAction(disconnect_action)
-        disconnect_action.setEnabled(False)
+        self.disconnect_action = QAction("Odpojiť", self)
+        self.server_menu.addAction(self.disconnect_action)
+        self.disconnect_action.setEnabled(False)
 
         self.help_menu = self.menu_bar.addMenu("Pomoc")
-        about_action = QAction("O programe", self)
-        about_action.triggered.connect(
-            lambda: QMessageBox.about(self, "O programe", "Testovacie okno stanice")
-        )
-        self.help_menu.addAction(about_action)
+        self.about_action = QAction("O programe", self)
+        self.help_menu.addAction(self.about_action)
 
         self.background = QLabel(self)
         self.background.setPixmap(QPixmap("assets/reliefRE_uzol.bmp"))
@@ -86,11 +83,6 @@ class REStation(QMainWindow):
 
         self.path_build_cancel = AbstractButton(
             parent=self, button_type=ButtonType.NORMAL
-        )
-        self.path_build_cancel.setFunctions(
-            lambda: print("left click"),
-            lambda: print("right click"),
-            lambda: print("middle click"),
         )
         self.path_build_cancel.move(468, 204)
 
@@ -131,47 +123,29 @@ class REStation(QMainWindow):
         self.train_nr.move(688, 208)
         self.train_nr.set_state(IndicatorState.ON)
 
-        self.switch_1_3 = AbstractLeverSlim(
-            lambda state: self.switch_1_3.set_light(state.value, "lightblue"), self
-        )
+        self.switch_1_3 = AbstractLeverSlim(self)
         self.switch_1_3.move(12, 55)
 
-        self.switch_2 = AbstractLeverSlim(
-            lambda state: self.switch_2.set_light(state.value, "lightblue"), self
-        )
+        self.switch_2 = AbstractLeverSlim(self)
         self.switch_2.move(82, 55)
 
-        self.switch_4_vk2 = AbstractLeverSlim(
-            lambda state: self.switch_4_vk2.set_light(state.value, "lightblue"), self
-        )
+        self.switch_4_vk2 = AbstractLeverSlim(self)
         self.switch_4_vk2.move(152, 55)
 
-        self.switch_5 = AbstractLeverSlim(
-            lambda state: self.switch_5.set_light(state.value, "lightblue"), self
-        )
+        self.switch_5 = AbstractLeverSlim(self)
         self.switch_5.move(225, 55)
 
-        self.vk_1 = AbstractLeverSlim(
-            lambda state: self.vk_1.set_light(state.value, "lightblue"), self
-        )
+        self.vk_1 = AbstractLeverSlim(self)
         self.vk_1.move(295, 55)
 
-        self.switch_6_7 = AbstractLeverSlim(
-            lambda state: self.switch_6_7.set_light(state.value, "lightblue"), self
-        )
+        self.switch_6_7 = AbstractLeverSlim(self)
         self.switch_6_7.move(814, 55)
 
-        self.switch_8 = AbstractLeverSlim(
-            lambda state: self.switch_8.set_light(state.value, "lightblue"), self
-        )
+        self.switch_8 = AbstractLeverSlim(self)
         self.switch_8.move(885, 55)
 
-        self.switch_9 = AbstractLeverSlim(
-            lambda state: self.switch_9.set_light(state.value, "lightblue"), self
-        )
+        self.switch_9 = AbstractLeverSlim(self)
         self.switch_9.move(955, 55)
 
-        self.switch_10 = AbstractLeverSlim(
-            lambda state: self.switch_10.set_light(state.value, "lightblue"), self
-        )
+        self.switch_10 = AbstractLeverSlim(self)
         self.switch_10.move(1027, 55)

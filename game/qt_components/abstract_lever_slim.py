@@ -6,11 +6,11 @@ from game.data_types.api_package import LeverState
 
 
 class AbstractLeverSlim(QWidget):
-    def __init__(self, on_update, parent=None):
+    def __init__(self, parent=None):
         QWidget.__init__(self, parent=parent)
         self.setGeometry(0, 0, 60, 120)
         self.state: LeverState = LeverState.MIDDLE
-        self.on_update = on_update
+        self.on_update = lambda state: None
 
         self.lever_middle_pixmap = QPixmap("assets/lever_middle.png")
         self.lever_left_pixmap = QPixmap("assets/lever_left.png")
@@ -54,6 +54,9 @@ class AbstractLeverSlim(QWidget):
         self.area3.setGeometry(40, 60, 20, 110)
         self.area3.setStyleSheet("background-color: transparent; border: none;")
         self.area3.clicked.connect(lambda: self._set_state(LeverState.RIGHT))
+
+    def set_update_function(self, function):
+        self.on_update = function
 
     def _set_state(self, state: LeverState):
         self.state = state

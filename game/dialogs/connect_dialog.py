@@ -49,7 +49,12 @@ class ConnectDialog(QDialog):
         self.connect_button = QPushButton("Pripojiť", self)
         self.connect_button.setFont(self.font_obj)
         self.connect_button.move(80, 115)
+        self.connect_button.clicked.connect(self.connect_func)
 
         self.cancel_button = QPushButton("Zrušiť", self)
         self.cancel_button.setFont(self.font_obj)
         self.cancel_button.move(180, 115)
+        self.cancel_button.clicked.connect(self.close)
+
+    def connect_func(self):
+        pass
