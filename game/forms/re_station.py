@@ -1,4 +1,13 @@
-from PyQt5.QtWidgets import QMainWindow, QLabel, QPushButton, QComboBox, QLineEdit, QMessageBox, QMenu, QAction
+from PyQt5.QtWidgets import (
+    QMainWindow,
+    QLabel,
+    QPushButton,
+    QComboBox,
+    QLineEdit,
+    QMessageBox,
+    QMenu,
+    QAction,
+)
 from PyQt5.QtGui import QPixmap, QFont
 from PyQt5.QtCore import Qt
 
@@ -20,7 +29,7 @@ from game.data_types.api_package import (
     IndicatorState,
     LeverState,
     IndicatorColor,
-    ButtonType
+    ButtonType,
 )
 
 
@@ -29,7 +38,7 @@ class REStation(QMainWindow):
         super().__init__()
         self.setGeometry(0, 0, 1100, 800)
         self.setWindowTitle("Station test window")
-        self.setFixedSize(1100, 800)        
+        self.setFixedSize(1100, 800)
         self.font_obj = QFont("Arial", 20)
 
         # ----- menu items -----
@@ -53,7 +62,9 @@ class REStation(QMainWindow):
 
         self.help_menu = self.menu_bar.addMenu("Pomoc")
         about_action = QAction("O programe", self)
-        about_action.triggered.connect(lambda: QMessageBox.about(self, "O programe", "Testovacie okno stanice"))
+        about_action.triggered.connect(
+            lambda: QMessageBox.about(self, "O programe", "Testovacie okno stanice")
+        )
         self.help_menu.addAction(about_action)
 
         self.background = QLabel(self)
@@ -68,10 +79,14 @@ class REStation(QMainWindow):
         self.title.setFixedSize(356, 55)
         self.title.setFont(self.font_obj)
 
-        self.path_build = AbstractIndicatorSlim(indicator_color=IndicatorColor.RED, parent=self)
+        self.path_build = AbstractIndicatorSlim(
+            indicator_color=IndicatorColor.RED, parent=self
+        )
         self.path_build.move(397, 207)
 
-        self.path_build_cancel = AbstractButton(parent=self, button_type=ButtonType.NORMAL)
+        self.path_build_cancel = AbstractButton(
+            parent=self, button_type=ButtonType.NORMAL
+        )
         self.path_build_cancel.setFunctions(
             lambda: print("left click"),
             lambda: print("right click"),
@@ -102,6 +117,19 @@ class REStation(QMainWindow):
 
         self.switch_cut_disable_S = AbstractButton(ButtonType.NORMAL, self)
         self.switch_cut_disable_S.move(1038, 300)
+
+        self.time_5s = AbstractIndicatorSlim(IndicatorColor.RED, self)
+        self.time_5s.move(545, 130)
+
+        self.time_1min = AbstractIndicatorSlim(IndicatorColor.RED, self)
+        self.time_1min.move(617, 130)
+
+        self.time_3min = AbstractIndicatorSlim(IndicatorColor.RED, self)
+        self.time_3min.move(688, 130)
+
+        self.train_nr = AbstractIndicatorSlim(IndicatorColor.WHITE, self)
+        self.train_nr.move(688, 208)
+        self.train_nr.set_state(IndicatorState.ON)
 
         self.switch_1_3 = AbstractLeverSlim(
             lambda state: self.switch_1_3.set_light(state.value, "lightblue"), self

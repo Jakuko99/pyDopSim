@@ -1,4 +1,15 @@
-from PyQt5.QtWidgets import QMainWindow, QLabel, QPushButton, QComboBox, QLineEdit, QMessageBox, QMenu, QAction, QDialog
+import os
+from PyQt5.QtWidgets import (
+    QMainWindow,
+    QLabel,
+    QPushButton,
+    QComboBox,
+    QLineEdit,
+    QMessageBox,
+    QMenu,
+    QAction,
+    QDialog,
+)
 from PyQt5.QtGui import QPixmap, QFont
 from PyQt5.QtCore import Qt
 
@@ -15,7 +26,7 @@ class ConnectDialog(QDialog):
         self.player_label.setFont(self.font_obj)
         self.player_label.move(10, 10)
 
-        self.player_name = QLineEdit(self)
+        self.player_name = QLineEdit(os.getlogin(), self)
         self.player_name.setFont(self.font_obj)
         self.player_name.move(75, 10)
 
@@ -31,9 +42,9 @@ class ConnectDialog(QDialog):
         self.server_port_label.setFont(self.font_obj)
         self.server_port_label.move(10, 80)
 
-        self.server_port = QLineEdit(self)
+        self.server_port = QLineEdit("8000", self)
         self.server_port.setFont(self.font_obj)
-        self.server_port.move(75, 80)    
+        self.server_port.move(75, 80)
 
         self.connect_button = QPushButton("Pripojiť", self)
         self.connect_button.setFont(self.font_obj)

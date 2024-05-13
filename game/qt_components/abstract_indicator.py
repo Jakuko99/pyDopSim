@@ -12,14 +12,16 @@ class AbstractIndicator(QWidget):
         self.setGeometry(0, 0, 60, 60)
         self.state: IndicatorState = IndicatorState.OFF
 
-        self.off_pixmap = QPixmap("assets/indicator_off.png")        
-        self.on_pixmap = QPixmap(f"assets/indicator_on_{indicator_color.name.lower()}.png")
+        self.off_pixmap = QPixmap("assets/indicator_off.png")
+        self.on_pixmap = QPixmap(
+            f"assets/indicator_on_{indicator_color.name.lower()}.png"
+        )
 
         self.timer = QTimer(self)
         self.timer.timeout.connect(self._update)
 
         self.body = QLabel("", self)
-        self.body.setGeometry(15, 0, 22, 22)        
+        self.body.setGeometry(15, 0, 22, 22)
         self.body.setPixmap(self.off_pixmap)
         self.body.setScaledContents(True)
 
