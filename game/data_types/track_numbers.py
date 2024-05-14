@@ -1,7 +1,7 @@
 from enum import Enum
 
 
-class TrackNumbers(Enum):
+class Tracks(Enum):
     DOPRAVNA_1 = 197
     DOPRAVNA_2 = 269
     DOPRAVNA_3 = 125

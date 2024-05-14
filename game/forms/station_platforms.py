@@ -4,7 +4,7 @@ from PyQt5.QtGui import QPixmap
 from uuid import UUID
 import os
 
-from game.data_types.api_package import TrackNumbers
+from game.data_types.api_package import Tracks
 from game.objects.api_package import Train, Carriage
 
 
@@ -21,12 +21,12 @@ class PlatformWidget(QWidget):
 
     def add_train(
         self,
-        track_nr: TrackNumbers,
+        track_nr: Tracks,
         track_pos: int,
         train: Train,
     ):
         self.trains[train.uuid] = train
-        if track_nr == TrackNumbers.MANIPULACNA_4A:
+        if track_nr == Tracks.MANIPULACNA_4A:
             self.trains[train.uuid].move(6805 + track_pos, track_nr.value)
         else:
             self.trains[train.uuid].move(3440 + track_pos, track_nr.value)
@@ -50,29 +50,29 @@ class StationPlatforms(QMainWindow):
         self.setGeometry(120, 150, 1000, 475)
         self.setWindowTitle(f"Staničné koľaje: žst. {station_name}")
 
-        train = Train("750", 600, self.platforms)
+        train = Train("757-b2-a", 600, self.platforms)
         train.add_carriage(Carriage("ZSSK_Ameer"))
         train.add_carriage(Carriage("ZSSK_Ameer"))
         train.add_carriage(Carriage("ZSSK_Ameer"))
         train.add_carriage(Carriage("ZSSK_Ameer"))
 
         self.platforms.add_train(
-            TrackNumbers.DOPRAVNA_1, 100, Train("0Bee", parent=self.platforms)
+            Tracks.DOPRAVNA_1, 100, Train("0Bee", parent=self.platforms)
         )
-        self.platforms.add_train(TrackNumbers.DOPRAVNA_2, 100, train)
+        self.platforms.add_train(Tracks.DOPRAVNA_2, 100, train)
         self.platforms.add_train(
-            TrackNumbers.DOPRAVNA_3,
+            Tracks.DOPRAVNA_3,
             100,
             Train("840_ZSSK_TEZ", parent=self.platforms, train_nr=1822),
         )
         self.platforms.add_train(
-            TrackNumbers.DOPRAVNA_5, 100, Train("495-95-a", parent=self.platforms)
+            Tracks.DOPRAVNA_5, 100, Train("495-95-a", parent=self.platforms)
         )
         self.platforms.add_train(
-            TrackNumbers.MANIPULACNA_4, 100, Train("425-95-c-a", parent=self.platforms)
+            Tracks.MANIPULACNA_4, 100, Train("425-95-c-a", parent=self.platforms)
         )
         self.platforms.add_train(
-            TrackNumbers.MANIPULACNA_4A, 300, Train("405-95-L", parent=self.platforms)
+            Tracks.MANIPULACNA_4A, 300, Train("405-95-L", parent=self.platforms)
         )
 
     def get_tracks(self) -> PlatformWidget:
