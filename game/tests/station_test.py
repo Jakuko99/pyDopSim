@@ -10,9 +10,6 @@ class StationTest:
         self.window = REStation(station_name)
 
     def add_test_bindings(self):
-        self.window.about_action.triggered.connect(
-            lambda: QMessageBox.about(self, "O programe", "Testovacie okno stanice")
-        )
         self.window.path_build_cancel.setFunctions(
             lambda: self.window.path_build.set_state(IndicatorState.ON),  # left click
             lambda: self.window.path_build.set_state(IndicatorState.OFF),  # right click

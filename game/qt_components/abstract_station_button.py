@@ -10,7 +10,7 @@ class AbstractStationButton(QWidget):
         self.right_click_function = lambda: None
         self.middle_click_function = lambda: None
 
-        self.context_menu = QMenu(self) # move top menu into station button ???
+        self.context_menu = QMenu(self)  # move top menu into station button ???
         self.client_menu = QMenu(self)
         self.client_menu.setTitle("Klient")
         self.client_menu.addAction("Action 1")
