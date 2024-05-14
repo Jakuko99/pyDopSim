@@ -1,0 +1,2 @@
+class ShuntingDialog:
+    pass
