@@ -1,4 +1,4 @@
-from PyQt5.QtWidgets import QWidget, QPushButton, QMenu
+from PyQt5.QtWidgets import QWidget, QPushButton, QMenu, QAction
 from PyQt5.QtCore import Qt, QSize
 from PyQt5.QtGui import QIcon
 
@@ -10,12 +10,32 @@ class AbstractStationButton(QWidget):
         self.right_click_function = lambda: None
         self.middle_click_function = lambda: None
 
-        self.context_menu = QMenu(self)  # move top menu into station button ???
+        # ----- Context menu -----
+        self.context_menu = QMenu(self)
         self.client_menu = QMenu(self)
         self.client_menu.setTitle("Klient")
-        self.client_menu.addAction("Action 1")
+        self.client_menu.addAction("Pripojiť k serveru")
+
+        action: QAction = self.client_menu.addAction("Odpojiť od servera")
+        action.setEnabled(False)
+        self.client_menu.addSeparator()
+        self.client_menu.addAction("Zobraziť informácie o klientovi")
         self.context_menu.addMenu(self.client_menu)
-        self.context_menu.addAction("Action 2")
+
+        self.settings_menu = QMenu(self)
+        self.settings_menu.setTitle("Nastavenia")
+        action = self.settings_menu.addAction("Zvuky simulácie")
+        action.setCheckable(True)
+        action.setChecked(True)
+
+        action = self.settings_menu.addAction("Zvuky dopravného denníka")
+        action.setCheckable(True)
+        action.setChecked(True)
+
+        self.settings_menu.addSeparator()
+        action = self.settings_menu.addAction("Rozšírené nastavenia")
+
+        self.context_menu.addMenu(self.settings_menu)
 
         self.button = QPushButton(self)
         icon = QIcon("assets/station_button.png")

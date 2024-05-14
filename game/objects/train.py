@@ -49,7 +49,7 @@ class Train(QWidget):
     def add_carriage(self, carriage: Carriage):
         self.carriages.append(carriage)
         carriage.setParent(self)
-        carriage.move(self.width() + 2, 0)
+        carriage.move(self.width(), 0)
         self.setGeometry(
             0,
             0,
