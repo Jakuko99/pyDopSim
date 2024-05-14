@@ -5,3 +5,4 @@ class IndicatorColor(Enum):
     WHITE = auto()
     RED = auto()
     GREEN = auto()
+    YELLOW = auto()

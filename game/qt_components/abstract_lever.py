@@ -2,13 +2,14 @@ from PyQt5.QtWidgets import QWidget, QLabel, QPushButton
 from PyQt5.QtGui import QFont, QPixmap
 from PyQt5.QtCore import Qt
 
-from game.data_types.api_package import LeverState
+from game.data_types.api_package import LeverState, IndicatorColor, IndicatorState
+from game.qt_components.abstract_switch_indicator import AbstractSwitchIndicator
 
 
 class AbstractLever(QWidget):
     def __init__(self, text: str, on_update, parent=None):
         QWidget.__init__(self, parent=parent)
-        self.setGeometry(0, 0, 60, 120)
+        self.setGeometry(0, 0, 65, 120)
         self.state: LeverState = LeverState.MIDDLE
         self.on_update = on_update
 
@@ -19,21 +20,14 @@ class AbstractLever(QWidget):
         self.body = QLabel("", self)
         self.body.setGeometry(0, 0, 60, 110)
 
-        self.light1 = QLabel("", self)
-        self.light1.setGeometry(5, 15, 20, 20)
-        self.light1.setStyleSheet(
-            "background-color: gray; border-radius: 10px; border: 4px solid black;"
-        )
-        self.light2 = QLabel("", self)
-        self.light2.setGeometry(20, 0, 20, 20)
-        self.light2.setStyleSheet(
-            "background-color: gray; border-radius: 10px; border: 4px solid black;"
-        )
-        self.light3 = QLabel("", self)
-        self.light3.setGeometry(35, 15, 20, 20)
-        self.light3.setStyleSheet(
-            "background-color: gray; border-radius: 10px; border: 4px solid black;"
-        )
+        self.light1 = AbstractSwitchIndicator(IndicatorColor.GREEN, self)
+        self.light1.move(0, 15)
+
+        self.light2 = AbstractSwitchIndicator(IndicatorColor.RED, self)
+        self.light2.move(20, 0)
+
+        self.light3 = AbstractSwitchIndicator(IndicatorColor.YELLOW, self)
+        self.light3.move(40, 15)
 
         self.lever = QLabel("", self)
         self.lever.setGeometry(0, 60, 60, 50)
@@ -73,8 +67,8 @@ class AbstractLever(QWidget):
         elif state == LeverState.RIGHT:
             self.lever.setPixmap(self.lever_right_pixmap)
 
-    def set_light(self, light_id: int, color: str):
-        light: QLabel = self.__getattribute__(f"light{light_id}")
-        light.setStyleSheet(
-            f"background-color: {color}; border-radius: 10px; border: 4px solid black;"
-        )
+    def set_light(self, light_id: int, state: IndicatorState):
+        for i in range(1, 4):  # reset lights
+            self.__getattribute__(f"light{i}").set_state(IndicatorState.OFF)
+        light: AbstractSwitchIndicator = self.__getattribute__(f"light{light_id}")
+        light.set_state(state)

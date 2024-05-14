@@ -9,7 +9,9 @@ from game.qt_components.api_package import (
     AbstractIndicatorSlim,
     AbstractLever,
     AbstractButton,
+    AbstractStationButton,
 )
+from game.forms.station_platforms import StationPlatforms
 from game.data_types.api_package import (
     SignalSign,
     TrackState,
@@ -27,6 +29,8 @@ class TestWindow(QMainWindow):
         self.setGeometry(0, 0, 800, 600)
         self.setWindowTitle("Component test window")
         self.setStyleSheet("background-color: lightgray")
+
+        self.platforms: StationPlatforms = StationPlatforms()
 
         self.signal = AbstractSignal(5, self)
         self.signal.move(40, 5)
@@ -57,6 +61,10 @@ class TestWindow(QMainWindow):
         self.button2 = QPushButton("Change signal", self)
         self.button2.move(240, 125)
         self.button2.clicked.connect(self.change_signal2)
+
+        self.station_button = AbstractStationButton(self)
+        self.station_button.move(360, 20)
+        self.station_button.setFunctions(self.show_platforms)
 
         self.track = AbstractTrack(300, self)
         self.track.move(5, 180)
@@ -126,13 +134,17 @@ class TestWindow(QMainWindow):
         self.indicator3.set_state(IndicatorState[self.combo4.currentText()])
 
     def change_lever(self, state: LeverState):
-        self.lever.set_light(1, "gray")  # reset lights
-        self.lever.set_light(2, "gray")
-        self.lever.set_light(3, "gray")
+        self.lever.set_light(1, IndicatorState.OFF)  # reset lights
+        self.lever.set_light(2, IndicatorState.OFF)
+        self.lever.set_light(3, IndicatorState.OFF)
 
         if state == LeverState.LEFT:
-            self.lever.set_light(1, "lime")
+            self.lever.set_light(1, IndicatorState.ON)
         elif state == LeverState.MIDDLE:
-            self.lever.set_light(2, "red")
+            self.lever.set_light(2, IndicatorState.ON)
         elif state == LeverState.RIGHT:
-            self.lever.set_light(3, "yellow")
+            self.lever.set_light(3, IndicatorState.ON)
+
+    def show_platforms(self):
+        if self.platforms:
+            self.platforms.show()

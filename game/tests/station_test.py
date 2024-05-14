@@ -21,31 +21,39 @@ class StationTest:
             ),  # middle click
         )
         self.window.switch_1_3.set_update_function(
-            lambda state: self.window.switch_1_3.set_light(state.value, "lightblue")
+            lambda state: self.window.switch_1_3.set_light(
+                state.value, IndicatorState.ON
+            )
         )
         self.window.switch_2.set_update_function(
-            lambda state: self.window.switch_2.set_light(state.value, "lightblue")
+            lambda state: self.window.switch_2.set_light(state.value, IndicatorState.ON)
         )
         self.window.switch_4_vk2.set_update_function(
-            lambda state: self.window.switch_4_vk2.set_light(state.value, "lightblue")
+            lambda state: self.window.switch_4_vk2.set_light(
+                state.value, IndicatorState.ON
+            )
         )
         self.window.switch_5.set_update_function(
-            lambda state: self.window.switch_5.set_light(state.value, "lightblue")
+            lambda state: self.window.switch_5.set_light(state.value, IndicatorState.ON)
         )
         self.window.vk_1.set_update_function(
-            lambda state: self.window.vk_1.set_light(state.value, "lightblue")
+            lambda state: self.window.vk_1.set_light(state.value, IndicatorState.ON)
         )
         self.window.switch_6_7.set_update_function(
-            lambda state: self.window.switch_6_7.set_light(state.value, "lightblue")
+            lambda state: self.window.switch_6_7.set_light(
+                state.value, IndicatorState.ON
+            )
         )
         self.window.switch_8.set_update_function(
-            lambda state: self.window.switch_8.set_light(state.value, "lightblue")
+            lambda state: self.window.switch_8.set_light(state.value, IndicatorState.ON)
         )
         self.window.switch_9.set_update_function(
-            lambda state: self.window.switch_9.set_light(state.value, "lightblue")
+            lambda state: self.window.switch_9.set_light(state.value, IndicatorState.ON)
         )
         self.window.switch_10.set_update_function(
-            lambda state: self.window.switch_10.set_light(state.value, "lightblue")
+            lambda state: self.window.switch_10.set_light(
+                state.value, IndicatorState.ON
+            )
         )
 
     def run(self):

@@ -20,8 +20,10 @@ from game.qt_components.api_package import (
     AbstractLeverSlim,
     AbstractIndicatorSlim,
     AbstractButton,
+    AbstractStationButton,
 )
 from game.dialogs.api_package import ConnectDialog
+from game.forms.station_platforms import StationPlatforms
 from game.data_types.api_package import (
     SignalSign,
     TrackState,
@@ -40,6 +42,7 @@ class REStation(QMainWindow):
         self.setWindowTitle("Station test window")
         self.setFixedSize(1100, 800)
         self.font_obj = QFont("Arial", 20)
+        self.station_platforms = StationPlatforms(station_name=station_name)
 
         # ----- menu items -----
         self.menu_bar = self.menuBar()
@@ -151,3 +154,7 @@ class REStation(QMainWindow):
 
         self.switch_10 = AbstractLeverSlim(self)
         self.switch_10.move(1027, 55)
+
+        self.station_button = AbstractStationButton(self)
+        self.station_button.move(476, 652)
+        self.station_button.setFunctions(lambda: self.station_platforms.show())
