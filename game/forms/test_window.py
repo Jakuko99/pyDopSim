@@ -12,6 +12,7 @@ from game.qt_components.api_package import (
     AbstractStationButton,
 )
 from game.forms.station_platforms import StationPlatforms
+from game.dialogs.new_train_dialog import NewTrainDialog
 from game.data_types.api_package import (
     SignalSign,
     TrackState,
@@ -31,6 +32,7 @@ class TestWindow(QMainWindow):
         self.setStyleSheet("background-color: lightgray")
 
         self.platforms: StationPlatforms = StationPlatforms()
+        self.new_train_dialog = NewTrainDialog(self)
 
         self.signal = AbstractSignal(5, self)
         self.signal.move(40, 5)
@@ -65,6 +67,10 @@ class TestWindow(QMainWindow):
         self.station_button = AbstractStationButton(self)
         self.station_button.move(360, 20)
         self.station_button.setFunctions(self.show_platforms)
+
+        self.new_train_dialog_button = QPushButton("New train dialog", self)
+        self.new_train_dialog_button.move(360, 80)
+        self.new_train_dialog_button.clicked.connect(self.new_train_dialog.show)
 
         self.track = AbstractTrack(300, self)
         self.track.move(5, 180)

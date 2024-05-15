@@ -1,11 +1,11 @@
-from PyQt5.QtWidgets import QWidget, QLabel, QScrollArea, QMainWindow
+from PyQt5.QtWidgets import QWidget, QLabel, QScrollArea, QMainWindow, QPushButton
 from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QPixmap
 from uuid import UUID
 import os
 
 from game.data_types.api_package import Tracks
-from game.objects.api_package import Train, Carriage
+from game.objects.api_package import Locomotive, Carriage, Consist
 
 
 class PlatformWidget(QWidget):
@@ -17,19 +17,21 @@ class PlatformWidget(QWidget):
         self.label.setPixmap(plaform_pixmap)
         self.label.move(0, 0)
         self.label.setFixedSize(plaform_pixmap.width(), 450)
-        self.trains: dict[UUID, Train] = dict()
+        self.trains: dict[UUID, Consist] = dict()
 
     def add_train(
         self,
         track_nr: Tracks,
         track_pos: int,
-        train: Train,
+        train: Consist,
     ):
         self.trains[train.uuid] = train
         if track_nr == Tracks.MANIPULACNA_4A:
-            self.trains[train.uuid].move(6805 + track_pos, track_nr.value)
+            self.trains[train.uuid].move(6800 + track_pos, track_nr.value)
+        elif track_nr == Tracks.DOPRAVNA_1:
+            self.trains[train.uuid].move(3055 + track_pos, track_nr.value)
         else:
-            self.trains[train.uuid].move(3440 + track_pos, track_nr.value)
+            self.trains[train.uuid].move(3435 + track_pos, track_nr.value)
 
 
 class StationPlatforms(QMainWindow):
@@ -50,29 +52,30 @@ class StationPlatforms(QMainWindow):
         self.setGeometry(120, 150, 1000, 475)
         self.setWindowTitle(f"Staničné koľaje: žst. {station_name}")
 
-        train = Train("757-b2-a", 600, self.platforms)
-        train.add_carriage(Carriage("ZSSK_Ameer"))
-        train.add_carriage(Carriage("ZSSK_Ameer"))
-        train.add_carriage(Carriage("ZSSK_Ameer"))
-        train.add_carriage(Carriage("ZSSK_Ameer"))
+        con = Consist(parent=self.platforms, train_nr=600)
+        con1 = Consist(parent=self.platforms, train_nr=602)
 
+        con.add_locomotive(Locomotive("757-b2-a"))
+        con.add_carriage(Carriage("ZSSK_Ameer"))
+        con.add_carriage(Carriage("ZSSK_Ameer"))
+        con.add_carriage(Carriage("ZSSK_Ameer"))
+        con.add_carriage(Carriage("ZSSK_Ameer"))
+
+        con1.add_locomotive(Locomotive("757-b2-a"))
+        con1.add_carriage(Carriage("ZSSK_Ameer"))
+        con1.add_carriage(Carriage("ZSSK_Ameer"))
+        con1.add_carriage(Carriage("ZSSK_Ameer"))
+        con1.add_carriage(Carriage("ZSSK_Ameer"))
+
+        co = Consist(parent=self.platforms, train_nr=601)
+        co.add_locomotive(Locomotive("840_ZSSK_TEZ"))
+
+        self.platforms.add_train(Tracks.DOPRAVNA_2, 0, con)
+        self.platforms.add_train(Tracks.DOPRAVNA_1, 0, con1)
         self.platforms.add_train(
-            Tracks.DOPRAVNA_1, 100, Train("0Bee", parent=self.platforms)
-        )
-        self.platforms.add_train(Tracks.DOPRAVNA_2, 100, train)
-        self.platforms.add_train(
-            Tracks.DOPRAVNA_3,
-            100,
-            Train("840_ZSSK_TEZ", parent=self.platforms, train_nr=1822),
-        )
-        self.platforms.add_train(
-            Tracks.DOPRAVNA_5, 100, Train("495-95-a", parent=self.platforms)
-        )
-        self.platforms.add_train(
-            Tracks.MANIPULACNA_4, 100, Train("425-95-c-a", parent=self.platforms)
-        )
-        self.platforms.add_train(
-            Tracks.MANIPULACNA_4A, 300, Train("405-95-L", parent=self.platforms)
+            Tracks.MANIPULACNA_4A,
+            0,
+            co,
         )
 
     def get_tracks(self) -> PlatformWidget:

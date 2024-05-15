@@ -1,27 +1,20 @@
 from PyQt5.QtWidgets import QMenu, QAction, QWidget, QLabel
 from PyQt5.QtGui import QIcon, QPixmap
 from uuid import UUID, uuid4
-import os
 
 from game.objects.carriage import Carriage
+from game.objects.locomotive import Locomotive
 
 
-class Train(QWidget):
-    def __init__(self, train_asset: str, train_nr: int = None, parent=None):
+class Consist(QWidget):
+    def __init__(self, train_nr: int = None, parent=None):
         super().__init__(parent=parent)
         self.uuid: UUID = uuid4()
-        self.train_nr = train_nr
         self.carriages: list[Carriage] = []
-
-        if os.path.exists(f"assets/vozidla/{train_asset}.bmp"):
-            self.train_body = QLabel(self)
-            self.train_asset: QPixmap = QPixmap(f"assets/vozidla/{train_asset}.bmp")
-            self.train_body.setPixmap(self.train_asset)
-            self.train_body.move(0, 0)
-        else:
-            raise FileNotFoundError(f"Train asset {train_asset} not found")
-
-        self.setGeometry(0, 0, self.train_asset.width(), 45)
+        self.locomotives: list[Locomotive] = []
+        self.train_nr = train_nr
+        self.setGeometry(0, 0, 5, 45)
+        self.setMinimumSize(5, 45)
 
         self.context_menu = QMenu(self)  # move top menu into station button ???
         if self.train_nr:
@@ -49,11 +42,22 @@ class Train(QWidget):
     def add_carriage(self, carriage: Carriage):
         self.carriages.append(carriage)
         carriage.setParent(self)
-        carriage.move(self.width(), 0)
+        carriage.move(self.width() + 2, 0)
         self.setGeometry(
             0,
             0,
-            self.train_asset.width() + sum([c.width() for c in self.carriages]),
+            self.width() + carriage.width() + 2,
+            45,
+        )
+
+    def add_locomotive(self, locomotive: Locomotive):
+        self.locomotives.append(locomotive)
+        locomotive.setParent(self)
+        locomotive.move(self.width() + 2, 0)
+        self.setGeometry(
+            0,
+            0,
+            self.width() + locomotive.width() + 2,
             45,
         )
 
