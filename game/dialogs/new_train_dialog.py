@@ -15,7 +15,7 @@ from PyQt5.QtGui import QPixmap, QFont
 from PyQt5.QtCore import Qt
 import os
 
-from game.data_types.api_package import TrainType
+from game.data_types.api_package import TrainType, Tracks
 from game.objects.api_package import Locomotive, Carriage, Consist
 
 
@@ -45,7 +45,7 @@ class NewTrainDialog(QDialog):
         super().__init__(parent)
         self.font_obj = QFont("Arial", 10)
         self.setWindowTitle("Vytvoriť nový vlak")
-        self.setFixedSize(630, 400)
+        self.setFixedSize(630, 365)
 
         self.consist = Consist()
         self.preview = None
@@ -79,13 +79,21 @@ class NewTrainDialog(QDialog):
 
         self.train_type_label = QLabel("Typ vlaku:", self)
         self.train_type_label.setFont(self.font_obj)
-        self.train_type_label.move(165, 8)
+        self.train_type_label.move(170, 8)
 
         self.train_type_combo = QComboBox(self)
         self.train_type_combo.setFont(self.font_obj)
         self.train_type_combo.addItems([v.name for v in TrainType])
         self.train_type_combo.move(240, 5)
         self.train_type_combo.setFixedSize(75, 25)
+
+        self.train_nr_label = QLabel("Číslo vlaku:", self)
+        self.train_nr_label.setFont(self.font_obj)
+        self.train_nr_label.move(320, 8)
+
+        self.train_nr_field = QLineEdit(self)
+        self.train_nr_field.setFixedSize(65, 25)
+        self.train_nr_field.move(395, 5)
 
         self.add_loco_button = QPushButton("Pridať lokomotívu", self)
         self.add_loco_button.move(165, 60)
@@ -121,6 +129,23 @@ class NewTrainDialog(QDialog):
         self.preview_button.setFixedSize(150, 25)
         self.preview_button.clicked.connect(self.show_consist_preview)
 
+        self.confirm_button = QPushButton("Pridať súpravu", self)
+        self.confirm_button.move(475, 335)
+        self.confirm_button.setFixedSize(150, 25)
+        self.confirm_button.clicked.connect(self.create_consist)
+
+        self.train_pos_label = QLabel("Koľaj:", self)
+        self.train_pos_label.setFont(self.font_obj)
+        self.train_pos_label.move(170, 35)
+
+        self.track_pos_combo = QComboBox(self)
+        self.track_pos_combo.setFont(self.font_obj)
+        self.track_pos_combo.addItems(
+            [v.name for v in Tracks if "MANIPULACNA" in v.name]
+        )
+        self.track_pos_combo.move(240, 35)
+        self.track_pos_combo.setFixedSize(175, 25)
+
     def on_train_selected(self, item):
         pixmap = QPixmap(f"assets/vozidla/{item.text()}.bmp")
         if pixmap.width() > 300:  # fit to width
@@ -149,6 +174,9 @@ class NewTrainDialog(QDialog):
     def remove_all(self):
         self.consist_list.clear()
         self.consist = Consist()
+
+    def create_consist(self):
+        pass
 
 
 if __name__ == "__main__":
