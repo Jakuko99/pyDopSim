@@ -4,6 +4,7 @@ from uuid import UUID, uuid4
 
 from game.objects.carriage import Carriage
 from game.objects.locomotive import Locomotive
+from game.data_types.api_package import TrainType
 
 
 class Consist(QWidget):
@@ -13,12 +14,21 @@ class Consist(QWidget):
         self.carriages: list[Carriage] = []
         self.locomotives: list[Locomotive] = []
         self.train_nr = train_nr
+        self.train_type: TrainType = None
         self.setGeometry(0, 0, 5, 45)
         self.setMinimumSize(5, 45)
 
         self.context_menu = QMenu(self)  # move top menu into station button ???
         if self.train_nr:
-            train_nr_item = QAction(str(self.train_nr), self)
+            train_nr_item = QAction(
+                f"{self.train_type.name if self.train_type else ''} {self.train_nr}",
+                self,
+            )
+            train_nr_item.setEnabled(False)
+            self.context_menu.addAction(train_nr_item)
+            self.context_menu.addSeparator()
+        else:
+            train_nr_item = QAction("(nepriradené číslo)", self)
             train_nr_item.setEnabled(False)
             self.context_menu.addAction(train_nr_item)
             self.context_menu.addSeparator()
@@ -43,23 +53,24 @@ class Consist(QWidget):
         self.carriages.append(carriage)
         carriage.setParent(self)
         carriage.move(self.width() + 2, 0)
-        self.setGeometry(
-            0,
-            0,
-            self.width() + carriage.width() + 2,
-            45,
-        )
+        self.setFixedSize(self.width() + carriage.width() + 2, 45)
 
     def add_locomotive(self, locomotive: Locomotive):
         self.locomotives.append(locomotive)
         locomotive.setParent(self)
         locomotive.move(self.width() + 2, 0)
-        self.setGeometry(
-            0,
-            0,
-            self.width() + locomotive.width() + 2,
-            45,
-        )
+        self.setFixedSize(self.width() + locomotive.width() + 2, 45)
+
+    def remove_all(self):
+        self.locomotives.clear()  # TODO: need to fix this method
+        self.carriages.clear()
 
     def contextMenuEvent(self, event):
         self.context_menu.exec_(event.globalPos())
+
+    def set_train_number(self, train_type: TrainType, train_nr: int):
+        self.train_type = train_type
+        self.train_nr = train_nr
+        self.context_menu.actions()[0].setText(
+            f"{self.train_type.name} {self.train_nr}"
+        )

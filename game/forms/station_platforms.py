@@ -6,6 +6,7 @@ import os
 
 from game.data_types.api_package import Tracks
 from game.objects.api_package import Locomotive, Carriage, Consist
+from game.data_types.api_package import TrainType
 
 
 class PlatformWidget(QWidget):
@@ -47,19 +48,19 @@ class StationPlatforms(QMainWindow):
         self.scroll.setWidget(self.platforms)
 
         self.setCentralWidget(self.scroll)
-        # self.setStyleSheet("background-color: #303030;")
         self.setFixedHeight(475)
         self.setGeometry(120, 150, 1000, 475)
         self.setWindowTitle(f"Staničné koľaje: žst. {station_name}")
 
-        con = Consist(parent=self.platforms, train_nr=600)
+        con = Consist(parent=self.platforms)
         con1 = Consist(parent=self.platforms, train_nr=602)
 
+        con.add_carriage(Carriage("ZSSK_Ameer"))
+        con.add_carriage(Carriage("ZSSK_Ameer"))
+        con.add_carriage(Carriage("ZSSK_Ameer"))
+        con.add_carriage(Carriage("ZSSK_Ameer"))
         con.add_locomotive(Locomotive("757-b2-a"))
-        con.add_carriage(Carriage("ZSSK_Ameer"))
-        con.add_carriage(Carriage("ZSSK_Ameer"))
-        con.add_carriage(Carriage("ZSSK_Ameer"))
-        con.add_carriage(Carriage("ZSSK_Ameer"))
+        con.set_train_number(TrainType.R, 940)
 
         con1.add_locomotive(Locomotive("757-b2-a"))
         con1.add_carriage(Carriage("ZSSK_Ameer"))
@@ -67,7 +68,7 @@ class StationPlatforms(QMainWindow):
         con1.add_carriage(Carriage("ZSSK_Ameer"))
         con1.add_carriage(Carriage("ZSSK_Ameer"))
 
-        co = Consist(parent=self.platforms, train_nr=601)
+        co = Consist(parent=self.platforms)
         co.add_locomotive(Locomotive("840_ZSSK_TEZ"))
 
         self.platforms.add_train(Tracks.DOPRAVNA_2, 0, con)

@@ -18,4 +18,4 @@ class Locomotive(QWidget):
         else:
             raise FileNotFoundError(f"Locomotive asset {train_asset} not found")
 
-        self.setGeometry(0, 0, self.train_asset.width(), 45)
+        self.setFixedSize(self.train_asset.width(), 45)

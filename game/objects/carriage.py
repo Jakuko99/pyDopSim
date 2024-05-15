@@ -20,4 +20,4 @@ class Carriage(QWidget):
         else:
             raise FileNotFoundError(f"Train asset {carriage_asset} not found")
 
-        self.setGeometry(0, 0, self.carriage_asset.width(), 45)
+        self.setFixedSize(self.carriage_asset.width(), 45)
