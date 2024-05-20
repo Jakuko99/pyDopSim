@@ -150,9 +150,9 @@ class NewTrainDialog(QDialog):
         self.train_preview.setPixmap(pixmap)
 
     def search_function(self):
-        search_text = self.search_field.text()
+        search_text = self.search_field.text().lower()
         self.train_list.clear()
-        self.train_list.addItems([v for v in self.train_assets if search_text in v])
+        self.train_list.addItems([v for v in self.train_assets if search_text in v.lower()]) # make search case insensitive
 
     def add_vehicle(self):
         self.consist_list.addItem(self.train_list.currentItem().text())
