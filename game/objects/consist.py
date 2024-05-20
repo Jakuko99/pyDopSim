@@ -4,21 +4,25 @@ from uuid import UUID, uuid4
 
 from game.objects.train_object import TrainObject
 from game.data_types.api_package import TrainType
+from game.dialogs.shunting_dialog import ShuntingDialog
+from game.dialogs.train_number_dialog import TrainNumberDialog
 
 
 class Consist(QWidget):
-    def __init__(self, train_nr: int = None, parent=None):
+    def __init__(self, train_nr: int = None, train_type: TrainType = None, parent=None):
         super().__init__(parent=parent)
         self.uuid: UUID = uuid4()
         self.carriages: list[TrainObject] = []
         self.locomotives: list[TrainObject] = []
         self.train_nr = train_nr
-        self.train_type: TrainType = None
+        self.train_type: train_type
         self.setGeometry(0, 0, 5, 45)
         self.setMinimumSize(5, 45)
+        self.shunting_dialog = ShuntingDialog(self)
+        self.train_number_dialog = TrainNumberDialog(self)
 
-        self.context_menu = QMenu(self)  # move top menu into station button ???
-        if self.train_nr:
+        self.context_menu = QMenu(self)
+        if self.train_nr and train_type:
             train_nr_item = QAction(
                 f"{self.train_type.name if self.train_type else ''} {self.train_nr}",
                 self,
@@ -34,6 +38,7 @@ class Consist(QWidget):
 
         self.shunt_action = QAction("Posun", self)
         self.shunt_action.setIcon(QIcon("assets/shunting_icon.png"))
+        self.shunt_action.triggered.connect(self.shunting_dialog.show)
         self.context_menu.addAction(self.shunt_action)
 
         self.dispatch_action = QAction("Vypraviť", self)
@@ -42,6 +47,7 @@ class Consist(QWidget):
 
         self.new_train_action = QAction("Zaviesť nový vlak", self)
         self.new_train_action.setIcon(QIcon("assets/new_train_icon.png"))
+        self.new_train_action.triggered.connect(self.train_number_dialog.show)
         self.context_menu.addAction(self.new_train_action)
 
         self.refresh_train_action = QAction("Obnoviť vlak", self)
@@ -70,3 +76,7 @@ class Consist(QWidget):
         self.context_menu.actions()[0].setText(
             f"{self.train_type.name} {self.train_nr}"
         )
+
+    @property
+    def vehicles_count(self):
+        return len(self.locomotives) + len(self.carriages)

@@ -17,9 +17,9 @@ from PyQt5.QtCore import Qt
 import os
 
 
-class ShuntingDialog(QMainWindow):
+class TrainNumberDialog(QMainWindow):
     def __init__(self, parent):
         super().__init__(parent)
         self.font_obj = QFont("Arial", 10)
-        self.setWindowTitle("Posun súpravy")
+        self.setWindowTitle("Zaviest nový vlak")
         # self.setFixedSize(630, 365)

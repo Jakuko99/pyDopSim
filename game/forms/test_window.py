@@ -32,7 +32,7 @@ class TestWindow(QMainWindow):
         self.setStyleSheet("background-color: lightgray")
 
         self.platforms: StationPlatforms = StationPlatforms()
-        self.new_train_dialog = NewTrainDialog(self)
+        self.new_train_dialog = NewTrainDialog(self, lambda x, y: None)
 
         self.signal = AbstractSignal(5, self)
         self.signal.move(40, 5)

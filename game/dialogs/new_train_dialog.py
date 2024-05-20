@@ -10,6 +10,7 @@ from PyQt5.QtWidgets import (
     QComboBox,
     QListWidget,
     QScrollArea,
+    QCheckBox,
 )
 from PyQt5.QtGui import QPixmap, QFont
 from PyQt5.QtCore import Qt
@@ -41,8 +42,9 @@ class ConsistPreview(QMainWindow):
 
 
 class NewTrainDialog(QDialog):
-    def __init__(self, parent):
+    def __init__(self, parent, on_confirm):
         super().__init__(parent)
+        self.on_confirm = on_confirm
         self.font_obj = QFont("Arial", 10)
         self.setWindowTitle("Vytvoriť nový vlak")
         self.setFixedSize(630, 365)
@@ -96,7 +98,7 @@ class NewTrainDialog(QDialog):
         self.train_nr_field.move(395, 5)
 
         self.add_loco_button = QPushButton("Pridať vozidlo", self)
-        self.add_loco_button.move(165, 60)
+        self.add_loco_button.move(165, 65)
         self.add_loco_button.setFixedSize(100, 25)
         self.add_loco_button.clicked.connect(
             self.add_vehicle
@@ -108,7 +110,7 @@ class NewTrainDialog(QDialog):
         self.consist_list.move(475, 28)
 
         self.remove_one_button = QPushButton("Odstrániť položku", self)
-        self.remove_one_button.move(360, 60)
+        self.remove_one_button.move(360, 65)
         self.remove_one_button.setFixedSize(110, 25)
         self.remove_one_button.clicked.connect(
             lambda: self.consist_list.takeItem(self.consist_list.currentRow())
@@ -166,14 +168,19 @@ class NewTrainDialog(QDialog):
         self.consist = Consist()
 
     def create_consist(self):
+        if not self.consist.vehicles_count == 0:
+            self.on_confirm(
+                self.consist, Tracks.__getitem__(self.track_pos_combo.currentText())
+            )
+            self.reset_window()  # reset window after closing
+            self.close()
+        else:
+            QMessageBox.warning(self, "Chyba", "Súprava je prázdna")
+
+    def reset_window(self):
         pass
 
-
-if __name__ == "__main__":
-    import sys
-    from PyQt5.QtWidgets import QApplication
-
-    app = QApplication(sys.argv)
-    ex = NewTrainDialog(None)
-    ex.show()
-    sys.exit(app.exec_())
+    def closeEvent(self, event):
+        if self.preview:
+            self.preview.close()
+        event.accept()
