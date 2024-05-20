@@ -1,5 +1,7 @@
 from PyQt5.QtWidgets import QMainWindow, QLabel, QPushButton, QComboBox, QLineEdit
 from PyQt5.QtGui import QIcon
+from queue import Queue
+import logging
 
 from game.qt_components.api_package import (
     AbstractSignal,
@@ -25,11 +27,15 @@ from game.data_types.api_package import (
 
 
 class TestWindow(QMainWindow):
-    def __init__(self):
+    def __init__(self, log_pipe: Queue):
         super().__init__()
+        self.log_pipe = log_pipe
         self.setGeometry(0, 0, 800, 600)
         self.setWindowTitle("Component test window")
         self.setStyleSheet("background-color: lightgray")
+        self.logger = logging.getLogger("App.TestWindow")
+        self.logger.setLevel(logging.DEBUG)
+        self.logger.info("Test window initialized")
 
         self.platforms: StationPlatforms = StationPlatforms()
         self.new_train_dialog = NewTrainDialog(self, lambda x, y: None)
@@ -64,7 +70,7 @@ class TestWindow(QMainWindow):
         self.button2.move(240, 125)
         self.button2.clicked.connect(self.change_signal2)
 
-        self.station_button = AbstractStationButton(self)
+        self.station_button = AbstractStationButton(parent=self, log_pipe=self.log_pipe)
         self.station_button.move(360, 20)
         self.station_button.setFunctions(self.show_platforms)
 
@@ -121,6 +127,7 @@ class TestWindow(QMainWindow):
 
     def change_signal(self):
         self.signal.set_sign(SignalSign[self.combo.currentText()])
+        self.logger.debug(f"Signal changed to {self.combo.currentText()}")
 
     def change_signal1(self):
         self.signal1.set_sign(SignalSign[self.combo1.currentText()])

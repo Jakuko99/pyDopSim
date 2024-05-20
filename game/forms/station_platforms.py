@@ -46,9 +46,9 @@ class PlatformWidget(QWidget):
 
     def add_created_train(self, consist: Consist, track_nr: Tracks, track_pos: int = 0):
         consist.setParent(self)
-        self.trains[consist.uuid] = (
-            consist  # TODO: need to create custom layout for adding trains dynamically
-        )
+        self.trains[
+            consist.uuid
+        ] = consist  # TODO: need to create custom layout for adding trains dynamically
         self.add_train(track_nr, track_pos, consist)
 
     def add_train(

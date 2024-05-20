@@ -4,6 +4,8 @@ from PyQt5.QtWidgets import (
 )
 from PyQt5.QtGui import QPixmap, QFont
 from PyQt5.QtCore import Qt
+from queue import Queue
+import logging
 
 from game.qt_components.api_package import (
     AbstractSignal,
@@ -29,12 +31,16 @@ from game.data_types.api_package import (
 
 
 class REStation(QMainWindow):
-    def __init__(self, station_name: str):
+    def __init__(self, station_name: str, log_pipe: Queue):
         super().__init__()
         self.setGeometry(0, 0, 1100, 780)
         self.setWindowTitle("Station test window")
         self.setFixedSize(1100, 780)
         self.font_obj = QFont("Arial", 20)
+        self.log_pipe: Queue = log_pipe
+        self.logger = logging.getLogger("App.REStation")
+        self.logger.setLevel(logging.DEBUG)
+        self.logger.info("REStation initialized")
         self.station_platforms = StationPlatforms(station_name=station_name)
 
         self.background = QLabel(self)
@@ -123,6 +129,6 @@ class REStation(QMainWindow):
         self.switch_10 = AbstractLeverSlim(self)
         self.switch_10.move(1027, 35)
 
-        self.station_button = AbstractStationButton(self)
+        self.station_button = AbstractStationButton(parent=self, log_pipe=self.log_pipe)
         self.station_button.move(476, 632)
         self.station_button.setFunctions(lambda: self.station_platforms.show())

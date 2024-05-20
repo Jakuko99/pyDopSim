@@ -12,7 +12,7 @@ from PyQt5.QtWidgets import (
     QScrollArea,
     QCheckBox,
 )
-from PyQt5.QtGui import QPixmap, QFont
+from PyQt5.QtGui import QPixmap, QFont, QIntValidator
 from PyQt5.QtCore import Qt
 import os
 
@@ -78,24 +78,7 @@ class NewTrainDialog(QDialog):
         self.train_preview.setFixedSize(300, 45)
         self.train_preview.setAutoFillBackground(True)
         self.train_preview.move(165, 125)
-
-        self.train_type_label = QLabel("Typ vlaku:", self)
-        self.train_type_label.setFont(self.font_obj)
-        self.train_type_label.move(170, 8)
-
-        self.train_type_combo = QComboBox(self)
-        self.train_type_combo.setFont(self.font_obj)
-        self.train_type_combo.addItems([v.name for v in TrainType])
-        self.train_type_combo.move(240, 5)
-        self.train_type_combo.setFixedSize(75, 25)
-
-        self.train_nr_label = QLabel("Číslo vlaku:", self)
-        self.train_nr_label.setFont(self.font_obj)
-        self.train_nr_label.move(320, 8)
-
-        self.train_nr_field = QLineEdit(self)
-        self.train_nr_field.setFixedSize(65, 25)
-        self.train_nr_field.move(395, 5)
+        self.on_train_selected(self.train_list.item(0))  # auto select first item
 
         self.add_loco_button = QPushButton("Pridať vozidlo", self)
         self.add_loco_button.move(165, 65)
@@ -133,15 +116,51 @@ class NewTrainDialog(QDialog):
 
         self.train_pos_label = QLabel("Koľaj:", self)
         self.train_pos_label.setFont(self.font_obj)
-        self.train_pos_label.move(170, 35)
+        self.train_pos_label.move(170, 5)
 
         self.track_pos_combo = QComboBox(self)
         self.track_pos_combo.setFont(self.font_obj)
         self.track_pos_combo.addItems(
             [v.name for v in Tracks if "MANIPULACNA" in v.name]
         )
-        self.track_pos_combo.move(240, 35)
+        self.track_pos_combo.move(240, 5)
         self.track_pos_combo.setFixedSize(175, 25)
+
+        self.track_pos_label1 = QLabel("Pozícia:", self)
+        self.track_pos_label1.setFont(self.font_obj)
+        self.track_pos_label1.move(170, 35)
+
+        self.track_pos_field = QLineEdit("0", self)
+        self.track_pos_field.setFont(self.font_obj)
+        self.track_pos_field.setValidator(QIntValidator(0, 5000))  # accept only numbers
+        self.track_pos_field.setFixedSize(50, 25)
+        self.track_pos_field.move(240, 35)
+
+        self.train_nr_checkbox = QCheckBox("Priradiť číslo vlaku", self)
+        self.train_nr_checkbox.setFont(self.font_obj)
+        self.train_nr_checkbox.move(165, 190)
+        self.train_nr_checkbox.stateChanged.connect(self.change_train_nr)
+
+        self.train_type_label = QLabel("Typ vlaku:", self)
+        self.train_type_label.setFont(self.font_obj)
+        self.train_type_label.move(165, 215)
+
+        self.train_type_combo = QComboBox(self)
+        self.train_type_combo.setFont(self.font_obj)
+        self.train_type_combo.addItems([v.name for v in TrainType])
+        self.train_type_combo.move(250, 215)
+        self.train_type_combo.setFixedSize(75, 25)
+        self.train_type_combo.setEnabled(False)
+
+        self.train_nr_label = QLabel("Číslo vlaku:", self)
+        self.train_nr_label.setFont(self.font_obj)
+        self.train_nr_label.move(165, 245)
+
+        self.train_nr_field = QLineEdit(self)
+        self.train_nr_field.setFixedSize(65, 25)
+        self.train_nr_field.setValidator(QIntValidator(0, 99999))
+        self.train_nr_field.move(250, 245)
+        self.train_nr_field.setEnabled(False)
 
     def on_train_selected(self, item):
         pixmap = QPixmap(f"assets/vozidla/{item.text()}.bmp")
@@ -161,6 +180,14 @@ class NewTrainDialog(QDialog):
         loco = TrainObject(self.train_list.currentItem().text())
         self.consist.add_train_obj(loco)
 
+    def change_train_nr(self):
+        if self.train_nr_checkbox.isChecked():
+            self.train_nr_field.setEnabled(True)
+            self.train_type_combo.setEnabled(True)
+        else:
+            self.train_nr_field.setEnabled(False)
+            self.train_type_combo.setEnabled(False)
+
     def show_consist_preview(self):
         self.preview = ConsistPreview(self.consist, self)
         self.preview.show()
@@ -171,8 +198,17 @@ class NewTrainDialog(QDialog):
 
     def create_consist(self):
         if not self.consist.vehicles_count == 0:
+            if self.train_nr_checkbox.isChecked():  # set train number if checked
+                self.consist.set_train_number(
+                    train_type=TrainType.__getitem__(
+                        self.train_type_combo.currentText()
+                    ),
+                    train_nr=int(self.train_nr_field.text()),
+                )
             self.on_confirm(
-                self.consist, Tracks.__getitem__(self.track_pos_combo.currentText())
+                self.consist,
+                Tracks.__getitem__(self.track_pos_combo.currentText()),
+                int(self.track_pos_field.text()),
             )
             self.reset_window()  # reset window after closing
             self.close()
@@ -180,7 +216,13 @@ class NewTrainDialog(QDialog):
             QMessageBox.warning(self, "Chyba", "Súprava je prázdna")
 
     def reset_window(self):
-        pass
+        self.remove_all()
+        self.track_pos_combo.setCurrentIndex(0)
+        self.track_pos_field.setText("0")
+        self.train_nr_checkbox.setChecked(False)
+        self.train_nr_field.setText("")
+        self.train_type_combo.setCurrentIndex(0)
+        self.train_list.setCurrentRow(0)
 
     def closeEvent(self, event):
         if self.preview:

@@ -1,12 +1,17 @@
 from PyQt5.QtWidgets import QWidget, QPushButton, QMenu, QAction
 from PyQt5.QtCore import Qt, QSize
 from PyQt5.QtGui import QIcon
+from queue import Queue
+
+from game.forms.log_window import LogWindow
 
 
 class AbstractStationButton(QWidget):
-    def __init__(self, parent=None):
+    def __init__(self, log_pipe: Queue, parent=None):
         QWidget.__init__(self, parent=parent)
+        self.log_pipe: Queue = log_pipe
         self.setGeometry(0, 0, 80, 55)
+        self.log_window = LogWindow(self, log_pipe)
         self.right_click_function = lambda: None
         self.middle_click_function = lambda: None
 
@@ -21,6 +26,11 @@ class AbstractStationButton(QWidget):
         self.client_menu.addSeparator()
         self.client_menu.addAction("Zobraziť informácie o klientovi")
         self.context_menu.addMenu(self.client_menu)
+
+        self.log_action = QAction("Zobraziť log", self)
+        self.log_action.triggered.connect(self.log_window.show)
+        self.log_action.setIcon(QIcon("assets/log_icon.png"))
+        self.context_menu.addAction(self.log_action)
 
         self.settings_menu = QMenu(self)
         self.settings_menu.setTitle("Nastavenia")
