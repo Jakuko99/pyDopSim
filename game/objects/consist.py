@@ -2,8 +2,7 @@ from PyQt5.QtWidgets import QMenu, QAction, QWidget, QLabel
 from PyQt5.QtGui import QIcon, QPixmap
 from uuid import UUID, uuid4
 
-from game.objects.carriage import Carriage
-from game.objects.locomotive import Locomotive
+from game.objects.train_object import TrainObject
 from game.data_types.api_package import TrainType
 
 
@@ -11,8 +10,8 @@ class Consist(QWidget):
     def __init__(self, train_nr: int = None, parent=None):
         super().__init__(parent=parent)
         self.uuid: UUID = uuid4()
-        self.carriages: list[Carriage] = []
-        self.locomotives: list[Locomotive] = []
+        self.carriages: list[TrainObject] = []
+        self.locomotives: list[TrainObject] = []
         self.train_nr = train_nr
         self.train_type: TrainType = None
         self.setGeometry(0, 0, 5, 45)
@@ -49,17 +48,14 @@ class Consist(QWidget):
         self.refresh_train_action.setIcon(QIcon("assets/refresh_train_icon.png"))
         self.context_menu.addAction(self.refresh_train_action)
 
-    def add_carriage(self, carriage: Carriage):
-        self.carriages.append(carriage)
-        carriage.setParent(self)
-        carriage.move(self.width() + 2, 0)
-        self.setFixedSize(self.width() + carriage.width() + 2, 45)
-
-    def add_locomotive(self, locomotive: Locomotive):
-        self.locomotives.append(locomotive)
-        locomotive.setParent(self)
-        locomotive.move(self.width() + 2, 0)
-        self.setFixedSize(self.width() + locomotive.width() + 2, 45)
+    def add_train_obj(self, train_object: TrainObject):
+        if train_object.movable:  # if movable is True, it is a locomotive
+            self.locomotives.append(train_object)
+        else:
+            self.carriages.append(train_object)
+        train_object.setParent(self)
+        train_object.move(self.width() + 1, 0)
+        self.setFixedSize(self.width() + train_object.width() + 1, 45)
 
     def remove_all(self):
         self.locomotives.clear()  # TODO: need to fix this method

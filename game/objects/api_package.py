@@ -1,3 +1,2 @@
-from .locomotive import Locomotive
-from .carriage import Carriage
+from .train_object import TrainObject
 from .consist import Consist

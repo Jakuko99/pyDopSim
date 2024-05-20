@@ -5,7 +5,7 @@ from uuid import UUID
 import os
 
 from game.data_types.api_package import Tracks
-from game.objects.api_package import Locomotive, Carriage, Consist
+from game.objects.api_package import TrainObject, Consist
 from game.data_types.api_package import TrainType
 
 
@@ -32,7 +32,7 @@ class PlatformWidget(QWidget):
         elif track_nr == Tracks.DOPRAVNA_1:
             self.trains[train.uuid].move(3055 + track_pos, track_nr.value)
         else:
-            self.trains[train.uuid].move(3435 + track_pos, track_nr.value)
+            self.trains[train.uuid].move(3438 + track_pos, track_nr.value)
 
 
 class StationPlatforms(QMainWindow):
@@ -55,21 +55,21 @@ class StationPlatforms(QMainWindow):
         con = Consist(parent=self.platforms)
         con1 = Consist(parent=self.platforms, train_nr=602)
 
-        con.add_carriage(Carriage("ZSSK_Ameer"))
-        con.add_carriage(Carriage("ZSSK_Ameer"))
-        con.add_carriage(Carriage("ZSSK_Ameer"))
-        con.add_carriage(Carriage("ZSSK_Ameer"))
-        con.add_locomotive(Locomotive("757-b2-a"))
+        con.add_train_obj(TrainObject("ZSSK_Ameer"))
+        con.add_train_obj(TrainObject("ZSSK_Ameer"))
+        con.add_train_obj(TrainObject("ZSSK_Ameer"))
+        con.add_train_obj(TrainObject("ZSSK_Ameer"))
+        con.add_train_obj(TrainObject("757-b2-a"))
         con.set_train_number(TrainType.R, 940)
 
-        con1.add_locomotive(Locomotive("757-b2-a"))
-        con1.add_carriage(Carriage("ZSSK_Ameer"))
-        con1.add_carriage(Carriage("ZSSK_Ameer"))
-        con1.add_carriage(Carriage("ZSSK_Ameer"))
-        con1.add_carriage(Carriage("ZSSK_Ameer"))
+        con1.add_train_obj(TrainObject("757-b2-a"))
+        con1.add_train_obj(TrainObject("ZSSK_Ameer"))
+        con1.add_train_obj(TrainObject("ZSSK_Ameer"))
+        con1.add_train_obj(TrainObject("ZSSK_Ameer"))
+        con1.add_train_obj(TrainObject("ZSSK_Ameer"))
 
         co = Consist(parent=self.platforms)
-        co.add_locomotive(Locomotive("840_ZSSK_TEZ"))
+        co.add_train_obj(TrainObject("840_ZSSK_TEZ"))
 
         self.platforms.add_train(Tracks.DOPRAVNA_2, 0, con)
         self.platforms.add_train(Tracks.DOPRAVNA_1, 0, con1)

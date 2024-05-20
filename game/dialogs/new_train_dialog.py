@@ -16,7 +16,7 @@ from PyQt5.QtCore import Qt
 import os
 
 from game.data_types.api_package import TrainType, Tracks
-from game.objects.api_package import Locomotive, Carriage, Consist
+from game.objects.api_package import TrainObject, Consist
 
 
 class ConsistPreview(QMainWindow):
@@ -95,17 +95,12 @@ class NewTrainDialog(QDialog):
         self.train_nr_field.setFixedSize(65, 25)
         self.train_nr_field.move(395, 5)
 
-        self.add_loco_button = QPushButton("Pridať lokomotívu", self)
+        self.add_loco_button = QPushButton("Pridať vozidlo", self)
         self.add_loco_button.move(165, 60)
         self.add_loco_button.setFixedSize(100, 25)
         self.add_loco_button.clicked.connect(
-            self.add_locomotive
+            self.add_vehicle
         )  # dynammic adding is not working
-
-        self.add_carriage_button = QPushButton("Pridať vozeň", self)
-        self.add_carriage_button.move(165, 95)
-        self.add_carriage_button.setFixedSize(100, 25)
-        self.add_carriage_button.clicked.connect(self.add_carriage)
 
         self.consist_list = QListWidget(self)
         self.consist_list.setFont(self.font_obj)
@@ -157,15 +152,10 @@ class NewTrainDialog(QDialog):
         self.train_list.clear()
         self.train_list.addItems([v for v in self.train_assets if search_text in v])
 
-    def add_locomotive(self):
+    def add_vehicle(self):
         self.consist_list.addItem(self.train_list.currentItem().text())
-        loco = Locomotive(self.train_list.currentItem().text())
-        self.consist.add_locomotive(loco)
-
-    def add_carriage(self):
-        self.consist_list.addItem(self.train_list.currentItem().text())
-        carriage = Carriage(self.train_list.currentItem().text())
-        self.consist.add_carriage(carriage)
+        loco = TrainObject(self.train_list.currentItem().text())
+        self.consist.add_train_obj(loco)
 
     def show_consist_preview(self):
         self.preview = ConsistPreview(self.consist, self)
