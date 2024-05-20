@@ -3,6 +3,8 @@ from PyQt5.QtGui import QIcon, QPixmap
 from uuid import UUID, uuid4
 import os
 
+from game.data_types.exceptions import AssetNotFound
+
 
 class TrainObject(QWidget):
     def __init__(self, train_asset: str, parent=None):
@@ -30,6 +32,6 @@ class TrainObject(QWidget):
             ):
                 self.movable = True
         else:
-            raise FileNotFoundError(f"Locomotive asset {train_asset} not found")
+            raise AssetNotFound(f"Súbor pre vozidlo {train_asset} nebol nájdený.")
 
         self.setFixedSize(self.train_asset.width(), 45)
