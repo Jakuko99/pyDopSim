@@ -15,6 +15,13 @@ class QueueHandler(logging.StreamHandler):
         return self.queue
 
 
+log_format = logging.Formatter(
+    "[%(asctime)s][%(levelname)s] - %(name)s: %(message)s", datefmt="%d-%m-%y %H:%M:%S"
+)
+queue_handler: QueueHandler = QueueHandler()  # singleton for obtaining logging pipe
+queue_handler.setFormatter(log_format)
+queue_handler.setLevel(logging.DEBUG)
+
 if __name__ == "__main__":
     handler = QueueHandler()
     logger = logging.getLogger("App")

@@ -17,6 +17,7 @@ from game.qt_components.api_package import (
     AbstractIndicatorSlim,
     AbstractButton,
     AbstractStationButton,
+    AbstractClock,
 )
 from game.forms.station_platforms import StationPlatforms
 from game.data_types.api_package import (
@@ -28,16 +29,21 @@ from game.data_types.api_package import (
     IndicatorColor,
     ButtonType,
 )
+from utils.api_package import queue_handler
 
 
 class REStation(QMainWindow):
-    def __init__(self, station_name: str, log_pipe: Queue):
+    def __init__(self, station_name: str, log_pipe: Queue = None):
         super().__init__()
         self.setGeometry(0, 0, 1100, 780)
         self.setWindowTitle("Station test window")
         self.setFixedSize(1100, 780)
         self.font_obj = QFont("Arial", 20)
-        self.log_pipe: Queue = log_pipe
+        if log_pipe:
+            self.log_pipe: Queue = log_pipe
+        else:
+            self.log_pipe = queue_handler.get_logging_pipe()
+
         self.logger = logging.getLogger("App.REStation")
         self.logger.setLevel(logging.DEBUG)
         self.logger.info("REStation initialized")
@@ -132,3 +138,7 @@ class REStation(QMainWindow):
         self.station_button = AbstractStationButton(parent=self, log_pipe=self.log_pipe)
         self.station_button.move(476, 632)
         self.station_button.setFunctions(lambda: self.station_platforms.show())
+
+        self.clock = AbstractClock(parent=self)
+        self.clock.setFixedSize(400, 100)
+        self.clock.move(465, 705)

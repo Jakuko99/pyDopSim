@@ -4,12 +4,17 @@ from PyQt5.QtGui import QIcon
 from queue import Queue
 
 from game.forms.log_window import LogWindow
+from utils.api_package import queue_handler
 
 
 class AbstractStationButton(QWidget):
-    def __init__(self, log_pipe: Queue, parent=None):
+    def __init__(self, log_pipe: Queue = None, parent=None):
         QWidget.__init__(self, parent=parent)
-        self.log_pipe: Queue = log_pipe
+        if log_pipe:
+            self.log_pipe: Queue = log_pipe
+        else:
+            self.log_pipe = queue_handler.get_logging_pipe()
+
         self.setGeometry(0, 0, 80, 55)
         self.log_window = LogWindow(self, log_pipe)
         self.right_click_function = lambda: None

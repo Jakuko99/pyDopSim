@@ -4,16 +4,22 @@ from PyQt5.QtWidgets import QApplication, QMessageBox
 
 from game.forms.api_package import REStation
 from game.data_types.api_package import IndicatorState
+from utils.api_package import queue_handler
 
 
 class StationTest:
-    def __init__(self, log_pipe: Queue, station_name: str = "Test station"):
+    def __init__(self, log_pipe: Queue = None, station_name: str = "Test station"):
         self.logger = logging.getLogger("App.StationTest")
         self.logger.setLevel(logging.DEBUG)
         self.logger.info("Station test started")
         self.app = QApplication([])
-        self.window = REStation(station_name=station_name, log_pipe=log_pipe)
-        self.log_pipe = log_pipe
+        if log_pipe:
+            self.log_pipe = log_pipe
+        else:
+            self.log_pipe = (
+                queue_handler.get_logging_pipe()
+            )  # grab the logging pipe from the queue handler
+        self.window = REStation(station_name=station_name)
 
     def add_test_bindings(self):
         self.window.path_build_cancel.setFunctions(

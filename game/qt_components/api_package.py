@@ -9,3 +9,4 @@ from .abstract_indicator_slim import AbstractIndicatorSlim
 from .abstract_button import AbstractButton
 from .abstract_station_button import AbstractStationButton
 from .abstract_train_layout import AbstractTrainLayout
+from .abstract_clock import AbstractClock
