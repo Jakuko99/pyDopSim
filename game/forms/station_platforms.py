@@ -2,6 +2,7 @@ from PyQt5.QtWidgets import QWidget, QLabel, QScrollArea, QMainWindow, QMenu, QA
 from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QPixmap, QIcon
 from uuid import UUID
+import logging
 import os
 
 from game.data_types.api_package import Tracks
@@ -16,6 +17,7 @@ class PlatformWidget(QWidget):
         self.create_train_dialog = NewTrainDialog(
             self, on_confirm=self.add_created_train
         )
+        self.logger = logging.getLogger("App.StationPlatforms")
         plaform_pixmap = QPixmap("assets/station_platforms.png")
         self.setFixedSize(plaform_pixmap.width(), 450)
         self.label = QLabel(self)
@@ -65,6 +67,12 @@ class PlatformWidget(QWidget):
             self.trains[train.uuid].move(3055 + track_pos, track_nr.value)
         else:
             self.trains[train.uuid].move(3438 + track_pos, track_nr.value)
+
+        self.logger.debug(
+            f"Train {train.uuid} added to {track_nr.name} at position {track_pos}"
+        )
+        train.update()
+        self.update()  # not working
 
     def context_menu_event(self, event):
         self.context_menu.exec_(event.globalPos())

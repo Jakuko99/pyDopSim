@@ -137,7 +137,13 @@ class REStation(QMainWindow):
 
         self.station_button = AbstractStationButton(parent=self, log_pipe=self.log_pipe)
         self.station_button.move(476, 632)
-        self.station_button.setFunctions(lambda: self.station_platforms.show())
+        self.station_button.setFunctions(
+            lambda: (
+                self.station_platforms.show()
+                if not self.station_platforms.isVisible()
+                else self.station_platforms.raise_()
+            )
+        )  # bring window forward if already open
 
         self.clock = AbstractClock(parent=self)
         self.clock.setFixedSize(400, 100)

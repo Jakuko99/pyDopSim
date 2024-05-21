@@ -19,7 +19,11 @@ import os
 
 class ShuntingDialog(QMainWindow):
     def __init__(self, parent):
-        super().__init__(parent)
+        super().__init__(parent=parent)
         self.font_obj = QFont("Arial", 10)
         self.setWindowTitle("Posun súpravy")
+        self._parent = parent
+
+        self.lab = QLabel(self)
+        self.lab.setText(str(self._parent.uuid))  # access info about consist
         # self.setFixedSize(630, 365)

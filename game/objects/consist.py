@@ -14,8 +14,8 @@ class Consist(QWidget):
         self.uuid: UUID = uuid4()
         self.carriages: list[TrainObject] = []
         self.locomotives: list[TrainObject] = []
-        self.train_nr = train_nr
-        self.train_type: train_type
+        self.train_nr: int = train_nr
+        self.train_type: TrainType = train_type
         self.setGeometry(0, 0, 5, 45)
         self.setMinimumSize(5, 45)
         self.shunting_dialog = ShuntingDialog(self)
