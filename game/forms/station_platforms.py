@@ -94,6 +94,7 @@ class StationPlatforms(QMainWindow):
         self.setFixedHeight(475)
         self.setGeometry(120, 150, 1000, 475)
         self.setWindowTitle(f"Staničné koľaje: žst. {station_name}")
+        self.setWindowIcon(QIcon("assets/app_icon.png"))
 
         # ----- test consists -----
         con = Consist()

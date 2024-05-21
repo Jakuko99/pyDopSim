@@ -12,7 +12,7 @@ from PyQt5.QtWidgets import (
     QScrollArea,
     QCheckBox,
 )
-from PyQt5.QtGui import QPixmap, QFont
+from PyQt5.QtGui import QFont, QIcon
 from PyQt5.QtCore import Qt
 import os
 
@@ -22,4 +22,5 @@ class TrainNumberDialog(QMainWindow):
         super().__init__(parent)
         self.font_obj = QFont("Arial", 10)
         self.setWindowTitle("Zaviest nový vlak")
+        self.setWindowIcon(QIcon("assets/new_train_icon.png"))
         # self.setFixedSize(630, 365)

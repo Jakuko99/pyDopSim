@@ -12,7 +12,7 @@ from PyQt5.QtWidgets import (
     QScrollArea,
     QCheckBox,
 )
-from PyQt5.QtGui import QPixmap, QFont
+from PyQt5.QtGui import QPixmap, QFont, QIcon
 from PyQt5.QtCore import Qt
 import os
 
@@ -22,6 +22,7 @@ class ShuntingDialog(QMainWindow):
         super().__init__(parent=parent)
         self.font_obj = QFont("Arial", 10)
         self.setWindowTitle("Posun súpravy")
+        self.setWindowIcon(QIcon("assets/shunting_icon.png"))
         self._parent = parent
 
         self.lab = QLabel(self)

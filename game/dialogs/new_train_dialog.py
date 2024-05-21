@@ -12,7 +12,7 @@ from PyQt5.QtWidgets import (
     QScrollArea,
     QCheckBox,
 )
-from PyQt5.QtGui import QPixmap, QFont, QIntValidator
+from PyQt5.QtGui import QPixmap, QFont, QIntValidator, QIcon
 from PyQt5.QtCore import Qt
 import os
 
@@ -47,6 +47,7 @@ class NewTrainDialog(QDialog):
         self.on_confirm = on_confirm
         self.font_obj = QFont("Arial", 10)
         self.setWindowTitle("Vytvoriť nový vlak")
+        self.setWindowIcon(QIcon("assets/app_icon.png"))
         self.setFixedSize(630, 365)
 
         self.consist = Consist()

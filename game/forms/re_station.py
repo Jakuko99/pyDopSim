@@ -2,9 +2,10 @@ from PyQt5.QtWidgets import (
     QMainWindow,
     QLabel,
 )
-from PyQt5.QtGui import QPixmap, QFont
+from PyQt5.QtGui import QPixmap, QFont, QIcon
 from PyQt5.QtCore import Qt
 from queue import Queue
+import ctypes
 import logging
 
 from game.qt_components.api_package import (
@@ -31,12 +32,16 @@ from game.data_types.api_package import (
 )
 from utils.api_package import queue_handler
 
+myappid = f"Jakub.PyDopSim.beta"
+ctypes.windll.shell32.SetCurrentProcessExplicitAppUserModelID(myappid)
+
 
 class REStation(QMainWindow):
     def __init__(self, station_name: str, log_pipe: Queue = None):
         super().__init__()
         self.setGeometry(0, 0, 1100, 780)
         self.setWindowTitle("Station test window")
+        self.setWindowIcon(QIcon("assets/app_icon.png"))
         self.setFixedSize(1100, 780)
         self.font_obj = QFont("Arial", 20)
         if log_pipe:
