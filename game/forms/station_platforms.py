@@ -61,6 +61,8 @@ class PlatformWidget(QWidget):
     ):
         train.setParent(self)
         self.trains[train.uuid] = train
+        train.shunting_dialog.populate_dialog()  # add necessary info about consists
+        train.set_train_pos(track_nr, track_pos)  # add necessary info about consists
         if track_nr == Tracks.MANIPULACNA_4A:
             self.trains[train.uuid].move(6800 + track_pos, track_nr.value)
         elif track_nr == Tracks.DOPRAVNA_1:
@@ -115,6 +117,7 @@ class StationPlatforms(QMainWindow):
         con1.set_train_number(TrainType.R, 941)
 
         co = Consist()
+        co.add_train_obj(TrainObject("840_ZSSK_TEZ"))
         co.add_train_obj(TrainObject("840_ZSSK_TEZ"))
 
         self.platforms.add_train(Tracks.DOPRAVNA_2, 0, con)

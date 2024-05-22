@@ -3,7 +3,7 @@ from PyQt5.QtGui import QIcon, QPixmap
 from uuid import UUID, uuid4
 
 from game.objects.train_object import TrainObject
-from game.data_types.api_package import TrainType
+from game.data_types.api_package import TrainType, Tracks
 from game.dialogs.shunting_dialog import ShuntingDialog
 from game.dialogs.train_number_dialog import TrainNumberDialog
 
@@ -20,6 +20,8 @@ class Consist(QWidget):
         self.setMinimumSize(5, 45)
         self.shunting_dialog = ShuntingDialog(self)
         self.train_number_dialog = TrainNumberDialog(self)
+        self.track_nr: Tracks = None
+        self.track_pos: int = 0
 
         self.context_menu = QMenu(self)
         if self.train_nr and train_type:
@@ -76,6 +78,10 @@ class Consist(QWidget):
         self.context_menu.actions()[0].setText(
             f"{self.train_type.name} {self.train_nr}"
         )
+
+    def set_train_pos(self, track_nr: Tracks, track_pos: int):
+        self.track_nr = track_nr
+        self.track_pos = track_pos
 
     @property
     def vehicles_count(self):
