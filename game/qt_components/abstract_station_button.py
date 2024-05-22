@@ -24,6 +24,7 @@ class AbstractStationButton(QWidget):
         self.context_menu = QMenu(self)
         self.client_menu = QMenu(self)
         self.client_menu.setTitle("Klient")
+        self.client_menu.setIcon(QIcon("assets/client_icon.png"))
         self.client_menu.addAction("Pripojiť k serveru")
 
         action: QAction = self.client_menu.addAction("Odpojiť od servera")
@@ -39,6 +40,7 @@ class AbstractStationButton(QWidget):
 
         self.settings_menu = QMenu(self)
         self.settings_menu.setTitle("Nastavenia")
+        self.settings_menu.setIcon(QIcon("assets/settings_icon.png"))
         action = self.settings_menu.addAction("Zvuky simulácie")
         action.setCheckable(True)
         action.setChecked(True)

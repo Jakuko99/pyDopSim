@@ -12,6 +12,7 @@ from game.qt_components.api_package import (
     AbstractLever,
     AbstractButton,
     AbstractStationButton,
+    AbstractTrackButton,
 )
 from game.forms.station_platforms import StationPlatforms
 from game.dialogs.new_train_dialog import NewTrainDialog
@@ -78,8 +79,12 @@ class TestWindow(QMainWindow):
         self.new_train_dialog_button.move(360, 80)
         self.new_train_dialog_button.clicked.connect(self.new_train_dialog.show)
 
-        self.track = AbstractTrack(300, self)
-        self.track.move(5, 180)
+        self.track = AbstractTrack(
+            2,
+            self,
+            click_callaback=lambda x: self.logger.debug(f"Track button clicked: {x}"),
+        )
+        self.track.move(5, 160)
 
         self.combo3 = QComboBox(self)
         self.combo3.addItems([item for item in TrackState.__members__])

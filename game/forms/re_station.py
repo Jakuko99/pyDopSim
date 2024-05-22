@@ -153,3 +153,18 @@ class REStation(QMainWindow):
         self.clock = AbstractClock(parent=self)
         self.clock.setFixedSize(400, 100)
         self.clock.move(465, 705)
+
+        self.track_1 = AbstractTrack(track_segments=2, parent=self)
+        self.track_1.move(420, 413)
+
+        self.track_2 = AbstractTrack(track_segments=2, parent=self)
+        self.track_2.move(420, 491)
+
+        self.track_3 = AbstractTrack(track_segments=2, parent=self)
+        self.track_3.move(420, 335)
+
+        self.track_4 = AbstractTrack(track_segments=2, parent=self, shunt_track=True)
+        self.track_4.move(420, 568)
+
+        self.track_5 = AbstractTrack(track_segments=2, parent=self)
+        self.track_5.move(420, 257)
