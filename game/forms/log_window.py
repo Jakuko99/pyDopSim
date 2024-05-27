@@ -29,7 +29,7 @@ class LogWindow(QMainWindow):
         self.log_area = QTextEdit(self)
         self.log_area.setReadOnly(True)
         self.log_area.setStyleSheet("background-color: black")
-        self.log_area.setFont(QFont("Consolas", 10))
+        self.log_area.setFont(QFont("Cascadia Mono", 10))
         self.log_area.contextMenuEvent = self.show_context_menu
         self.log_timer = QTimer(self)
         self.log_timer.timeout.connect(self.update_log)

@@ -12,12 +12,16 @@ from PyQt5.QtWidgets import (
 )
 from PyQt5.QtGui import QPixmap, QFont
 from PyQt5.QtCore import Qt
+import logging
 
 
 class ConnectDialog(QDialog):
     def __init__(self, parent):
         super().__init__(parent)
         self.font_obj = QFont("Arial", 11)
+
+        self.logger = logging.getLogger("App.ConnectDialog")
+        self.logger.setLevel(logging.DEBUG)
 
         self.setWindowTitle("Pripojiť k serveru")
         self.setFixedSize(275, 150)
@@ -54,7 +58,13 @@ class ConnectDialog(QDialog):
         self.cancel_button = QPushButton("Zrušiť", self)
         self.cancel_button.setFont(self.font_obj)
         self.cancel_button.move(180, 115)
-        self.cancel_button.clicked.connect(self.close)
+        self.cancel_button.clicked.connect(self.close_func)
 
     def connect_func(self):
-        pass
+        self.logger.info(
+            f"Trying to connect to server at {self.server_ip.text()}:{self.server_port.text()}"
+        )
+
+    def close_func(self):
+        self.logger.info("Connection to server aborted")
+        self.close()
