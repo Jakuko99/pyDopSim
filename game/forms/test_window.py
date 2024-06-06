@@ -97,6 +97,28 @@ class TestWindow(QMainWindow):
         self.button3.move(50, 245)
         self.button3.clicked.connect(self.change_state)
 
+        self.downL45_switch = AbstractSwitch(SwitchType.DOWN_45_LEFT, self)
+        self.downL45_switch.move(275, 175)
+
+        self.upR45_switch = AbstractSwitch(SwitchType.UP_45_RIGHT, self)
+        self.upR45_switch.move(300, 200)
+
+        self.z_switch = AbstractSwitch(SwitchType.Z_TYPE, self)
+        self.z_switch.move(350, 175)
+
+        self.downR45_switch = AbstractSwitch(SwitchType.DOWN_45_RIGHT, self)
+        self.downR45_switch.move(425, 200)
+
+        self.upL45_switch = AbstractSwitch(SwitchType.UP_45_LEFT, self)
+        self.upL45_switch.move(450, 175)
+
+        self.combo5 = QComboBox(self)
+        self.combo5.addItems([item for item in TrackState.__members__])
+        self.combo5.move(275, 275)
+        self.button5 = QPushButton("Change state", self)
+        self.button5.move(380, 275)
+        self.button5.clicked.connect(self.switch_change_state)
+
         self.indicator = AbstractIndicator(IndicatorColor.WHITE, "Voľnosť\ntrate", self)
         self.indicator.move(75, 280)
 
@@ -129,6 +151,16 @@ class TestWindow(QMainWindow):
             right_click_function=lambda: self.abs_label.setText("Right click"),
             middle_click_function=lambda: self.abs_label.setText("Middle click"),
         )
+
+        self.abstract_track_button_green = AbstractTrackButton(
+            IndicatorColor.GREEN, lambda: None, self
+        )
+        self.abstract_track_button_green.move(125, 400)
+
+        self.abstract_track_button_white = AbstractTrackButton(
+            IndicatorColor.WHITE, lambda: None, self
+        )
+        self.abstract_track_button_white.move(175, 400)
 
     def change_signal(self):
         self.signal.set_sign(SignalSign[self.combo.currentText()])
@@ -166,3 +198,10 @@ class TestWindow(QMainWindow):
     def show_platforms(self):
         if self.platforms:
             self.platforms.show()
+
+    def switch_change_state(self):
+        self.z_switch.set_state(TrackState[self.combo5.currentText()])
+        self.downL45_switch.set_state(TrackState[self.combo5.currentText()])
+        self.upR45_switch.set_state(TrackState[self.combo5.currentText()])
+        self.downR45_switch.set_state(TrackState[self.combo5.currentText()])
+        self.upL45_switch.set_state(TrackState[self.combo5.currentText()])
