@@ -25,7 +25,7 @@ class AbstractSwitchIndicator(QWidget):
         self.body.setPixmap(self.off_pixmap)
         self.body.setStyleSheet("background-color: transparent;")
 
-    def set_state(self, state: IndicatorState):  # TODO: finish ids
+    def set_state(self, state: IndicatorState):
         self.timer.stop()
 
         if state == IndicatorState.ON:

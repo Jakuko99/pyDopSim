@@ -40,7 +40,7 @@ class REStation(QMainWindow):
     def __init__(self, station_name: str, log_pipe: Queue = None):
         super().__init__()
         self.setGeometry(0, 0, 1100, 780)
-        self.setWindowTitle("Station test window")
+        self.setWindowTitle(f"PyDopSim: RE - {station_name}")
         self.setWindowIcon(QIcon("assets/app_icon.png"))
         self.setFixedSize(1100, 780)
         self.font_obj = QFont("Arial", 20)
@@ -113,32 +113,32 @@ class REStation(QMainWindow):
         self.train_nr.move(688, 188)
         self.train_nr.set_state(IndicatorState.ON)
 
-        self.switch_1_3 = AbstractLeverSlim(self)
-        self.switch_1_3.move(12, 35)
+        self.switch_1_3_controller = AbstractLeverSlim(self)
+        self.switch_1_3_controller.move(12, 35)
 
-        self.switch_2 = AbstractLeverSlim(self)
-        self.switch_2.move(82, 35)
+        self.switch_2_controller = AbstractLeverSlim(self)
+        self.switch_2_controller.move(82, 35)
 
-        self.switch_4_vk2 = AbstractLeverSlim(self)
-        self.switch_4_vk2.move(152, 35)
+        self.switch_4_vk2_controller = AbstractLeverSlim(self)
+        self.switch_4_vk2_controller.move(152, 35)
 
-        self.switch_5 = AbstractLeverSlim(self)
-        self.switch_5.move(225, 35)
+        self.switch_5_controller = AbstractLeverSlim(self)
+        self.switch_5_controller.move(225, 35)
 
-        self.vk_1 = AbstractLeverSlim(self)
-        self.vk_1.move(295, 35)
+        self.vk_1_controller = AbstractLeverSlim(self)
+        self.vk_1_controller.move(295, 35)
 
-        self.switch_6_7 = AbstractLeverSlim(self)
-        self.switch_6_7.move(814, 35)
+        self.switch_6_7_controller = AbstractLeverSlim(self)
+        self.switch_6_7_controller.move(814, 35)
 
-        self.switch_8 = AbstractLeverSlim(self)
-        self.switch_8.move(885, 35)
+        self.switch_8_controller = AbstractLeverSlim(self)
+        self.switch_8_controller.move(885, 35)
 
-        self.switch_9 = AbstractLeverSlim(self)
-        self.switch_9.move(955, 35)
+        self.switch_9_controller = AbstractLeverSlim(self)
+        self.switch_9_controller.move(955, 35)
 
-        self.switch_10 = AbstractLeverSlim(self)
-        self.switch_10.move(1027, 35)
+        self.switch_10_controller = AbstractLeverSlim(self)
+        self.switch_10_controller.move(1027, 35)
 
         self.station_button = AbstractStationButton(parent=self, log_pipe=self.log_pipe)
         self.station_button.move(476, 632)
@@ -168,3 +168,9 @@ class REStation(QMainWindow):
 
         self.track_5 = AbstractTrack(track_segments=2, parent=self)
         self.track_5.move(420, 257)
+
+        self.switch_1_3 = AbstractSwitch(switch_type=SwitchType.Z_TYPE, parent=self)
+        self.switch_1_3.move(256, 352)
+
+        self.switch_5 = AbstractSwitch(switch_type=SwitchType.UP_45_RIGHT, parent=self)
+        self.switch_5.move(365, 290)

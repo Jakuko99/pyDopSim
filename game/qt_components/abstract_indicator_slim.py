@@ -23,7 +23,7 @@ class AbstractIndicatorSlim(QWidget):
         self.body.setGeometry(0, 0, 33, 33)
         self.body.setPixmap(self.off_pixmap)
 
-    def set_state(self, state: IndicatorState):  # TODO: finish ids
+    def set_state(self, state: IndicatorState):
         self.timer.stop()
 
         if state == IndicatorState.ON:

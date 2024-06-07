@@ -1,5 +1,5 @@
 from PyQt5.QtWidgets import QWidget, QLabel
-from PyQt5 import QtCore
+from PyQt5.QtCore import QTimer
 from PyQt5.QtGui import QPixmap, QTransform
 
 from game.data_types.api_package import TrackState, SwitchType
@@ -8,9 +8,10 @@ from game.data_types.api_package import TrackState, SwitchType
 class AbstractSwitch(QWidget):
     def __init__(self, switch_type: SwitchType, parent=None):
         QWidget.__init__(self, parent)
+        self.timer = QTimer(self)
         self.switch_type: SwitchType = switch_type
         if switch_type == SwitchType.Z_TYPE:
-            switch_height: int = 90
+            switch_height: int = 100
         else:
             switch_height: int = 45
         self.setGeometry(0, 0, 60, switch_height)
@@ -43,9 +44,11 @@ class AbstractSwitch(QWidget):
             self.straight_down = QLabel(self)
             self.straight_down.setGeometry(0, 0, 60, 21)
             self.straight_down.setPixmap(self.free_straight_pixmap)
-            self.straight_down.move(0, 65)
+            self.straight_down.move(0, 78)
 
-            self.diagonal = QLabel(self)
+            self.diagonal = QLabel(
+                self
+            )  # TODO: diagonal visual asset needs to be redone, doesn't line correctly
             self.diagonal.setGeometry(0, 0, 45, 45)
             self.diagonal.setPixmap(self.free_diagonal_pixmap)
             self.diagonal.setScaledContents(True)
@@ -127,3 +130,6 @@ class AbstractSwitch(QWidget):
                 self.diagonal.setPixmap(self.reserved_diagonal_pixmap)
             elif state == TrackState.OCCUPIED:
                 self.diagonal.setPixmap(self.occupied_diagonal_pixmap)
+
+    def blinking_action(self):
+        pass  # TODO: implement blinking action when creating path for train

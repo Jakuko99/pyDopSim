@@ -31,7 +31,7 @@ class AbstractIndicator(QWidget):
         self.label.setStyleSheet("background-color: white; color: black;")
         self.label.move(0, 23)
 
-    def set_state(self, state: IndicatorState):  # TODO: finish ids
+    def set_state(self, state: IndicatorState):
         self.timer.stop()
 
         if state == IndicatorState.ON:

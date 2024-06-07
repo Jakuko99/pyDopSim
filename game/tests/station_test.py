@@ -3,7 +3,7 @@ import logging
 from PyQt5.QtWidgets import QApplication, QMessageBox
 
 from game.forms.api_package import REStation
-from game.data_types.api_package import IndicatorState, TrackState
+from game.data_types.api_package import IndicatorState, TrackState, LeverState
 from utils.api_package import queue_handler
 
 
@@ -20,6 +20,9 @@ class StationTest:
                 queue_handler.get_logging_pipe()
             )  # grab the logging pipe from the queue handler
         self.window = REStation(station_name=station_name)
+        self.window.setWindowTitle(
+            "Station test window"
+        )  # override default window title for testing
 
     def add_test_bindings(self):
         self.window.path_build_cancel.setFunctions(
@@ -29,38 +32,40 @@ class StationTest:
                 IndicatorState.BLINKING
             ),  # middle click
         )
-        self.window.switch_1_3.set_update_function(
-            lambda state: self.window.switch_1_3.set_light(
+        self.window.switch_1_3_controller.set_update_function(self.switch_1_3_action)
+        self.window.switch_2_controller.set_update_function(
+            lambda state: self.window.switch_2_controller.set_light(
                 state.value, IndicatorState.ON
             )
         )
-        self.window.switch_2.set_update_function(
-            lambda state: self.window.switch_2.set_light(state.value, IndicatorState.ON)
-        )
-        self.window.switch_4_vk2.set_update_function(
-            lambda state: self.window.switch_4_vk2.set_light(
+        self.window.switch_4_vk2_controller.set_update_function(
+            lambda state: self.window.switch_4_vk2_controller.set_light(
                 state.value, IndicatorState.ON
             )
         )
-        self.window.switch_5.set_update_function(
-            lambda state: self.window.switch_5.set_light(state.value, IndicatorState.ON)
-        )
-        self.window.vk_1.set_update_function(
-            lambda state: self.window.vk_1.set_light(state.value, IndicatorState.ON)
-        )
-        self.window.switch_6_7.set_update_function(
-            lambda state: self.window.switch_6_7.set_light(
+        self.window.switch_5_controller.set_update_function(self.switch_5_action)
+        self.window.vk_1_controller.set_update_function(
+            lambda state: self.window.vk_1_controller.set_light(
                 state.value, IndicatorState.ON
             )
         )
-        self.window.switch_8.set_update_function(
-            lambda state: self.window.switch_8.set_light(state.value, IndicatorState.ON)
+        self.window.switch_6_7_controller.set_update_function(
+            lambda state: self.window.switch_6_7_controller.set_light(
+                state.value, IndicatorState.ON
+            )
         )
-        self.window.switch_9.set_update_function(
-            lambda state: self.window.switch_9.set_light(state.value, IndicatorState.ON)
+        self.window.switch_8_controller.set_update_function(
+            lambda state: self.window.switch_8_controller.set_light(
+                state.value, IndicatorState.ON
+            )
         )
-        self.window.switch_10.set_update_function(
-            lambda state: self.window.switch_10.set_light(
+        self.window.switch_9_controller.set_update_function(
+            lambda state: self.window.switch_9_controller.set_light(
+                state.value, IndicatorState.ON
+            )
+        )
+        self.window.switch_10_controller.set_update_function(
+            lambda state: self.window.switch_10_controller.set_light(
                 state.value, IndicatorState.ON
             )
         )
@@ -111,6 +116,26 @@ class StationTest:
             self.window.track_4.set_state(TrackState.OCCUPIED)
         elif button_id == 4:
             self.window.track_4.set_state(TrackState.RESERVED)
+
+    def switch_1_3_action(self, state: LeverState):
+        self.window.switch_1_3_controller.set_light(state.value, IndicatorState.ON)
+        self.window.switch_1_3.set_state(
+            TrackState.FREE
+            if state == LeverState.MIDDLE
+            else TrackState.OCCUPIED
+            if state == LeverState.LEFT
+            else TrackState.RESERVED
+        )
+
+    def switch_5_action(self, state: LeverState):
+        self.window.switch_5_controller.set_light(state.value, IndicatorState.ON)
+        self.window.switch_5.set_state(
+            TrackState.FREE
+            if state == LeverState.MIDDLE
+            else TrackState.OCCUPIED
+            if state == LeverState.LEFT
+            else TrackState.RESERVED
+        )
 
     def run(self):
         self.window.show()
