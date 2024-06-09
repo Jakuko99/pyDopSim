@@ -11,6 +11,7 @@ class AbstractTrack(QWidget):
         self,
         track_segments: int,
         shunt_track: bool = False,
+        no_buttons: bool = False,
         parent=None,
         click_callaback=lambda x: None,
         right_click_callback=lambda x: None,
@@ -22,6 +23,7 @@ class AbstractTrack(QWidget):
         self.segments: QLabel = []
         self.click_callaback = click_callaback
         self.right_click_callback = right_click_callback
+        self.no_buttons: bool = no_buttons
 
         self.train_label = QLabel(self)
         self.train_label.setFont(font)
@@ -35,46 +37,47 @@ class AbstractTrack(QWidget):
             seg.resize(60, 20)
             self.segments.append(seg)
 
-        self.button_white1 = AbstractTrackButton(
-            IndicatorColor.WHITE,
-            parent=self,
-            on_clicked=lambda: self.click_callaback(1),
-        )
-        self.button_white1.set_functions(
-            right_click_function=lambda: self.right_click_callback(1)
-        )
-        self.button_white1.move(10, 8)
-
-        if not shunt_track:
-            self.button_green1 = AbstractTrackButton(
-                IndicatorColor.GREEN,
+        if self.no_buttons is False:
+            self.button_white1 = AbstractTrackButton(
+                IndicatorColor.WHITE,
                 parent=self,
-                on_clicked=lambda: self.click_callaback(2),
+                on_clicked=lambda: self.click_callaback(1),
             )
-            self.button_green1.set_functions(
-                right_click_function=lambda: self.right_click_callback(2)
+            self.button_white1.set_functions(
+                right_click_function=lambda: self.right_click_callback(1)
             )
-            self.button_green1.move(50, 8)
+            self.button_white1.move(10, 8)
 
-            self.button_green2 = AbstractTrackButton(
-                IndicatorColor.GREEN,
+            if not shunt_track:
+                self.button_green1 = AbstractTrackButton(
+                    IndicatorColor.GREEN,
+                    parent=self,
+                    on_clicked=lambda: self.click_callaback(2),
+                )
+                self.button_green1.set_functions(
+                    right_click_function=lambda: self.right_click_callback(2)
+                )
+                self.button_green1.move(50, 8)
+
+                self.button_green2 = AbstractTrackButton(
+                    IndicatorColor.GREEN,
+                    parent=self,
+                    on_clicked=lambda: self.click_callaback(3),
+                )
+                self.button_green2.set_functions(
+                    right_click_function=lambda: self.right_click_callback(3)
+                )
+                self.button_green2.move(120 + (track_segments * 60) - 30, 8)
+
+            self.button_white2 = AbstractTrackButton(
+                IndicatorColor.WHITE,
                 parent=self,
-                on_clicked=lambda: self.click_callaback(3),
+                on_clicked=lambda: self.click_callaback(4),
             )
-            self.button_green2.set_functions(
-                right_click_function=lambda: self.right_click_callback(3)
+            self.button_white2.set_functions(
+                right_click_function=lambda: self.right_click_callback(4)
             )
-            self.button_green2.move(120 + (track_segments * 60) - 30, 8)
-
-        self.button_white2 = AbstractTrackButton(
-            IndicatorColor.WHITE,
-            parent=self,
-            on_clicked=lambda: self.click_callaback(4),
-        )
-        self.button_white2.set_functions(
-            right_click_function=lambda: self.right_click_callback(4)
-        )
-        self.button_white2.move(160 + (track_segments * 60) - 30, 8)
+            self.button_white2.move(160 + (track_segments * 60) - 30, 8)
 
     def set_state(self, state: TrackState, train_id: int = None):
         self.train_label.setText("")

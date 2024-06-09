@@ -2,7 +2,8 @@ from PyQt5.QtWidgets import QWidget, QLabel
 from PyQt5.QtCore import QTimer
 from PyQt5.QtGui import QPixmap, QTransform
 
-from game.data_types.api_package import TrackState, SwitchType
+from game.data_types.api_package import TrackState, SwitchType, SwitchPosition
+from game.qt_components.abstract_track import AbstractTrack
 
 
 class AbstractSwitch(QWidget):
@@ -13,10 +14,18 @@ class AbstractSwitch(QWidget):
         if switch_type == SwitchType.Z_TYPE:
             switch_height: int = 100
         else:
-            switch_height: int = 45
+            switch_height: int = 60
         self.setGeometry(0, 0, 60, switch_height)
         self.switch_type: SwitchType = switch_type
         self.occupancy_status: TrackState = TrackState.FREE
+        self.switch_position: SwitchPosition = (
+            SwitchPosition.STRAIGHT
+            if not switch_type == SwitchType.Z_TYPE
+            else SwitchPosition.Z_DOWN_STRAIGHT
+        )
+        self.associated_track: AbstractTrack = (
+            None if not switch_type == SwitchType.Z_TYPE else {"up": None, "down": None}
+        )
 
         if self.switch_type == SwitchType.Z_TYPE:
             self.free_straight_pixmap: QPixmap = QPixmap("assets/track_free.png")
@@ -49,11 +58,11 @@ class AbstractSwitch(QWidget):
             self.diagonal = QLabel(
                 self
             )  # TODO: diagonal visual asset needs to be redone, doesn't line correctly
-            self.diagonal.setGeometry(0, 0, 45, 45)
+            self.diagonal.setGeometry(0, 0, 60, 60)
             self.diagonal.setPixmap(self.free_diagonal_pixmap)
             self.diagonal.setScaledContents(True)
             self.diagonal.setStyleSheet("background-color: transparent")
-            self.diagonal.move(5, 21)
+            self.diagonal.move(6, 19)
 
         else:
             self.free_diagonal_pixmap: QPixmap = QPixmap(
@@ -102,7 +111,7 @@ class AbstractSwitch(QWidget):
                 raise ValueError("Invalid switch type")
 
             self.diagonal = QLabel(self)
-            self.diagonal.setGeometry(0, 0, 45, 45)
+            self.diagonal.setGeometry(0, 0, 60, 60)
             self.diagonal.setPixmap(self.free_diagonal_pixmap)
             self.diagonal.setScaledContents(True)
             self.diagonal.setStyleSheet("background-color: transparent")
@@ -130,6 +139,23 @@ class AbstractSwitch(QWidget):
                 self.diagonal.setPixmap(self.reserved_diagonal_pixmap)
             elif state == TrackState.OCCUPIED:
                 self.diagonal.setPixmap(self.occupied_diagonal_pixmap)
+
+        if self.associated_track:  # copy state to associated track object
+            if self.switch_type == SwitchType.Z_TYPE:
+                self.associated_track["up"].set_state(
+                    state
+                )  # TODO: tweak this by switch position
+                self.associated_track["down"].set_state(state)
+            else:
+                self.associated_track.set_state(state)
+
+    def add_associated_track(self, track: AbstractTrack, track1: AbstractTrack = None):
+        if self.switch_type == SwitchType.Z_TYPE:
+            if track1:
+                self.associated_track["up"] = track
+            self.associated_track["down"] = track1
+        else:
+            self.associated_track: AbstractTrack = track
 
     def blinking_action(self):
         pass  # TODO: implement blinking action when creating path for train

@@ -33,16 +33,8 @@ class StationTest:
             ),  # middle click
         )
         self.window.switch_1_3_controller.set_update_function(self.switch_1_3_action)
-        self.window.switch_2_controller.set_update_function(
-            lambda state: self.window.switch_2_controller.set_light(
-                state.value, IndicatorState.ON
-            )
-        )
-        self.window.switch_4_vk2_controller.set_update_function(
-            lambda state: self.window.switch_4_vk2_controller.set_light(
-                state.value, IndicatorState.ON
-            )
-        )
+        self.window.switch_2_controller.set_update_function(self.switch_2_action)
+        self.window.switch_4_vk2_controller.set_update_function(self.switch_4_action)
         self.window.switch_5_controller.set_update_function(self.switch_5_action)
         self.window.vk_1_controller.set_update_function(
             lambda state: self.window.vk_1_controller.set_light(
@@ -130,6 +122,26 @@ class StationTest:
     def switch_5_action(self, state: LeverState):
         self.window.switch_5_controller.set_light(state.value, IndicatorState.ON)
         self.window.switch_5.set_state(
+            TrackState.FREE
+            if state == LeverState.MIDDLE
+            else TrackState.OCCUPIED
+            if state == LeverState.LEFT
+            else TrackState.RESERVED
+        )
+
+    def switch_2_action(self, state: LeverState):
+        self.window.switch_2_controller.set_light(state.value, IndicatorState.ON)
+        self.window.switch_2.set_state(
+            TrackState.FREE
+            if state == LeverState.MIDDLE
+            else TrackState.OCCUPIED
+            if state == LeverState.LEFT
+            else TrackState.RESERVED
+        )
+
+    def switch_4_action(self, state: LeverState):
+        self.window.switch_4_vk2_controller.set_light(state.value, IndicatorState.ON)
+        self.window.switch_4.set_state(
             TrackState.FREE
             if state == LeverState.MIDDLE
             else TrackState.OCCUPIED
