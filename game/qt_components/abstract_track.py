@@ -17,27 +17,34 @@ class AbstractTrack(QWidget):
         right_click_callback=lambda x: None,
     ):
         QWidget.__init__(self, parent)
-        self.setGeometry(0, 0, (track_segments * 60) + 180, 46)
+        if no_buttons:
+            self.setGeometry(0, 0, (track_segments * 60), 20)
+        else:
+            self.setGeometry(0, 0, (track_segments * 60) + 180, 46)
         self.track_segments: int = track_segments
         font = QFont("Arial", 11)
         self.segments: QLabel = []
         self.click_callaback = click_callaback
         self.right_click_callback = right_click_callback
         self.no_buttons: bool = no_buttons
-
-        self.train_label = QLabel(self)
-        self.train_label.setFont(font)
-        self.train_label.move(int((120 + (track_segments * 60) + 20) / 2), 0)
-        self.train_label.setFixedSize(100, 15)
+        self.train_label = None
 
         for i in range(track_segments):
             seg = QLabel(self)
             seg.setPixmap(QPixmap("assets/track_free.png"))
-            seg.move(90 + i * 60, 17)
+            if self.no_buttons:
+                seg.move(i * 60, 0)
+            else:
+                seg.move(90 + i * 60, 17)
             seg.resize(60, 20)
             self.segments.append(seg)
 
         if self.no_buttons is False:
+            self.train_label = QLabel(self)
+            self.train_label.setFont(font)
+            self.train_label.move(int((120 + (track_segments * 60) + 20) / 2), 0)
+            self.train_label.setFixedSize(100, 15)
+
             self.button_white1 = AbstractTrackButton(
                 IndicatorColor.WHITE,
                 parent=self,
@@ -80,7 +87,8 @@ class AbstractTrack(QWidget):
             self.button_white2.move(160 + (track_segments * 60) - 30, 8)
 
     def set_state(self, state: TrackState, train_id: int = None):
-        self.train_label.setText("")
+        if self.train_label:
+            self.train_label.setText("")
 
         segment: QLabel
         if state == TrackState.FREE:

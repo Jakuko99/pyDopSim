@@ -23,9 +23,7 @@ class AbstractSwitch(QWidget):
             if not switch_type == SwitchType.Z_TYPE
             else SwitchPosition.Z_DOWN_STRAIGHT
         )
-        self.associated_track: AbstractTrack = (
-            None if not switch_type == SwitchType.Z_TYPE else dict()
-        )
+        self.associated_track: dict[AbstractTrack] = dict()
 
         if self.switch_type == SwitchType.Z_TYPE:
             self.free_straight_pixmap: QPixmap = QPixmap("assets/track_free.png")
@@ -140,23 +138,27 @@ class AbstractSwitch(QWidget):
             elif state == TrackState.OCCUPIED:
                 self.diagonal.setPixmap(self.occupied_diagonal_pixmap)
 
-        if self.associated_track:  # copy state to associated track object
-            if self.switch_type == SwitchType.Z_TYPE:
-                if self.associated_track.get("up", None):
-                    self.associated_track["up"].set_state(
-                        state
-                    )  # TODO: tweak this by switch position
-                    self.associated_track["down"].set_state(state)
-            else:
-                self.associated_track.set_state(state)
+        if (
+            self.associated_track
+        ):  # copy state to associated track object, switch can have up to two objects
+            if self.associated_track.get("down", None):
+                self.associated_track.get("down").set_state(state)
 
-    def add_associated_track(self, track: AbstractTrack, track1: AbstractTrack = None):
-        if self.switch_type == SwitchType.Z_TYPE:
-            if track1:
-                self.associated_track["up"] = track
-            self.associated_track["down"] = track1
-        else:
-            self.associated_track: AbstractTrack = track
+            if self.associated_track.get("up", None):
+                self.associated_track.get("up").set_state(state)
+
+    def add_associated_track(
+        self,
+        default_track: AbstractTrack,
+        additional_track: AbstractTrack = None,
+    ):
+        """default_track - main track associated with the switch (down)
+        additional_track - additional track associated with the switch, placed on the other side of the switch (up)
+        """
+        if additional_track:
+            self.associated_track["up"] = additional_track
+
+        self.associated_track["down"] = default_track
 
     def blinking_action(self):
         pass  # TODO: implement blinking action when creating path for train

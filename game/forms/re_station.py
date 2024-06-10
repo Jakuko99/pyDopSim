@@ -186,15 +186,15 @@ class REStation(QMainWindow):
         self.switch_4.move(349, 530)
 
         self.switch_1_3_track_up = AbstractTrack(2, parent=self, no_buttons=True)
-        self.switch_1_3_track_up.move(222, 335)
+        self.switch_1_3_track_up.move(312, 352)
         self.switch_1_3_track_down = AbstractTrack(2, parent=self, no_buttons=True)
-        self.switch_1_3_track_down.move(222, 413)
-        self.switch_1_3.add_associated_track(
-            self.switch_1_3_track_up, self.switch_1_3_track_down
-        )
+        self.switch_1_3_track_down.move(312, 430)
+
+        self.switch_2.add_associated_track(self.switch_1_3_track_down)
+        self.switch_5.add_associated_track(self.switch_1_3_track_up)
 
         self.switch_4_track = AbstractTrack(1, parent=self, no_buttons=True)
-        self.switch_4_track.move(280, 491)
+        self.switch_4_track.move(370, 508)
         self.switch_4.add_associated_track(self.switch_4_track)
 
         self.switch_6_7 = AbstractSwitch(switch_type=SwitchType.Z_TYPE, parent=self)
@@ -204,19 +204,21 @@ class REStation(QMainWindow):
         self.switch_8.move(751, 293)
 
         self.switch_8_track = AbstractTrack(1, parent=self, no_buttons=True)
-        self.switch_8_track.move(635, 335)
-        self.switch_8.add_associated_track(self.switch_8_track)
+        self.switch_8_track.move(725, 352)
+        self.switch_8_track_up = AbstractTrack(1, parent=self, no_buttons=True)
+        self.switch_8_track_up.move(710, 274)
+        self.switch_8.add_associated_track(self.switch_8_track, self.switch_8_track_up)
 
         self.switch_9 = AbstractSwitch(switch_type=SwitchType.DOWN_45_LEFT, parent=self)
         self.switch_9.move(752, 452)
 
         self.switch_9_track = AbstractTrack(1, parent=self, no_buttons=True)
-        self.switch_9_track.move(635, 413)
+        self.switch_9_track.move(725, 430)
         self.switch_9.add_associated_track(self.switch_9_track)
 
         self.switch_10 = AbstractSwitch(switch_type=SwitchType.UP_45_LEFT, parent=self)
         self.switch_10.move(791, 368)
 
         self.switch_10_track = AbstractTrack(1, parent=self, no_buttons=True)
-        self.switch_10_track.move(700, 413)
+        self.switch_10_track.move(790, 430)
         self.switch_10.add_associated_track(self.switch_10_track)
