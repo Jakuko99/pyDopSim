@@ -24,7 +24,7 @@ class AbstractSwitch(QWidget):
             else SwitchPosition.Z_DOWN_STRAIGHT
         )
         self.associated_track: AbstractTrack = (
-            None if not switch_type == SwitchType.Z_TYPE else {"up": None, "down": None}
+            None if not switch_type == SwitchType.Z_TYPE else dict()
         )
 
         if self.switch_type == SwitchType.Z_TYPE:
@@ -142,10 +142,11 @@ class AbstractSwitch(QWidget):
 
         if self.associated_track:  # copy state to associated track object
             if self.switch_type == SwitchType.Z_TYPE:
-                self.associated_track["up"].set_state(
-                    state
-                )  # TODO: tweak this by switch position
-                self.associated_track["down"].set_state(state)
+                if self.associated_track.get("up", None):
+                    self.associated_track["up"].set_state(
+                        state
+                    )  # TODO: tweak this by switch position
+                    self.associated_track["down"].set_state(state)
             else:
                 self.associated_track.set_state(state)
 

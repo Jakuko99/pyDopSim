@@ -196,3 +196,27 @@ class REStation(QMainWindow):
         self.switch_4_track = AbstractTrack(1, parent=self, no_buttons=True)
         self.switch_4_track.move(280, 491)
         self.switch_4.add_associated_track(self.switch_4_track)
+
+        self.switch_6_7 = AbstractSwitch(switch_type=SwitchType.Z_TYPE, parent=self)
+        self.switch_6_7.move(710, 509)
+
+        self.switch_8 = AbstractSwitch(switch_type=SwitchType.UP_45_LEFT, parent=self)
+        self.switch_8.move(751, 293)
+
+        self.switch_8_track = AbstractTrack(1, parent=self, no_buttons=True)
+        self.switch_8_track.move(635, 335)
+        self.switch_8.add_associated_track(self.switch_8_track)
+
+        self.switch_9 = AbstractSwitch(switch_type=SwitchType.DOWN_45_LEFT, parent=self)
+        self.switch_9.move(752, 452)
+
+        self.switch_9_track = AbstractTrack(1, parent=self, no_buttons=True)
+        self.switch_9_track.move(635, 413)
+        self.switch_9.add_associated_track(self.switch_9_track)
+
+        self.switch_10 = AbstractSwitch(switch_type=SwitchType.UP_45_LEFT, parent=self)
+        self.switch_10.move(791, 368)
+
+        self.switch_10_track = AbstractTrack(1, parent=self, no_buttons=True)
+        self.switch_10_track.move(700, 413)
+        self.switch_10.add_associated_track(self.switch_10_track)
