@@ -7,9 +7,7 @@ from game.data_types.api_package import IndicatorState, IndicatorColor
 
 
 class AbstractTrackButton(QWidget):
-    def __init__(
-        self, button_color: IndicatorColor, on_clicked=lambda: None, parent=None
-    ):
+    def __init__(self, button_color: IndicatorColor, parent=None):
         QWidget.__init__(self, parent=parent)
         self.color: str = button_color
         self.setGeometry(0, 0, 40, 40)
@@ -23,7 +21,7 @@ class AbstractTrackButton(QWidget):
         self.on_pixmap = QIcon(
             f"assets/track_button_{button_color.name.lower()}_on.png"
         )
-        self._on_clicked = on_clicked
+        self._on_clicked = lambda: None
 
         self.timer = QTimer(self)
         self.timer.timeout.connect(self._update)
@@ -42,7 +40,13 @@ class AbstractTrackButton(QWidget):
             self.set_state(IndicatorState.OFF)
         self._on_clicked()  # maybe send event only on activation
 
-    def set_functions(self, right_click_function, middle_click_function=lambda: None):
+    def set_functions(
+        self,
+        left_click_function,
+        right_click_function,
+        middle_click_function=lambda: None,
+    ):
+        self._on_clicked = left_click_function
         self.right_click_function = right_click_function
         self.middle_click_function = middle_click_function
 

@@ -9,16 +9,15 @@ import ctypes
 import logging
 
 from game.qt_components.api_package import (
-    AbstractSignal,
     AbstractTrack,
     AbstractSwitch,
     AbstractIndicator,
-    AbstractLever,
     AbstractLeverSlim,
     AbstractIndicatorSlim,
     AbstractButton,
     AbstractStationButton,
     AbstractClock,
+    AbstractTrackButton,
 )
 from game.forms.station_platforms import StationPlatforms
 from game.data_types.api_package import (
@@ -222,3 +221,38 @@ class REStation(QMainWindow):
         self.switch_10_track = AbstractTrack(1, parent=self, no_buttons=True)
         self.switch_10_track.move(790, 430)
         self.switch_10.add_associated_track(self.switch_10_track)
+
+        self.track_S_button = AbstractTrackButton(
+            button_color=IndicatorColor.GREEN, parent=self
+        )
+        self.track_S_button.move(1005, 421)
+
+        self.track_S_button_shunt = AbstractTrackButton(
+            button_color=IndicatorColor.WHITE, parent=self
+        )
+        self.track_S_button_shunt.move(852, 421)
+
+        self.track_L1_button = AbstractTrackButton(
+            button_color=IndicatorColor.GREEN, parent=self
+        )
+        self.track_L1_button.move(55, 421)
+
+        self.track_L1_button_shunt = AbstractTrackButton(
+            button_color=IndicatorColor.WHITE, parent=self
+        )
+        self.track_L1_button_shunt.move(215, 421)
+
+        self.track_L2_button = AbstractTrackButton(
+            button_color=IndicatorColor.GREEN, parent=self
+        )
+        self.track_L2_button.move(55, 343)
+
+        self.track_L2_button_shunt = AbstractTrackButton(
+            button_color=IndicatorColor.WHITE, parent=self
+        )
+        self.track_L2_button_shunt.move(215, 343)
+
+        self.track_4a_shunt_button = AbstractTrackButton(
+            button_color=IndicatorColor.WHITE, parent=self
+        )
+        self.track_4a_shunt_button.move(780, 577)
