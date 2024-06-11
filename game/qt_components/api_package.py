@@ -1,4 +1,5 @@
 from .abstract_signal import AbstractSignal
+from .abstract_track_signal import AbstractTrackSignal
 from .abstract_track import AbstractTrack
 from .abstract_switch import AbstractSwitch
 from .abstract_lever import AbstractLever

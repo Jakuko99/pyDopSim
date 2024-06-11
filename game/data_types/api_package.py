@@ -1,4 +1,5 @@
 from .signal_sign import SignalSign
+from .signal_type import SignalType
 from .track_state import TrackState
 from .switch_type import SwitchType
 from .switch_position import SwitchPosition

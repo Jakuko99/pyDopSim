@@ -23,6 +23,7 @@ class StationTest:
         self.window.setWindowTitle(
             "Station test window"
         )  # override default window title for testing
+        self.window.station_button.enable_debug()
 
     def add_test_bindings(self):
         self.window.path_build_cancel.setFunctions(

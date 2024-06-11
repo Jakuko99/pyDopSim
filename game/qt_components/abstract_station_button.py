@@ -5,6 +5,7 @@ from queue import Queue
 
 from game.forms.log_window import LogWindow
 from game.dialogs.connect_dialog import ConnectDialog
+from game.dialogs.debug_dialog import DebugDialog
 from utils.api_package import queue_handler
 
 
@@ -21,6 +22,7 @@ class AbstractStationButton(QWidget):
         self.connect_dialog = ConnectDialog(self)
         self.right_click_function = lambda: None
         self.middle_click_function = lambda: None
+        self.debug: bool = False
 
         # ----- Context menu -----
         self.context_menu = QMenu(self)
@@ -40,6 +42,11 @@ class AbstractStationButton(QWidget):
         self.log_action.triggered.connect(self.log_window.show)
         self.log_action.setIcon(QIcon("assets/log_icon.png"))
         self.context_menu.addAction(self.log_action)
+
+        self.debug_action = QAction("Debug okno", self)
+        self.debug_action.setEnabled(False)
+        self.debug_action.triggered.connect(self._debug_action)
+        self.context_menu.addAction(self.debug_action)
 
         self.settings_menu = QMenu(self)
         self.settings_menu.setTitle("Nastavenia")
@@ -82,3 +89,11 @@ class AbstractStationButton(QWidget):
 
     def contextMenuEvent(self, event):
         self.context_menu.exec_(event.globalPos())
+
+    def _debug_action(self):
+        self.debug_dialog.show()
+
+    def enable_debug(self):
+        self.debug = True
+        self.debug_dialog = DebugDialog(self)
+        self.context_menu.actions()[2].setEnabled(True)

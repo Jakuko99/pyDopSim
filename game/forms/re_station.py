@@ -11,6 +11,7 @@ import logging
 from game.qt_components.api_package import (
     AbstractTrack,
     AbstractSwitch,
+    AbstractTrackSignal,
     AbstractIndicator,
     AbstractLeverSlim,
     AbstractIndicatorSlim,
@@ -23,6 +24,7 @@ from game.forms.station_platforms import StationPlatforms
 from game.data_types.api_package import (
     SignalSign,
     TrackState,
+    SignalType,
     SwitchType,
     IndicatorState,
     LeverState,
@@ -256,3 +258,58 @@ class REStation(QMainWindow):
             button_color=IndicatorColor.WHITE, parent=self
         )
         self.track_4a_shunt_button.move(780, 577)
+
+        self.signal_L2 = AbstractTrackSignal(
+            signal_type=SignalType.ENTRY_SIGNAL, parent=self
+        )
+        self.signal_L2.move(85, 387)
+
+        self.pr_L2_signal = AbstractTrackSignal(
+            signal_type=SignalType.EXPECT_SIGNAL, parent=self
+        )
+        self.pr_L2_signal.move(24, 387)
+
+        self.signal_L1 = AbstractTrackSignal(
+            signal_type=SignalType.ENTRY_SIGNAL, parent=self
+        )
+        self.signal_L1.move(85, 465)
+
+        self.pr_L1_signal = AbstractTrackSignal(
+            signal_type=SignalType.EXPECT_SIGNAL, parent=self
+        )
+        self.pr_L1_signal.move(24, 465)
+
+        self.signal_S5 = AbstractTrackSignal(
+            signal_type=SignalType.DEPARTURE_SIGNAL, parent=self, flipped=True
+        )
+        self.signal_S5.move(405, 232)
+
+        self.signal_S3 = AbstractTrackSignal(
+            signal_type=SignalType.DEPARTURE_SIGNAL, parent=self, flipped=True
+        )
+        self.signal_S3.move(405, 310)
+
+        self.signal_S1 = AbstractTrackSignal(
+            signal_type=SignalType.DEPARTURE_SIGNAL, parent=self, flipped=True
+        )
+        self.signal_S1.move(405, 388)
+
+        self.signal_S2 = AbstractTrackSignal(
+            signal_type=SignalType.DEPARTURE_SIGNAL, parent=self, flipped=True
+        )
+        self.signal_S2.move(405, 466)
+
+        self.signal_Se3 = AbstractTrackSignal(
+            signal_type=SignalType.SHUNTING_SIGNAL, parent=self, flipped=True
+        )
+        self.signal_Se3.move(429, 545)
+
+        self.signal_Se1 = AbstractTrackSignal(
+            signal_type=SignalType.SHUNTING_SIGNAL, parent=self
+        )
+        self.signal_Se1.move(232, 465)
+
+        self.signal_Se2 = AbstractTrackSignal(
+            signal_type=SignalType.SHUNTING_SIGNAL, parent=self
+        )
+        self.signal_Se2.move(232, 387)
