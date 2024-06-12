@@ -1,5 +1,6 @@
 from PyQt5.QtWidgets import QWidget, QLabel
 from PyQt5.QtGui import QPixmap, QTransform
+from PyQt5.QtCore import QTimer
 
 from game.data_types.api_package import SignalSign, SignalType
 
@@ -27,6 +28,7 @@ class AbstractTrackSignal(QWidget):
 
             self.body.setGeometry(0, 0, 35, 28)
             self.body.setPixmap(self.off_pixmap)
+
         elif self.signal_type == SignalType.ENTRY_SIGNAL:
             self.setGeometry(0, 0, 120, 29)
             self.stop_pixmap = QPixmap("assets/entry_signal_stop.png").transformed(
@@ -38,9 +40,13 @@ class AbstractTrackSignal(QWidget):
             self.warn_pixmap = QPixmap("assets/entry_signal_warn.png").transformed(
                 QTransform().rotate(180 if self.flipped else 0)
             )
+            self.sumonn_pixmap = QPixmap("assets/entry_signal_summon.png").transformed(
+                QTransform().rotate(180 if self.flipped else 0)
+            )
 
             self.body.setGeometry(0, 0, 120, 29)
             self.body.setPixmap(self.stop_pixmap)
+
         elif self.signal_type == SignalType.DEPARTURE_SIGNAL:
             self.setGeometry(0, 0, 60, 27)
             self.off_pixmap = QPixmap("assets/track_signal_off.png").transformed(
@@ -57,8 +63,13 @@ class AbstractTrackSignal(QWidget):
             self.body.setPixmap(self.off_pixmap)
 
         self.state: SignalSign = SignalSign.STOP
+        self.timer = QTimer(self)
+        self.timer.timeout.connect(self._update)
+        self.blinking_lamp: list = None
+        self.lamp_state: bool = True
 
-    def set_state(self, state: SignalSign):
+    def set_sign(self, state: SignalSign):
+        self.timer.stop()
         if state == SignalSign.SHUNT and (
             self.signal_type == SignalType.SHUNTING_SIGNAL
             or self.signal_type == SignalType.DEPARTURE_SIGNAL
@@ -77,8 +88,21 @@ class AbstractTrackSignal(QWidget):
         elif state == SignalSign.WARN and self.signal_type == SignalType.ENTRY_SIGNAL:
             self.state = SignalSign.WARN
             self.body.setPixmap(self.warn_pixmap)
+
+        elif state == SignalSign.SUMMON and self.signal_type == SignalType.ENTRY_SIGNAL:
+            self.state = SignalSign.SUMMON
+            self.body.setPixmap(self.sumonn_pixmap)
+            self.timer.start(500)
+
         else:  # failsafe
             if self.signal_type == SignalType.ENTRY_SIGNAL:
                 self.body.setPixmap(self.stop_pixmap)
             else:
                 self.body.setPixmap(self.off_pixmap)
+
+    def _update(self):
+        if self.lamp_state:
+            self.body.setPixmap(self.stop_pixmap)
+        else:
+            self.body.setPixmap(self.sumonn_pixmap)
+        self.lamp_state = not self.lamp_state  # invert state

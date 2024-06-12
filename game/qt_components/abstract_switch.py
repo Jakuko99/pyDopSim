@@ -147,6 +147,9 @@ class AbstractSwitch(QWidget):
             if self.associated_track.get("up", None):
                 self.associated_track.get("up").set_state(state)
 
+    def set_position(self, position: SwitchPosition):
+        pass  # TODO: implement switch position change
+
     def add_associated_track(
         self,
         default_track: AbstractTrack,

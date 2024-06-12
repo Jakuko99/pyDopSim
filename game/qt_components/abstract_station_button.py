@@ -11,6 +11,7 @@ from utils.api_package import queue_handler
 
 class AbstractStationButton(QWidget):
     def __init__(self, log_pipe: Queue = None, parent=None):
+        self._parent = parent
         QWidget.__init__(self, parent=parent)
         if log_pipe:
             self.log_pipe: Queue = log_pipe
@@ -44,7 +45,8 @@ class AbstractStationButton(QWidget):
         self.context_menu.addAction(self.log_action)
 
         self.debug_action = QAction("Debug okno", self)
-        self.debug_action.setEnabled(False)
+        self.debug_action.setVisible(False)
+        self.debug_action.setIcon(QIcon("assets/debug_icon.png"))
         self.debug_action.triggered.connect(self._debug_action)
         self.context_menu.addAction(self.debug_action)
 
@@ -95,5 +97,5 @@ class AbstractStationButton(QWidget):
 
     def enable_debug(self):
         self.debug = True
-        self.debug_dialog = DebugDialog(self)
-        self.context_menu.actions()[2].setEnabled(True)
+        self.debug_dialog = DebugDialog(self._parent)
+        self.context_menu.actions()[2].setVisible(True)
