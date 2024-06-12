@@ -10,11 +10,15 @@ class AbstractSwitch(QWidget):
     def __init__(self, switch_type: SwitchType, parent=None):
         QWidget.__init__(self, parent)
         self.timer = QTimer(self)
+        self.timer.timeout.connect(self._update)
+        self.state: bool = False
         self.switch_type: SwitchType = switch_type
+
         if switch_type == SwitchType.Z_TYPE:
             switch_height: int = 100
         else:
             switch_height: int = 60
+
         self.setGeometry(0, 0, 60, switch_height)
         self.switch_type: SwitchType = switch_type
         self.occupancy_status: TrackState = TrackState.FREE
@@ -53,9 +57,7 @@ class AbstractSwitch(QWidget):
             self.straight_down.setPixmap(self.free_straight_pixmap)
             self.straight_down.move(0, 78)
 
-            self.diagonal = QLabel(
-                self
-            )  # TODO: diagonal visual asset needs to be redone, doesn't line correctly
+            self.diagonal = QLabel(self)
             self.diagonal.setGeometry(0, 0, 60, 60)
             self.diagonal.setPixmap(self.free_diagonal_pixmap)
             self.diagonal.setScaledContents(True)
@@ -115,8 +117,9 @@ class AbstractSwitch(QWidget):
             self.diagonal.setStyleSheet("background-color: transparent")
             self.diagonal.move(0, 0)
 
-    def set_state(self, state: TrackState):  # TODO: redo whole method
-        self.occupancy_status = state
+    def set_state(self, state: TrackState):
+        if not state is TrackState.ALL:
+            self.occupancy_status = state  # dont save state if flashing
 
         self.diagonal.setPixmap(self.free_diagonal_pixmap)  # reset pixmaps
         if self.switch_type == SwitchType.Z_TYPE:
@@ -169,6 +172,11 @@ class AbstractSwitch(QWidget):
                     else self.free_straight_pixmap
                 )
 
+            if state == TrackState.ALL:
+                self.diagonal.setPixmap(self.occupied_diagonal_pixmap)
+                self.straight_up.setPixmap(self.occupied_straight_pixmap)
+                self.straight_down.setPixmap(self.occupied_straight_pixmap)
+
         else:
             if self.switch_position == SwitchPosition.TURNED:
                 self.diagonal.setPixmap(
@@ -198,6 +206,13 @@ class AbstractSwitch(QWidget):
                 ):
                     if self.associated_track.get("up", None):
                         self.associated_track["up"].set_state(state)
+
+            if state == TrackState.ALL:
+                self.diagonal.setPixmap(self.occupied_diagonal_pixmap)
+                if self.associated_track.get("down", None):
+                    self.associated_track["down"].set_state(TrackState.OCCUPIED)
+                if self.associated_track.get("up", None):
+                    self.associated_track["up"].set_state(TrackState.OCCUPIED)
 
     def set_position(self, position: SwitchPosition):
         if self.switch_type == SwitchType.Z_TYPE:
@@ -231,4 +246,15 @@ class AbstractSwitch(QWidget):
         self.associated_track["down"] = default_track
 
     def blinking_action(self):
-        pass  # TODO: implement blinking action when creating path for train
+        if self.timer.isActive():
+            self.timer.stop()
+        else:
+            self.timer.start(500)
+
+    def _update(self):
+        if self.state:
+            self.set_state(TrackState.ALL)
+        else:
+            self.set_state(TrackState.FREE)
+
+        self.state = not self.state

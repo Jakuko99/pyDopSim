@@ -313,3 +313,15 @@ class REStation(QMainWindow):
             signal_type=SignalType.SHUNTING_SIGNAL, parent=self
         )
         self.signal_Se2.move(232, 387)
+
+        self.pr_L2_track = AbstractTrack(1, parent=self, no_buttons=True)
+        self.pr_L2_track.move(-1, 352)
+
+        self.pr_L1_track = AbstractTrack(1, parent=self, no_buttons=True)
+        self.pr_L1_track.move(-1, 430)
+
+        self.track_L2 = AbstractTrack(2, parent=self, no_buttons=True)
+        self.track_L2.move(97, 352)
+
+        self.track_L1 = AbstractTrack(2, parent=self, no_buttons=True)
+        self.track_L1.move(97, 430)

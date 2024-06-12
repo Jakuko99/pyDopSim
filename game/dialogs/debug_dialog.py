@@ -88,12 +88,18 @@ class DebugDialog(QDialog):
         self.set_value_button.setFont(self.font_obj)
         self.set_value_button.clicked.connect(self.value_selected)
 
+        self.flash_switch_button = QPushButton("Zvýraznenie", self)
+        self.flash_switch_button.move(370, 63)
+        self.flash_switch_button.setFont(self.font_obj)
+        self.flash_switch_button.clicked.connect(self.flash_switch)
+        self.flash_switch_button.setEnabled(False)
+
         self.object_type = QLabel(self)
-        self.object_type.move(5, 60)
+        self.object_type.move(5, 90)
         self.object_type.setFixedSize(450, 20)
 
         self.object_state = QLabel(self)
-        self.object_state.move(5, 80)
+        self.object_state.move(5, 110)
         self.object_state.setFixedSize(200, 20)
 
     def object_selected(self):
@@ -103,6 +109,7 @@ class DebugDialog(QDialog):
         self.value_combo.setEnabled(False)
         self.switch_val_combo.setEnabled(False)
         self.switch_pos_button.setEnabled(False)
+        self.flash_switch_button.setEnabled(False)
 
         if obj_type == AbstractSignal or obj_type == AbstractTrackSignal:
             self.value_combo.addItems(SignalSign.__members__.keys())
@@ -132,6 +139,7 @@ class DebugDialog(QDialog):
         if obj_type == AbstractSwitch:  # enable switch position combo box
             self.switch_val_combo.setEnabled(True)
             self.switch_pos_button.setEnabled(True)
+            self.flash_switch_button.setEnabled(True)
 
     def value_selected(self):
         obj_type = type(self.station_obj[self.object_combo.currentText()])
@@ -172,3 +180,6 @@ class DebugDialog(QDialog):
         self.station_obj[self.object_combo.currentText()].set_position(
             SwitchPosition[self.switch_val_combo.currentText()]
         )
+
+    def flash_switch(self):
+        self.station_obj[self.object_combo.currentText()].blinking_action()

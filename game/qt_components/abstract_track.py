@@ -110,5 +110,7 @@ class AbstractTrack(QWidget):
                 segment.setPixmap(QPixmap("assets/track_free.png"))
             if state == TrackState.OCCUPIED:
                 segment.setPixmap(QPixmap("assets/track_occupied.png"))
+            if state == TrackState.RESERVED:
+                segment.setPixmap(QPixmap("assets/track_reserved.png"))
             if state == TrackState.CLOSURE:
                 pass

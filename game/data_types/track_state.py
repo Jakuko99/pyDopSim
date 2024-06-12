@@ -6,3 +6,4 @@ class TrackState(Enum):
     OCCUPIED = auto()
     CLOSURE = auto()
     RESERVED = auto()
+    ALL = auto()  # only for switches in blink mode
