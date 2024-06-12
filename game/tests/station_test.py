@@ -3,7 +3,12 @@ import logging
 from PyQt5.QtWidgets import QApplication, QMessageBox
 
 from game.forms.api_package import REStation
-from game.data_types.api_package import IndicatorState, TrackState, LeverState
+from game.data_types.api_package import (
+    IndicatorState,
+    TrackState,
+    LeverState,
+    SwitchPosition,
+)
 from utils.api_package import queue_handler
 
 
@@ -96,82 +101,82 @@ class StationTest:
 
     def switch_1_3_action(self, state: LeverState):
         self.window.switch_1_3_controller.set_light(state.value, IndicatorState.ON)
-        self.window.switch_1_3.set_state(
-            TrackState.FREE
-            if state == LeverState.MIDDLE
-            else TrackState.OCCUPIED
+        self.window.switch_1_3.set_position(
+            SwitchPosition.Z_DOWN_STRAIGHT
             if state == LeverState.LEFT
-            else TrackState.RESERVED
+            else SwitchPosition.TURNED
+            if state == LeverState.MIDDLE
+            else SwitchPosition.Z_UP_STRAIGHT
         )
 
     def switch_5_action(self, state: LeverState):
         self.window.switch_5_controller.set_light(state.value, IndicatorState.ON)
-        self.window.switch_5.set_state(
-            TrackState.FREE
-            if state == LeverState.MIDDLE
-            else TrackState.OCCUPIED
+        self.window.switch_5.set_position(
+            SwitchPosition.STRAIGHT
             if state == LeverState.LEFT
-            else TrackState.RESERVED
+            else SwitchPosition.AUTO
+            if state == LeverState.MIDDLE
+            else SwitchPosition.TURNED
         )
 
     def switch_2_action(self, state: LeverState):
         self.window.switch_2_controller.set_light(state.value, IndicatorState.ON)
-        self.window.switch_2.set_state(
-            TrackState.FREE
-            if state == LeverState.MIDDLE
-            else TrackState.OCCUPIED
+        self.window.switch_2.set_position(
+            SwitchPosition.STRAIGHT
             if state == LeverState.LEFT
-            else TrackState.RESERVED
+            else SwitchPosition.AUTO
+            if state == LeverState.MIDDLE
+            else SwitchPosition.TURNED
         )
 
     def switch_4_action(self, state: LeverState):
         self.window.switch_4_vk2_controller.set_light(state.value, IndicatorState.ON)
-        self.window.switch_4.set_state(
-            TrackState.FREE
-            if state == LeverState.MIDDLE
-            else TrackState.OCCUPIED
+        self.window.switch_4.set_position(
+            SwitchPosition.STRAIGHT
             if state == LeverState.LEFT
-            else TrackState.RESERVED
+            else SwitchPosition.AUTO
+            if state == LeverState.MIDDLE
+            else SwitchPosition.TURNED
         )
 
     def switch_6_7_action(self, state: LeverState):
         self.window.switch_6_7_controller.set_light(state.value, IndicatorState.ON)
-        self.window.switch_6_7.set_state(
-            TrackState.FREE
-            if state == LeverState.MIDDLE
-            else TrackState.OCCUPIED
+        self.window.switch_6_7.set_position(
+            SwitchPosition.Z_DOWN_STRAIGHT
             if state == LeverState.LEFT
-            else TrackState.RESERVED
+            else SwitchPosition.TURNED
+            if state == LeverState.MIDDLE
+            else SwitchPosition.Z_UP_STRAIGHT
         )
 
     def switch_8_action(self, state: LeverState):
         self.window.switch_8_controller.set_light(state.value, IndicatorState.ON)
-        self.window.switch_8.set_state(
-            TrackState.FREE
-            if state == LeverState.MIDDLE
-            else TrackState.OCCUPIED
+        self.window.switch_8.set_position(
+            SwitchPosition.STRAIGHT
             if state == LeverState.LEFT
-            else TrackState.RESERVED
+            else SwitchPosition.AUTO
+            if state == LeverState.MIDDLE
+            else SwitchPosition.TURNED
         )
 
     def switch_9_action(self, state: LeverState):
         self.window.switch_9_controller.set_light(state.value, IndicatorState.ON)
-        self.window.switch_9.set_state(
-            TrackState.FREE
-            if state == LeverState.MIDDLE
-            else TrackState.OCCUPIED
+        self.window.switch_9.set_position(
+            SwitchPosition.STRAIGHT
             if state == LeverState.LEFT
-            else TrackState.RESERVED
+            else SwitchPosition.AUTO
+            if state == LeverState.MIDDLE
+            else SwitchPosition.TURNED
         )
 
     def switch_10_action(self, state: LeverState):
         self.window.switch_10_controller.set_light(state.value, IndicatorState.ON)
-        self.window.switch_10.set_state(
-            TrackState.FREE
-            if state == LeverState.MIDDLE
-            else TrackState.OCCUPIED
+        self.window.switch_10.set_position(
+            SwitchPosition.STRAIGHT
             if state == LeverState.LEFT
-            else TrackState.RESERVED
+            else SwitchPosition.AUTO
+            if state == LeverState.MIDDLE
+            else SwitchPosition.TURNED
         )
 
     def run(self):

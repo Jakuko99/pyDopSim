@@ -21,7 +21,7 @@ class AbstractSwitch(QWidget):
         self.switch_position: SwitchPosition = (
             SwitchPosition.STRAIGHT
             if not switch_type == SwitchType.Z_TYPE
-            else SwitchPosition.Z_DOWN_STRAIGHT
+            else SwitchPosition.TURNED
         )
         self.associated_track: dict[AbstractTrack] = dict()
 
@@ -115,40 +115,107 @@ class AbstractSwitch(QWidget):
             self.diagonal.setStyleSheet("background-color: transparent")
             self.diagonal.move(0, 0)
 
-    def set_state(self, state: TrackState):
+    def set_state(self, state: TrackState):  # TODO: redo whole method
+        self.occupancy_status = state
+
+        self.diagonal.setPixmap(self.free_diagonal_pixmap)  # reset pixmaps
         if self.switch_type == SwitchType.Z_TYPE:
-            if state == TrackState.FREE:
-                self.straight_up.setPixmap(self.free_straight_pixmap)
-                self.straight_down.setPixmap(self.free_straight_pixmap)
-                self.diagonal.setPixmap(self.free_diagonal_pixmap)
-            elif state == TrackState.RESERVED:
-                self.straight_up.setPixmap(self.reserved_straight_pixmap)
-                self.straight_down.setPixmap(self.reserved_straight_pixmap)
-                self.diagonal.setPixmap(self.reserved_diagonal_pixmap)
-            elif state == TrackState.OCCUPIED:
-                self.straight_up.setPixmap(self.occupied_straight_pixmap)
-                self.straight_down.setPixmap(self.occupied_straight_pixmap)
-                self.diagonal.setPixmap(self.occupied_diagonal_pixmap)
+            self.straight_up.setPixmap(self.free_straight_pixmap)
+            self.straight_down.setPixmap(self.free_straight_pixmap)
+
+        if self.associated_track.get("down", None):
+            self.associated_track["down"].set_state(TrackState.FREE)
+        if self.associated_track.get("up", None):
+            self.associated_track["up"].set_state(TrackState.FREE)
+
+        if self.switch_type == SwitchType.Z_TYPE:
+            if self.switch_position is SwitchPosition.TURNED:
+                self.diagonal.setPixmap(
+                    self.occupied_diagonal_pixmap
+                    if state == TrackState.OCCUPIED
+                    else self.reserved_diagonal_pixmap
+                    if state == TrackState.RESERVED
+                    else self.free_diagonal_pixmap
+                )
+            elif self.switch_position is SwitchPosition.Z_DOWN_STRAIGHT:
+                self.straight_down.setPixmap(
+                    self.occupied_straight_pixmap
+                    if state == TrackState.OCCUPIED
+                    else self.reserved_straight_pixmap
+                    if state == TrackState.RESERVED
+                    else self.free_straight_pixmap
+                )
+            elif self.switch_position is SwitchPosition.Z_UP_STRAIGHT:
+                self.straight_up.setPixmap(
+                    self.occupied_straight_pixmap
+                    if state == TrackState.OCCUPIED
+                    else self.reserved_straight_pixmap
+                    if state == TrackState.RESERVED
+                    else self.free_straight_pixmap
+                )
+            elif self.switch_position is SwitchPosition.Z_BOTH:
+                self.straight_up.setPixmap(
+                    self.occupied_straight_pixmap
+                    if state == TrackState.OCCUPIED
+                    else self.reserved_straight_pixmap
+                    if state == TrackState.RESERVED
+                    else self.free_straight_pixmap
+                )
+                self.straight_down.setPixmap(
+                    self.occupied_straight_pixmap
+                    if state == TrackState.OCCUPIED
+                    else self.reserved_straight_pixmap
+                    if state == TrackState.RESERVED
+                    else self.free_straight_pixmap
+                )
 
         else:
-            if state == TrackState.FREE:
-                self.diagonal.setPixmap(self.free_diagonal_pixmap)
-            elif state == TrackState.RESERVED:
-                self.diagonal.setPixmap(self.reserved_diagonal_pixmap)
-            elif state == TrackState.OCCUPIED:
-                self.diagonal.setPixmap(self.occupied_diagonal_pixmap)
+            if self.switch_position == SwitchPosition.TURNED:
+                self.diagonal.setPixmap(
+                    self.occupied_diagonal_pixmap
+                    if state == TrackState.OCCUPIED
+                    else self.reserved_diagonal_pixmap
+                    if state == TrackState.RESERVED
+                    else self.free_diagonal_pixmap
+                )
+                if self.switch_type == SwitchType.UP_45_LEFT:
+                    if self.associated_track.get("up", None):
+                        self.associated_track["up"].set_state(state)
+                elif self.switch_type == SwitchType.UP_45_RIGHT:
+                    if self.associated_track.get("down", None):
+                        self.associated_track["down"].set_segment(0, state)
 
-        if (
-            self.associated_track
-        ):  # copy state to associated track object, switch can have up to two objects
-            if self.associated_track.get("down", None):
-                self.associated_track.get("down").set_state(state)
+            elif self.switch_position == SwitchPosition.STRAIGHT:
+                if (
+                    self.switch_type == SwitchType.DOWN_45_LEFT
+                    or SwitchType.DOWN_45_RIGHT
+                ):
+                    if self.associated_track.get("down", None):
+                        self.associated_track["down"].set_state(state)
 
-            if self.associated_track.get("up", None):
-                self.associated_track.get("up").set_state(state)
+                elif (
+                    self.switch_type == SwitchType.UP_45_LEFT or SwitchType.UP_45_RIGHT
+                ):
+                    if self.associated_track.get("up", None):
+                        self.associated_track["up"].set_state(state)
 
     def set_position(self, position: SwitchPosition):
-        pass  # TODO: implement switch position change
+        if self.switch_type == SwitchType.Z_TYPE:
+            if position in [
+                SwitchPosition.TURNED,
+                SwitchPosition.Z_DOWN_STRAIGHT,
+                SwitchPosition.Z_UP_STRAIGHT,
+                SwitchPosition.Z_BOTH,
+            ]:
+                self.switch_position = position
+        elif position in [SwitchPosition.STRAIGHT, SwitchPosition.TURNED]:
+            self.switch_position = position
+        elif position == SwitchPosition.AUTO:
+            pass  # no action needed
+        else:
+            raise ValueError(f"Invalid switch position for switch {self.switch_type}")
+
+        self.set_state(self.occupancy_status)  # update state of the switch
 
     def add_associated_track(
         self,

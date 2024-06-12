@@ -102,3 +102,13 @@ class AbstractTrack(QWidget):
                 self.train_label.setText(
                     f"{train_id} >" if train_id % 2 == 0 else f"< {train_id}"
                 )
+
+    def set_segment(self, segment_id: int, state: TrackState):
+        if segment_id < len(self.segments):
+            segment = self.segments[segment_id]
+            if state == TrackState.FREE:
+                segment.setPixmap(QPixmap("assets/track_free.png"))
+            if state == TrackState.OCCUPIED:
+                segment.setPixmap(QPixmap("assets/track_occupied.png"))
+            if state == TrackState.CLOSURE:
+                pass
