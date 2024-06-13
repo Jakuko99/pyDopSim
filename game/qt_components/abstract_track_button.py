@@ -36,9 +36,9 @@ class AbstractTrackButton(QWidget):
     def on_clicked(self):
         if self.state == IndicatorState.OFF:
             self.set_state(IndicatorState.BLINKING)
+            self._on_clicked()
         elif self.state == IndicatorState.BLINKING:
             self.set_state(IndicatorState.OFF)
-        self._on_clicked()  # maybe send event only on activation
 
     def set_functions(
         self,
@@ -74,3 +74,7 @@ class AbstractTrackButton(QWidget):
             self.right_click_function()
         if QMouseEvent.button() == Qt.MiddleButton:
             self.middle_click_function()
+
+    def stop_blinking(self):
+        self.timer.stop()
+        self.set_state(IndicatorState.OFF)

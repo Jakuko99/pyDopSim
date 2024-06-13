@@ -27,6 +27,7 @@ class AbstractTrack(QWidget):
         self.click_callaback = click_callaback
         self.right_click_callback = right_click_callback
         self.no_buttons: bool = no_buttons
+        self.shunt_track: bool = shunt_track
         self.train_label = None
 
         for i in range(track_segments):
@@ -52,7 +53,7 @@ class AbstractTrack(QWidget):
             )
             self.button_white1.move(10, 8)
 
-            if not shunt_track:
+            if not self.shunt_track:
                 self.button_green1 = AbstractTrackButton(
                     IndicatorColor.GREEN, parent=self
                 )
@@ -114,3 +115,11 @@ class AbstractTrack(QWidget):
                 segment.setPixmap(QPixmap("assets/track_reserved.png"))
             if state == TrackState.CLOSURE:
                 pass
+
+    def stop_blinking(self):
+        self.button_white1.stop_blinking()
+        self.button_white2.stop_blinking()
+
+        if not self.shunt_track:
+            self.button_green1.stop_blinking()
+            self.button_green2.stop_blinking()

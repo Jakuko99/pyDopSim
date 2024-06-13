@@ -42,11 +42,6 @@ class StationTest:
         self.window.switch_2_controller.set_update_function(self.switch_2_action)
         self.window.switch_4_vk2_controller.set_update_function(self.switch_4_action)
         self.window.switch_5_controller.set_update_function(self.switch_5_action)
-        self.window.vk_1_controller.set_update_function(
-            lambda state: self.window.vk_1_controller.set_light(
-                state.value, IndicatorState.ON
-            )
-        )
         self.window.switch_6_7_controller.set_update_function(self.switch_6_7_action)
         self.window.switch_8_controller.set_update_function(self.switch_8_action)
         self.window.switch_9_controller.set_update_function(self.switch_9_action)

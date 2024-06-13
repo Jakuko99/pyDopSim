@@ -117,7 +117,9 @@ class AbstractSwitch(QWidget):
             self.diagonal.setStyleSheet("background-color: transparent")
             self.diagonal.move(0, 0)
 
-    def set_state(self, state: TrackState):
+    def set_state(self, state: TrackState, position: SwitchPosition = None):
+        """position - for Z switch to specify which track is occupied"""
+
         if not state is TrackState.ALL:
             self.occupancy_status = state  # dont save state if flashing
 
@@ -157,20 +159,38 @@ class AbstractSwitch(QWidget):
                     else self.free_straight_pixmap
                 )
             elif self.switch_position is SwitchPosition.Z_BOTH:
-                self.straight_up.setPixmap(
-                    self.occupied_straight_pixmap
-                    if state == TrackState.OCCUPIED
-                    else self.reserved_straight_pixmap
-                    if state == TrackState.RESERVED
-                    else self.free_straight_pixmap
-                )
-                self.straight_down.setPixmap(
-                    self.occupied_straight_pixmap
-                    if state == TrackState.OCCUPIED
-                    else self.reserved_straight_pixmap
-                    if state == TrackState.RESERVED
-                    else self.free_straight_pixmap
-                )
+                if position:  # set only specified segment of the switch
+                    if position == SwitchPosition.Z_DOWN_STRAIGHT:
+                        self.straight_down.setPixmap(
+                            self.occupied_straight_pixmap
+                            if state == TrackState.OCCUPIED
+                            else self.reserved_straight_pixmap
+                            if state == TrackState.RESERVED
+                            else self.free_straight_pixmap
+                        )
+                    elif position == SwitchPosition.Z_UP_STRAIGHT:
+                        self.straight_up.setPixmap(
+                            self.occupied_straight_pixmap
+                            if state == TrackState.OCCUPIED
+                            else self.reserved_straight_pixmap
+                            if state == TrackState.RESERVED
+                            else self.free_straight_pixmap
+                        )
+                else:  # set all segments of the switch
+                    self.straight_up.setPixmap(
+                        self.occupied_straight_pixmap
+                        if state == TrackState.OCCUPIED
+                        else self.reserved_straight_pixmap
+                        if state == TrackState.RESERVED
+                        else self.free_straight_pixmap
+                    )
+                    self.straight_down.setPixmap(
+                        self.occupied_straight_pixmap
+                        if state == TrackState.OCCUPIED
+                        else self.reserved_straight_pixmap
+                        if state == TrackState.RESERVED
+                        else self.free_straight_pixmap
+                    )
 
             if state == TrackState.ALL:
                 self.diagonal.setPixmap(self.occupied_diagonal_pixmap)

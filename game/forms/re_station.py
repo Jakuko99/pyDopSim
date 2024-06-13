@@ -126,9 +126,6 @@ class REStation(QMainWindow):
         self.switch_5_controller = AbstractLeverSlim(self)
         self.switch_5_controller.move(225, 35)
 
-        self.vk_1_controller = AbstractLeverSlim(self)
-        self.vk_1_controller.move(295, 35)
-
         self.switch_6_7_controller = AbstractLeverSlim(self)
         self.switch_6_7_controller.move(814, 35)
 
@@ -234,50 +231,50 @@ class REStation(QMainWindow):
         )
         self.track_S_button_shunt.move(852, 421)
 
-        self.track_L1_button = AbstractTrackButton(
+        self.track_L6_button = AbstractTrackButton(
             button_color=IndicatorColor.GREEN, parent=self
         )
-        self.track_L1_button.move(55, 421)
+        self.track_L6_button.move(55, 421)
 
-        self.track_L1_button_shunt = AbstractTrackButton(
+        self.track_L6_button_shunt = AbstractTrackButton(
             button_color=IndicatorColor.WHITE, parent=self
         )
-        self.track_L1_button_shunt.move(215, 421)
+        self.track_L6_button_shunt.move(215, 421)
 
-        self.track_L2_button = AbstractTrackButton(
+        self.track_L7_button = AbstractTrackButton(
             button_color=IndicatorColor.GREEN, parent=self
         )
-        self.track_L2_button.move(55, 343)
+        self.track_L7_button.move(55, 343)
 
-        self.track_L2_button_shunt = AbstractTrackButton(
+        self.track_L7_button_shunt = AbstractTrackButton(
             button_color=IndicatorColor.WHITE, parent=self
         )
-        self.track_L2_button_shunt.move(215, 343)
+        self.track_L7_button_shunt.move(215, 343)
 
         self.track_4a_shunt_button = AbstractTrackButton(
             button_color=IndicatorColor.WHITE, parent=self
         )
         self.track_4a_shunt_button.move(780, 577)
 
-        self.signal_L2 = AbstractTrackSignal(
+        self.signal_L7 = AbstractTrackSignal(
             signal_type=SignalType.ENTRY_SIGNAL, parent=self
         )
-        self.signal_L2.move(85, 387)
+        self.signal_L7.move(85, 387)
 
-        self.pr_L2_signal = AbstractTrackSignal(
+        self.pr_L7_signal = AbstractTrackSignal(
             signal_type=SignalType.EXPECT_SIGNAL, parent=self
         )
-        self.pr_L2_signal.move(24, 387)
+        self.pr_L7_signal.move(24, 387)
 
-        self.signal_L1 = AbstractTrackSignal(
+        self.signal_L6 = AbstractTrackSignal(
             signal_type=SignalType.ENTRY_SIGNAL, parent=self
         )
-        self.signal_L1.move(85, 465)
+        self.signal_L6.move(85, 465)
 
-        self.pr_L1_signal = AbstractTrackSignal(
+        self.pr_L6_signal = AbstractTrackSignal(
             signal_type=SignalType.EXPECT_SIGNAL, parent=self
         )
-        self.pr_L1_signal.move(24, 465)
+        self.pr_L6_signal.move(24, 465)
 
         self.signal_S5 = AbstractTrackSignal(
             signal_type=SignalType.DEPARTURE_SIGNAL, parent=self, flipped=True
@@ -314,14 +311,65 @@ class REStation(QMainWindow):
         )
         self.signal_Se2.move(232, 387)
 
-        self.pr_L2_track = AbstractTrack(1, parent=self, no_buttons=True)
-        self.pr_L2_track.move(-1, 352)
+        self.pr_L7_track = AbstractTrack(1, parent=self, no_buttons=True)
+        self.pr_L7_track.move(-1, 352)
 
-        self.pr_L1_track = AbstractTrack(1, parent=self, no_buttons=True)
-        self.pr_L1_track.move(-1, 430)
+        self.pr_L6_track = AbstractTrack(1, parent=self, no_buttons=True)
+        self.pr_L6_track.move(-1, 430)
 
-        self.track_L2 = AbstractTrack(2, parent=self, no_buttons=True)
-        self.track_L2.move(97, 352)
+        self.track_L7 = AbstractTrack(2, parent=self, no_buttons=True)
+        self.track_L7.move(97, 352)
 
-        self.track_L1 = AbstractTrack(2, parent=self, no_buttons=True)
-        self.track_L1.move(97, 430)
+        self.track_L6 = AbstractTrack(2, parent=self, no_buttons=True)
+        self.track_L6.move(97, 430)
+
+        self.signal_L5 = AbstractTrackSignal(
+            signal_type=SignalType.DEPARTURE_SIGNAL, parent=self
+        )
+        self.signal_L5.move(666, 310)
+
+        self.signal_L3 = AbstractTrackSignal(
+            signal_type=SignalType.DEPARTURE_SIGNAL, parent=self
+        )
+        self.signal_L3.move(666, 388)
+
+        self.signal_L1 = AbstractTrackSignal(
+            signal_type=SignalType.DEPARTURE_SIGNAL, parent=self
+        )
+        self.signal_L1.move(666, 465)
+
+        self.signal_L2 = AbstractTrackSignal(
+            signal_type=SignalType.DEPARTURE_SIGNAL, parent=self
+        )
+        self.signal_L2.move(666, 544)
+
+        self.signal_Se4 = AbstractTrackSignal(
+            signal_type=SignalType.SHUNTING_SIGNAL, parent=self
+        )
+        self.signal_Se4.move(666, 620)
+
+        self.signal_Se5 = AbstractTrackSignal(
+            signal_type=SignalType.SHUNTING_SIGNAL, parent=self, flipped=True
+        )
+        self.signal_Se5.move(763, 543)
+
+        self.signal_Se6 = AbstractTrackSignal(
+            signal_type=SignalType.SHUNTING_SIGNAL, parent=self, flipped=True
+        )
+        self.signal_Se6.move(840, 386)
+
+        self.signal_S = AbstractTrackSignal(
+            signal_type=SignalType.ENTRY_SIGNAL, parent=self, flipped=True
+        )
+        self.signal_S.move(899, 386)
+
+        self.pr_S_signal = AbstractTrackSignal(
+            signal_type=SignalType.EXPECT_SIGNAL, parent=self, flipped=True
+        )
+        self.pr_S_signal.move(1040, 386)
+
+        self.track_S = AbstractTrack(2, parent=self, no_buttons=True)
+        self.track_S.move(889, 430)
+
+        self.pr_S_track = AbstractTrack(1, parent=self, no_buttons=True)
+        self.pr_S_track.move(1042, 430)

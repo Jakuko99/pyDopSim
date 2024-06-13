@@ -48,7 +48,7 @@ class AbstractTrackSignal(QWidget):
             self.body.setPixmap(self.stop_pixmap)
 
         elif self.signal_type == SignalType.DEPARTURE_SIGNAL:
-            self.setGeometry(0, 0, 60, 27)
+            self.setGeometry(0, 0, 62, 29)
             self.off_pixmap = QPixmap("assets/track_signal_off.png").transformed(
                 QTransform().rotate(180 if self.flipped else 0)
             )
@@ -60,6 +60,7 @@ class AbstractTrackSignal(QWidget):
             )
 
             self.body.setGeometry(0, 0, 60, 27)
+            self.body.setScaledContents(True)
             self.body.setPixmap(self.off_pixmap)
 
         self.state: SignalSign = SignalSign.STOP
