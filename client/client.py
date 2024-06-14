@@ -1,10 +1,11 @@
-import socket # use REST or TCP for the server framework
+import socket  # use REST or TCP for the server framework
 from queue import Queue
 
 from game.api_package import REStation
 
+
 class Client:
-    def __init__(self,station_name: str, log_pipe: Queue = None):
+    def __init__(self, station_name: str, log_pipe: Queue = None):
         self.station_name: str = station_name
         self.host: str = None
         self.port: int = 8040
