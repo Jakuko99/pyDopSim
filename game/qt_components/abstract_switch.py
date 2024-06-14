@@ -266,11 +266,19 @@ class AbstractSwitch(QWidget):
 
         self.associated_track["down"] = default_track
 
-    def blinking_action(self):
+    def toggle_blinking_action(self):
         if self.timer.isActive():
             self.timer.stop()
         else:
             self.timer.start(500)
+
+    def start_blinking_action(self):
+        if not self.timer.isActive():
+            self.timer.start(500)
+
+    def stop_blinking_action(self):
+        if self.timer.isActive():
+            self.timer.stop()
 
     def check_state(self, action: bool = False):
         if self.occupancy_status == TrackState.FREE and action is True:

@@ -182,4 +182,4 @@ class DebugDialog(QDialog):
         )
 
     def flash_switch(self):
-        self.station_obj[self.object_combo.currentText()].blinking_action()
+        self.station_obj[self.object_combo.currentText()].toggle_blinking_action()
