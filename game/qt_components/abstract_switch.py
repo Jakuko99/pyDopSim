@@ -23,6 +23,7 @@ class AbstractSwitch(QWidget):
         self.setGeometry(0, 0, 60, switch_height)
         self.switch_type: SwitchType = switch_type
         self.occupancy_status: TrackState = TrackState.FREE
+        self.test_state: bool = False
         self.switch_position: SwitchPosition = (
             SwitchPosition.STRAIGHT
             if not switch_type == SwitchType.Z_TYPE
@@ -197,6 +198,10 @@ class AbstractSwitch(QWidget):
                 self.diagonal.setPixmap(self.occupied_diagonal_pixmap)
                 self.straight_up.setPixmap(self.occupied_straight_pixmap)
                 self.straight_down.setPixmap(self.occupied_straight_pixmap)
+            elif state == TrackState.TEST:
+                self.diagonal.setPixmap(self.reserved_diagonal_pixmap)
+                self.straight_up.setPixmap(self.reserved_straight_pixmap)
+                self.straight_down.setPixmap(self.reserved_straight_pixmap)
 
         else:
             if self.switch_position == SwitchPosition.TURNED:
@@ -234,6 +239,12 @@ class AbstractSwitch(QWidget):
                     self.associated_track["down"].set_state(TrackState.OCCUPIED)
                 if self.associated_track.get("up", None):
                     self.associated_track["up"].set_state(TrackState.OCCUPIED)
+            elif state == TrackState.TEST:
+                self.diagonal.setPixmap(self.reserved_diagonal_pixmap)
+                if self.associated_track.get("down", None):
+                    self.associated_track["down"].set_state(TrackState.RESERVED)
+                if self.associated_track.get("up", None):
+                    self.associated_track["up"].set_state(TrackState.RESERVED)
 
     def set_position(self, position: SwitchPosition):
         if self.switch_type == SwitchType.Z_TYPE:
@@ -291,6 +302,14 @@ class AbstractSwitch(QWidget):
             )
             or self.test_state is True
         ):
+            self.set_state(TrackState.FREE)
+            self.test_state = False
+
+    def check_occupancy(self, action: bool = False):
+        if self.occupancy_status == TrackState.FREE and action is True:
+            self.set_state(TrackState.TEST)
+            self.test_state = True
+        elif action is False and self.test_state is True:
             self.set_state(TrackState.FREE)
             self.test_state = False
 

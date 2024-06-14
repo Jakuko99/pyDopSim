@@ -1,6 +1,7 @@
 from queue import Queue
 import logging
 from PyQt5.QtWidgets import QApplication, QMessageBox
+from PyQt5.QtCore import QEventLoop
 
 from game.forms.api_package import REStation
 from game.data_types.api_package import (
@@ -58,6 +59,9 @@ class StationTest:
 
         self.window.check_switch_positions.set_onPress(self.check_switch_positions)
         self.window.check_switch_positions.set_onRelease(self.revert_switch_positions)
+
+        self.window.check_track_segments.set_onPress(self.check_track_occupancy)
+        self.window.check_track_segments.set_onRelease(self.revert_track_occupancy)
 
     def track1_callback(self, button_id: int):
         if button_id == 2:
@@ -197,6 +201,52 @@ class StationTest:
         self.window.switch_9.check_state()
         self.window.switch_10.check_state()
 
+    def check_track_occupancy(self):
+        self.window.switch_1_3.check_occupancy(True)
+        self.window.switch_2.check_occupancy(True)
+        self.window.switch_4.check_occupancy(True)
+        self.window.switch_5.check_occupancy(True)
+        self.window.switch_6_7.check_occupancy(True)
+        self.window.switch_8.check_occupancy(True)
+        self.window.switch_9.check_occupancy(True)
+        self.window.switch_10.check_occupancy(True)
+
+        self.window.track_1.check_state(True)
+        self.window.track_2.check_state(True)
+        self.window.track_3.check_state(True)
+        self.window.track_4.check_state(True)
+        self.window.track_5.check_state(True)
+        self.window.track_4a.check_state(True)
+        self.window.track_L6.check_state(True)
+        self.window.track_L7.check_state(True)
+        self.window.track_S.check_state(True)
+        self.window.pr_S_track.check_state(True)
+        self.window.pr_L6_track.check_state(True)
+        self.window.pr_L7_track.check_state(True)
+
+    def revert_track_occupancy(self):
+        self.window.switch_1_3.check_occupancy()
+        self.window.switch_2.check_occupancy()
+        self.window.switch_4.check_occupancy()
+        self.window.switch_5.check_occupancy()
+        self.window.switch_6_7.check_occupancy()
+        self.window.switch_8.check_occupancy()
+        self.window.switch_9.check_occupancy()
+        self.window.switch_10.check_occupancy()
+
+        self.window.track_1.check_state()
+        self.window.track_2.check_state()
+        self.window.track_3.check_state()
+        self.window.track_4.check_state()
+        self.window.track_5.check_state()
+        self.window.track_4a.check_state()
+        self.window.track_L6.check_state()
+        self.window.track_L7.check_state()
+        self.window.track_S.check_state()
+        self.window.pr_S_track.check_state()
+        self.window.pr_L6_track.check_state()
+        self.window.pr_L7_track.check_state()
+
     def run(self):
         self.window.show()
-        self.app.exec_()
+        # self.app.exec_()
