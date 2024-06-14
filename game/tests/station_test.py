@@ -56,6 +56,9 @@ class StationTest:
             lambda x: self.window.track_4.set_state(TrackState.FREE)
         )
 
+        self.window.check_switch_positions.set_onPress(self.check_switch_positions)
+        self.window.check_switch_positions.set_onRelease(self.revert_switch_positions)
+
     def track1_callback(self, button_id: int):
         if button_id == 2:
             self.window.track_1.set_state(TrackState.OCCUPIED, train_id=940)
@@ -173,6 +176,26 @@ class StationTest:
             if state == LeverState.MIDDLE
             else SwitchPosition.TURNED
         )
+
+    def check_switch_positions(self):
+        self.window.switch_1_3.check_state(True)
+        self.window.switch_2.check_state(True)
+        self.window.switch_4.check_state(True)
+        self.window.switch_5.check_state(True)
+        self.window.switch_6_7.check_state(True)
+        self.window.switch_8.check_state(True)
+        self.window.switch_9.check_state(True)
+        self.window.switch_10.check_state(True)
+
+    def revert_switch_positions(self):
+        self.window.switch_1_3.check_state()
+        self.window.switch_2.check_state()
+        self.window.switch_4.check_state()
+        self.window.switch_5.check_state()
+        self.window.switch_6_7.check_state()
+        self.window.switch_8.check_state()
+        self.window.switch_9.check_state()
+        self.window.switch_10.check_state()
 
     def run(self):
         self.window.show()

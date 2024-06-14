@@ -164,6 +164,11 @@ class REStation(QMainWindow):
         self.track_4 = AbstractTrack(track_segments=2, parent=self, shunt_track=True)
         self.track_4.move(420, 568)
 
+        self.track_4a = AbstractTrack(
+            track_segments=1, parent=self, shunt_track=True, no_buttons=True
+        )
+        self.track_4a.move(819, 586)
+
         self.track_5 = AbstractTrack(track_segments=2, parent=self)
         self.track_5.move(420, 257)
 
@@ -373,3 +378,29 @@ class REStation(QMainWindow):
 
         self.pr_S_track = AbstractTrack(1, parent=self, no_buttons=True)
         self.pr_S_track.move(1042, 430)
+
+        self.summon_L_button = AbstractButton(ButtonType.NORMAL, self)
+        self.summon_L_button.move(286, 684)
+
+        self.summon_S1_S5_button = AbstractButton(ButtonType.NORMAL, self)
+        self.summon_S1_S5_button.move(357, 684)
+
+        self.summon_L1_L5_button = AbstractButton(ButtonType.NORMAL, self)
+        self.summon_L1_L5_button.move(707, 684)
+
+        self.summon_S_button = AbstractButton(ButtonType.NORMAL, self)
+        self.summon_S_button.move(780, 684)
+
+    def stop_blinking(self):
+        self.track_1.stop_blinking()
+        self.track_2.stop_blinking()
+        self.track_3.stop_blinking()
+        self.track_4.stop_blinking()
+        self.track_5.stop_blinking()
+        self.track_S_button.stop_blinking()
+        self.track_S_button_shunt.stop_blinking()
+        self.track_L6_button.stop_blinking()
+        self.track_L6_button_shunt.stop_blinking()
+        self.track_L7_button.stop_blinking()
+        self.track_L7_button_shunt.stop_blinking()
+        self.track_4a_shunt_button.stop_blinking()

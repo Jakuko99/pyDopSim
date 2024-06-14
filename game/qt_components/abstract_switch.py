@@ -12,6 +12,7 @@ class AbstractSwitch(QWidget):
         self.timer = QTimer(self)
         self.timer.timeout.connect(self._update)
         self.state: bool = False
+        self.test_state: bool = False
         self.switch_type: SwitchType = switch_type
 
         if switch_type == SwitchType.Z_TYPE:
@@ -270,6 +271,20 @@ class AbstractSwitch(QWidget):
             self.timer.stop()
         else:
             self.timer.start(500)
+
+    def check_state(self, action: bool = False):
+        if self.occupancy_status == TrackState.FREE and action is True:
+            self.set_state(TrackState.RESERVED)
+            self.test_state = True
+        elif (
+            action is False
+            and not (
+                self.occupancy_status is TrackState.RESERVED or TrackState.OCCUPIED
+            )
+            or self.test_state is True
+        ):
+            self.set_state(TrackState.FREE)
+            self.test_state = False
 
     def _update(self):
         if self.state:

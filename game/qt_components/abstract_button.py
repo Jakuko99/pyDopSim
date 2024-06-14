@@ -30,6 +30,12 @@ class AbstractButton(QWidget):
         self.right_click_function = right_click_function
         self.middle_click_function = middle_click_function
 
+    def set_onPress(self, function):
+        self.button.pressed.connect(function)
+
+    def set_onRelease(self, function):
+        self.button.released.connect(function)
+
     def mousePressEvent(self, QMouseEvent):
         if QMouseEvent.button() == Qt.RightButton:
             self.right_click_function()
