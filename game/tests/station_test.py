@@ -1,6 +1,6 @@
 from queue import Queue
 import logging
-from PyQt5.QtWidgets import QApplication, QMessageBox
+from PyQt5.QtWidgets import QApplication, QPushButton
 
 from game.forms.api_package import REStation
 from game.data_types.api_package import (
@@ -58,6 +58,12 @@ class StationTest:
 
         self.window.check_switch_positions.set_onPress(self.check_switch_positions)
         self.window.check_switch_positions.set_onRelease(self.revert_switch_positions)
+
+        self.window.stop_flashing_button = QPushButton(
+            "Stop flashing", self.window
+        )  # test button
+        self.window.stop_flashing_button.move(5, 5)
+        self.window.stop_flashing_button.clicked.connect(self.window.stop_blinking)
 
     def track1_callback(self, button_id: int):
         if button_id == 2:
