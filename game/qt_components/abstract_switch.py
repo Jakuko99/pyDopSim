@@ -198,10 +198,6 @@ class AbstractSwitch(QWidget):
                 self.diagonal.setPixmap(self.occupied_diagonal_pixmap)
                 self.straight_up.setPixmap(self.occupied_straight_pixmap)
                 self.straight_down.setPixmap(self.occupied_straight_pixmap)
-            elif state == TrackState.TEST:
-                self.diagonal.setPixmap(self.reserved_diagonal_pixmap)
-                self.straight_up.setPixmap(self.reserved_straight_pixmap)
-                self.straight_down.setPixmap(self.reserved_straight_pixmap)
 
         else:
             if self.switch_position == SwitchPosition.TURNED:
@@ -239,12 +235,6 @@ class AbstractSwitch(QWidget):
                     self.associated_track["down"].set_state(TrackState.OCCUPIED)
                 if self.associated_track.get("up", None):
                     self.associated_track["up"].set_state(TrackState.OCCUPIED)
-            elif state == TrackState.TEST:
-                self.diagonal.setPixmap(self.reserved_diagonal_pixmap)
-                if self.associated_track.get("down", None):
-                    self.associated_track["down"].set_state(TrackState.RESERVED)
-                if self.associated_track.get("up", None):
-                    self.associated_track["up"].set_state(TrackState.RESERVED)
 
     def set_position(self, position: SwitchPosition):
         if self.switch_type == SwitchType.Z_TYPE:
@@ -277,19 +267,11 @@ class AbstractSwitch(QWidget):
 
         self.associated_track["down"] = default_track
 
-    def toggle_blinking_action(self):
+    def blinking_action(self):
         if self.timer.isActive():
             self.timer.stop()
         else:
             self.timer.start(500)
-
-    def start_blinking_action(self):
-        if not self.timer.isActive():
-            self.timer.start(500)
-
-    def stop_blinking_action(self):
-        if self.timer.isActive():
-            self.timer.stop()
 
     def check_state(self, action: bool = False):
         if self.occupancy_status == TrackState.FREE and action is True:
@@ -302,14 +284,6 @@ class AbstractSwitch(QWidget):
             )
             or self.test_state is True
         ):
-            self.set_state(TrackState.FREE)
-            self.test_state = False
-
-    def check_occupancy(self, action: bool = False):
-        if self.occupancy_status == TrackState.FREE and action is True:
-            self.set_state(TrackState.TEST)
-            self.test_state = True
-        elif action is False and self.test_state is True:
             self.set_state(TrackState.FREE)
             self.test_state = False
 

@@ -7,4 +7,3 @@ class TrackState(Enum):
     CLOSURE = auto()
     RESERVED = auto()
     ALL = auto()  # only for switches in blink mode
-    TEST = auto()
