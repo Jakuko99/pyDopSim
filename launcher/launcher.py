@@ -1,18 +1,24 @@
-from PyQt5.QtWidgets import QLabel, QMainWindow, QTabWidget, QPushButton, QWidget
+import logging
+from PyQt5.QtWidgets import QLabel, QMainWindow, QTabWidget, QPushButton
 from PyQt5.QtGui import QPixmap, QFont, QIcon
 from PyQt5.QtCore import Qt
+from queue import Queue
 
 from client.api_package import Client
 from game.tests.api_package import StationTest
 from .game_info import GameInfo
 from .game_tab import GameTab
 from .settings_tab import SettingsTab
+from .connect_dialog import ConnectDialog
 
 
 class Launcher(QMainWindow):
-    def __init__(self, allow_debug_mode: bool = False):
+    def __init__(self, log_pipe: Queue = None):
         super().__init__()
-        self.allow_debug_mode = allow_debug_mode
+        self.log_pipe: Queue = log_pipe
+        self.logger = logging.getLogger("App.Launcher")
+        self.connect_dialog = ConnectDialog(self)
+
         self.setWindowIcon(QIcon("assets/app_icon.png"))
         self.setWindowTitle("PyDopSim Launcher")
         self.setFixedSize(600, 600)
@@ -35,7 +41,8 @@ class Launcher(QMainWindow):
 
         self.game_tab = GameTab(self)
         self.game_tab.test_station_button.clicked.connect(self.run_station_test)
-        self.tab_widget.addTab(self.game_tab, "Hra")
+        self.game_tab.connect_button.clicked.connect(self.connect_to_server)
+        self.tab_widget.addTab(self.game_tab, "Simulácia")
 
         self.settings_tab = SettingsTab(self)
         self.tab_widget.addTab(self.settings_tab, "Nastavenia")
@@ -45,8 +52,14 @@ class Launcher(QMainWindow):
         self.exit_button.move(495, 565)
         self.exit_button.setFont(self._font)
         self.exit_button.clicked.connect(self.close)
+        self.logger.info("pyDopSim Launcher started")
 
     def run_station_test(self):
-        self.station_test = StationTest()
+        self.logger.debug("Running station test")
+        self.station_test = StationTest(log_pipe=self.log_pipe)
         self.station_test.add_test_bindings()
         self.station_test.run()
+
+    def connect_to_server(self):
+        self.logger.debug("Opening connect dialog")
+        self.connect_dialog.show()
