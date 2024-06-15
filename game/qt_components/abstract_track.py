@@ -29,6 +29,8 @@ class AbstractTrack(QWidget):
         self.no_buttons: bool = no_buttons
         self.shunt_track: bool = shunt_track
         self.train_label = None
+        self.state: TrackState = TrackState.FREE
+        self.test_state: bool = False
 
         for i in range(track_segments):
             seg = QLabel(self)
@@ -80,6 +82,7 @@ class AbstractTrack(QWidget):
             self.button_white2.move(160 + (track_segments * 60) - 30, 8)
 
     def set_state(self, state: TrackState, train_id: int = None):
+        self.state = state
         if self.train_label:
             self.train_label.setText("")
 
@@ -115,6 +118,18 @@ class AbstractTrack(QWidget):
                 segment.setPixmap(QPixmap("assets/track_reserved.png"))
             if state == TrackState.CLOSURE:
                 pass
+
+    def check_state(self, action: bool = False):
+        if self.state == TrackState.FREE and action is True:
+            self.set_state(TrackState.RESERVED)
+            self.test_state = True
+        elif (
+            action is False
+            and not (self.state is TrackState.RESERVED or TrackState.OCCUPIED)
+            or self.test_state is True
+        ):
+            self.set_state(TrackState.FREE)
+            self.test_state = False
 
     def stop_blinking(self):
         self.button_white1.stop_blinking()
