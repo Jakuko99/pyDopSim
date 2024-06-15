@@ -23,6 +23,7 @@ class AbstractSwitch(QWidget):
         self.setGeometry(0, 0, 60, switch_height)
         self.switch_type: SwitchType = switch_type
         self.occupancy_status: TrackState = TrackState.FREE
+        self.test_state: bool = False
         self.switch_position: SwitchPosition = (
             SwitchPosition.STRAIGHT
             if not switch_type == SwitchType.Z_TYPE

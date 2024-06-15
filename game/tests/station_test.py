@@ -256,4 +256,4 @@ class StationTest:
 
     def run(self):
         self.window.show()
-        self.app.exec_()
+        # self.app.exec_()

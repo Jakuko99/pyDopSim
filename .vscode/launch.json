@@ -30,6 +30,24 @@
             "cwd": "${workspaceFolder}",
             "console": "integratedTerminal",
             "justMyCode": false            
+        },
+        {
+            "name": "Run client test",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "client_test.py",
+            "cwd": "${workspaceFolder}",
+            "console": "integratedTerminal",
+            "justMyCode": false            
+        },
+        {
+            "name": "Run launcher",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "run_launcher.py",
+            "cwd": "${workspaceFolder}",
+            "console": "integratedTerminal",
+            "justMyCode": false            
         }
     ]
 }
