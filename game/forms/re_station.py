@@ -236,50 +236,50 @@ class REStation(QMainWindow):
         )
         self.track_S_button_shunt.move(852, 421)
 
-        self.track_L6_button = AbstractTrackButton(
+        self.track_1L_button = AbstractTrackButton(
             button_color=IndicatorColor.GREEN, parent=self
         )
-        self.track_L6_button.move(55, 421)
+        self.track_1L_button.move(55, 421)
 
-        self.track_L6_button_shunt = AbstractTrackButton(
+        self.track_1L_button_shunt = AbstractTrackButton(
             button_color=IndicatorColor.WHITE, parent=self
         )
-        self.track_L6_button_shunt.move(215, 421)
+        self.track_1L_button_shunt.move(215, 421)
 
-        self.track_L7_button = AbstractTrackButton(
+        self.track_2L_button = AbstractTrackButton(
             button_color=IndicatorColor.GREEN, parent=self
         )
-        self.track_L7_button.move(55, 343)
+        self.track_2L_button.move(55, 343)
 
-        self.track_L7_button_shunt = AbstractTrackButton(
+        self.track_2L_button_shunt = AbstractTrackButton(
             button_color=IndicatorColor.WHITE, parent=self
         )
-        self.track_L7_button_shunt.move(215, 343)
+        self.track_2L_button_shunt.move(215, 343)
 
         self.track_4a_shunt_button = AbstractTrackButton(
             button_color=IndicatorColor.WHITE, parent=self
         )
         self.track_4a_shunt_button.move(780, 577)
 
-        self.signal_L7 = AbstractTrackSignal(
+        self.signal_2L = AbstractTrackSignal(
             signal_type=SignalType.ENTRY_SIGNAL, parent=self
         )
-        self.signal_L7.move(85, 387)
+        self.signal_2L.move(85, 387)
 
-        self.pr_L7_signal = AbstractTrackSignal(
+        self.pr_2L_signal = AbstractTrackSignal(
             signal_type=SignalType.EXPECT_SIGNAL, parent=self
         )
-        self.pr_L7_signal.move(24, 387)
+        self.pr_2L_signal.move(24, 387)
 
-        self.signal_L6 = AbstractTrackSignal(
+        self.signal_1L = AbstractTrackSignal(
             signal_type=SignalType.ENTRY_SIGNAL, parent=self
         )
-        self.signal_L6.move(85, 465)
+        self.signal_1L.move(85, 465)
 
-        self.pr_L6_signal = AbstractTrackSignal(
+        self.pr_1L_signal = AbstractTrackSignal(
             signal_type=SignalType.EXPECT_SIGNAL, parent=self
         )
-        self.pr_L6_signal.move(24, 465)
+        self.pr_1L_signal.move(24, 465)
 
         self.signal_S5 = AbstractTrackSignal(
             signal_type=SignalType.DEPARTURE_SIGNAL, parent=self, flipped=True
@@ -316,17 +316,17 @@ class REStation(QMainWindow):
         )
         self.signal_Se2.move(232, 387)
 
-        self.pr_L7_track = AbstractTrack(1, parent=self, no_buttons=True)
-        self.pr_L7_track.move(-1, 352)
+        self.pr_2L_track = AbstractTrack(1, parent=self, no_buttons=True)
+        self.pr_2L_track.move(-1, 352)
 
-        self.pr_L6_track = AbstractTrack(1, parent=self, no_buttons=True)
-        self.pr_L6_track.move(-1, 430)
+        self.pr_1L_track = AbstractTrack(1, parent=self, no_buttons=True)
+        self.pr_1L_track.move(-1, 430)
 
-        self.track_L7 = AbstractTrack(2, parent=self, no_buttons=True)
-        self.track_L7.move(97, 352)
+        self.track_2L = AbstractTrack(2, parent=self, no_buttons=True)
+        self.track_2L.move(97, 352)
 
-        self.track_L6 = AbstractTrack(2, parent=self, no_buttons=True)
-        self.track_L6.move(97, 430)
+        self.track_1L = AbstractTrack(2, parent=self, no_buttons=True)
+        self.track_1L.move(97, 430)
 
         self.signal_L5 = AbstractTrackSignal(
             signal_type=SignalType.DEPARTURE_SIGNAL, parent=self
@@ -399,8 +399,8 @@ class REStation(QMainWindow):
         self.track_5.stop_blinking()
         self.track_S_button.stop_blinking()
         self.track_S_button_shunt.stop_blinking()
-        self.track_L6_button.stop_blinking()
-        self.track_L6_button_shunt.stop_blinking()
-        self.track_L7_button.stop_blinking()
-        self.track_L7_button_shunt.stop_blinking()
+        self.track_1L_button.stop_blinking()
+        self.track_1L_button_shunt.stop_blinking()
+        self.track_2L_button.stop_blinking()
+        self.track_2L_button_shunt.stop_blinking()
         self.track_4a_shunt_button.stop_blinking()

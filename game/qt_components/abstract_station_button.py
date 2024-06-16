@@ -4,7 +4,6 @@ from PyQt5.QtGui import QIcon
 from queue import Queue
 
 from game.forms.log_window import LogWindow
-from game.dialogs.connect_dialog import ConnectDialog
 from game.dialogs.debug_dialog import DebugDialog
 from utils.api_package import queue_handler
 
@@ -20,24 +19,15 @@ class AbstractStationButton(QWidget):
 
         self.setGeometry(0, 0, 80, 55)
         self.log_window = LogWindow(self, log_pipe)
-        self.connect_dialog = ConnectDialog(self)
         self.right_click_function = lambda: None
         self.middle_click_function = lambda: None
         self.debug: bool = False
 
         # ----- Context menu -----
         self.context_menu = QMenu(self)
-        self.client_menu = QMenu(self)
-        self.client_menu.setTitle("Klient")
-        self.client_menu.setIcon(QIcon("assets/client_icon.png"))
-        self.client_menu.addAction("Pripojiť k serveru")
-        self.client_menu.actions()[0].triggered.connect(self.connect_dialog.show)
-
-        action: QAction = self.client_menu.addAction("Odpojiť od servera")
-        action.setEnabled(False)
-        self.client_menu.addSeparator()
-        self.client_menu.addAction("Zobraziť informácie o klientovi")
-        self.context_menu.addMenu(self.client_menu)
+        self.client_info: QAction = QAction("Informácie o klientovi", self)
+        self.client_info.setIcon(QIcon("assets/client_icon.png"))
+        self.context_menu.addAction(self.client_info)
 
         self.log_action = QAction("Zobraziť log", self)
         self.log_action.triggered.connect(self.log_window.show)
