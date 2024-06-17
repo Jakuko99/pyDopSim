@@ -17,7 +17,7 @@ class Launcher(QMainWindow):
         super().__init__()
         self.log_pipe: Queue = log_pipe
         self.logger = logging.getLogger("App.Launcher")
-        self.connect_dialog = ConnectDialog(self)
+        self.connect_dialog = ConnectDialog(self, self.run_client)
 
         self.setWindowIcon(QIcon("assets/app_icon.png"))
         self.setWindowTitle("PyDopSim Launcher")
@@ -57,8 +57,25 @@ class Launcher(QMainWindow):
     def run_station_test(self):
         self.logger.debug("Running station test")
         self.station_test = StationTest(log_pipe=self.log_pipe)
+        if not self.settings_tab.allow_2L_checkbox.isChecked():
+            self.station_test.window.disable_2L_track()
+            self.station_test.window.AHR_2L.setVisible(False)
+
         self.station_test.add_test_bindings()
         self.station_test.run()
+
+    def run_client(self, host: str, port: int, station_name: str):
+        self.client = Client(
+            station_name=station_name,
+            log_pipe=self.log_pipe,
+            allow_debug=self.game_tab.allow_debug_checkbox.isChecked(),
+        )
+        self.client.set_server_info(host, port)
+        self.client.connect()
+        while (
+            not self.client.connected
+        ):  # wait for client to connect, maybe rework later
+            self.client.run()
 
     def connect_to_server(self):
         self.logger.debug("Opening connect dialog")

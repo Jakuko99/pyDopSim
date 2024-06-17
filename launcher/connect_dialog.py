@@ -5,17 +5,17 @@ from PyQt5.QtWidgets import (
     QPushButton,
     QLineEdit,
     QMessageBox,
-    QListView,
     QDialog,
+    QListWidget,
 )
-from PyQt5.QtGui import QPixmap, QFont
-from PyQt5.QtCore import Qt
+from PyQt5.QtGui import QFont
 import logging
 
 
 class ConnectDialog(QDialog):
-    def __init__(self, parent):
+    def __init__(self, parent, on_confirm_callback=lambda x, y, z: None):
         super().__init__(parent)
+        self.on_confirm_callback = on_confirm_callback
         self.font_obj = QFont("Arial", 11)
 
         self.logger = logging.getLogger("App.ConnectDialog")
@@ -29,6 +29,7 @@ class ConnectDialog(QDialog):
         self.player_label.move(5, 10)
 
         self.player_name = QLineEdit(os.getlogin().capitalize(), self)
+        self.player_name.setFixedWidth(140)
         self.player_name.setFont(self.font_obj)
         self.player_name.move(70, 10)
 
@@ -37,6 +38,7 @@ class ConnectDialog(QDialog):
         self.server_label.move(5, 45)
 
         self.server_ip = QLineEdit(self)
+        self.server_ip.setFixedWidth(140)
         self.server_ip.setFont(self.font_obj)
         self.server_ip.move(70, 45)
 
@@ -46,30 +48,38 @@ class ConnectDialog(QDialog):
 
         self.server_port = QLineEdit("8000", self)
         self.server_port.setFont(self.font_obj)
+        self.server_port.setFixedWidth(140)
         self.server_port.move(70, 80)
 
         self.connect_button = QPushButton("Pripojiť", self)
         self.connect_button.setFont(self.font_obj)
-        self.connect_button.move(30, 215)
+        self.connect_button.move(20, 215)
         self.connect_button.clicked.connect(self.connect_func)
 
         self.cancel_button = QPushButton("Zrušiť", self)
         self.cancel_button.setFont(self.font_obj)
-        self.cancel_button.move(130, 215)
+        self.cancel_button.move(120, 215)
         self.cancel_button.clicked.connect(self.close_func)
 
-        self.available_stations = QListView(self)
-        self.available_stations.move(250, 30)
-        self.available_stations.resize(145, 215)
-        self.available_stations.clicked.connect(self.station_selected)
+        self.available_stations = QListWidget(self)
+        self.available_stations.setFont(self.font_obj)
+        self.available_stations.move(230, 30)
+        self.available_stations.setFixedSize(165, 215)
+        self.available_stations.doubleClicked.connect(self.station_selected)
 
         self.available_stations_label = QLabel("Dostupné stanice:", self)
         self.available_stations_label.setFont(self.font_obj)
-        self.available_stations_label.move(250, 5)
+        self.available_stations_label.move(230, 5)
 
     def connect_func(self):
         self.logger.info(
             f"Trying to connect to server at {self.server_ip.text()}:{self.server_port.text()}"
+        )
+
+        self.on_confirm_callback(
+            self.server_ip.text(),
+            int(self.server_port.text()),
+            self.available_stations.currentItem().text(),
         )
 
     def close_func(self):
@@ -77,4 +87,4 @@ class ConnectDialog(QDialog):
         self.close()
 
     def station_selected(self):
-        pass
+        selected_item: str = self.available_stations.currentItem().text()
