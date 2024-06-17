@@ -55,6 +55,11 @@ class REStation(QMainWindow):
         self.logger.info("REStation initialized")
         self.station_platforms = StationPlatforms(station_name=station_name)
 
+        self.station_name = station_name
+        self.station_name_left: str = self.station_name
+        self.station_name_right: str = self.station_name
+        self.station_name_turn: str = self.station_name
+
         self.background = QLabel(self)
         self.background.setPixmap(QPixmap("assets/reliefRE_uzol.bmp"))
         self.background.setScaledContents(True)
@@ -391,6 +396,27 @@ class REStation(QMainWindow):
         self.summon_S_button = AbstractButton(ButtonType.NORMAL, self)
         self.summon_S_button.move(780, 684)
 
+        self.station_left_label = QLabel(self.station_name_left, self)
+        self.station_left_label.move(10, 505)
+        self.station_left_label.setAlignment(Qt.AlignCenter)
+        self.station_left_label.setFont(QFont("Arial", 9))
+        self.station_left_label.setFixedSize(125, 20)
+        self.station_left_label.setStyleSheet("background-color: white")
+
+        self.station_right_label = QLabel(self.station_name_right, self)
+        self.station_right_label.move(965, 465)
+        self.station_right_label.setAlignment(Qt.AlignCenter)
+        self.station_right_label.setFixedSize(125, 20)
+        self.station_right_label.setFont(QFont("Arial", 9))
+        self.station_right_label.setStyleSheet("background-color: white")
+
+        self.station_turn_label = QLabel(self.station_name_turn, self)
+        self.station_turn_label.move(10, 320)
+        self.station_turn_label.setAlignment(Qt.AlignCenter)
+        self.station_turn_label.setFixedSize(125, 20)
+        self.station_turn_label.setFont(QFont("Arial", 9))
+        self.station_turn_label.setStyleSheet("background-color: white")
+
     def stop_blinking(self):
         self.track_1.stop_blinking()
         self.track_2.stop_blinking()
@@ -404,3 +430,19 @@ class REStation(QMainWindow):
         self.track_2L_button.stop_blinking()
         self.track_2L_button_shunt.stop_blinking()
         self.track_4a_shunt_button.stop_blinking()
+
+    def disable_2L_track(self):
+        self.pr_2L_track.set_state(TrackState.OCCUPIED)
+        self.track_2L_button.setEnabled(False)
+
+    def set_left_station_name(self, station_name: str):
+        self.station_name_left = station_name
+        self.station_left_label.setText(station_name)
+
+    def set_right_station_name(self, station_name: str):
+        self.station_name_right = station_name
+        self.station_right_label.setText(station_name)
+
+    def set_turn_station_name(self, station_name: str):
+        self.station_name_turn = station_name
+        self.station_turn_label.setText(station_name)

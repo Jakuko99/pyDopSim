@@ -224,12 +224,12 @@ class StationTest:
         self.window.track_4.check_state(True)
         self.window.track_5.check_state(True)
         self.window.track_4a.check_state(True)
-        self.window.track_L6.check_state(True)
-        self.window.track_L7.check_state(True)
+        self.window.track_1L.check_state(True)
+        self.window.track_2L.check_state(True)
         self.window.track_S.check_state(True)
         self.window.pr_S_track.check_state(True)
-        self.window.pr_L6_track.check_state(True)
-        self.window.pr_L7_track.check_state(True)
+        self.window.pr_1L_track.check_state(True)
+        self.window.pr_2L_track.check_state(True)
 
     def revert_track_occupancy(self):
         self.window.switch_1_3.check_occupancy()
@@ -247,12 +247,12 @@ class StationTest:
         self.window.track_4.check_state()
         self.window.track_5.check_state()
         self.window.track_4a.check_state()
-        self.window.track_L6.check_state()
-        self.window.track_L7.check_state()
+        self.window.track_1L.check_state()
+        self.window.track_2L.check_state()
         self.window.track_S.check_state()
         self.window.pr_S_track.check_state()
-        self.window.pr_L6_track.check_state()
-        self.window.pr_L7_track.check_state()
+        self.window.pr_1L_track.check_state()
+        self.window.pr_2L_track.check_state()
 
     def run(self):
         self.window.show()
