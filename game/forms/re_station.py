@@ -31,6 +31,7 @@ from game.data_types.api_package import (
     IndicatorColor,
     ButtonType,
 )
+from game.track_interlocking.api_package import AHR
 from utils.api_package import queue_handler
 
 myappid = f"Jakub.PyDopSim.beta"
@@ -54,6 +55,11 @@ class REStation(QMainWindow):
         self.logger.setLevel(logging.DEBUG)
         self.logger.info("REStation initialized")
         self.station_platforms = StationPlatforms(station_name=station_name)
+
+        self.station_name = station_name
+        self.station_name_left: str = self.station_name
+        self.station_name_right: str = self.station_name
+        self.station_name_turn: str = self.station_name
 
         self.background = QLabel(self)
         self.background.setPixmap(QPixmap("assets/reliefRE_uzol.bmp"))
@@ -236,50 +242,50 @@ class REStation(QMainWindow):
         )
         self.track_S_button_shunt.move(852, 421)
 
-        self.track_L6_button = AbstractTrackButton(
+        self.track_1L_button = AbstractTrackButton(
             button_color=IndicatorColor.GREEN, parent=self
         )
-        self.track_L6_button.move(55, 421)
+        self.track_1L_button.move(55, 421)
 
-        self.track_L6_button_shunt = AbstractTrackButton(
+        self.track_1L_button_shunt = AbstractTrackButton(
             button_color=IndicatorColor.WHITE, parent=self
         )
-        self.track_L6_button_shunt.move(215, 421)
+        self.track_1L_button_shunt.move(215, 421)
 
-        self.track_L7_button = AbstractTrackButton(
+        self.track_2L_button = AbstractTrackButton(
             button_color=IndicatorColor.GREEN, parent=self
         )
-        self.track_L7_button.move(55, 343)
+        self.track_2L_button.move(55, 343)
 
-        self.track_L7_button_shunt = AbstractTrackButton(
+        self.track_2L_button_shunt = AbstractTrackButton(
             button_color=IndicatorColor.WHITE, parent=self
         )
-        self.track_L7_button_shunt.move(215, 343)
+        self.track_2L_button_shunt.move(215, 343)
 
         self.track_4a_shunt_button = AbstractTrackButton(
             button_color=IndicatorColor.WHITE, parent=self
         )
         self.track_4a_shunt_button.move(780, 577)
 
-        self.signal_L7 = AbstractTrackSignal(
+        self.signal_2L = AbstractTrackSignal(
             signal_type=SignalType.ENTRY_SIGNAL, parent=self
         )
-        self.signal_L7.move(85, 387)
+        self.signal_2L.move(85, 387)
 
-        self.pr_L7_signal = AbstractTrackSignal(
+        self.pr_2L_signal = AbstractTrackSignal(
             signal_type=SignalType.EXPECT_SIGNAL, parent=self
         )
-        self.pr_L7_signal.move(24, 387)
+        self.pr_2L_signal.move(24, 387)
 
-        self.signal_L6 = AbstractTrackSignal(
+        self.signal_1L = AbstractTrackSignal(
             signal_type=SignalType.ENTRY_SIGNAL, parent=self
         )
-        self.signal_L6.move(85, 465)
+        self.signal_1L.move(85, 465)
 
-        self.pr_L6_signal = AbstractTrackSignal(
+        self.pr_1L_signal = AbstractTrackSignal(
             signal_type=SignalType.EXPECT_SIGNAL, parent=self
         )
-        self.pr_L6_signal.move(24, 465)
+        self.pr_1L_signal.move(24, 465)
 
         self.signal_S5 = AbstractTrackSignal(
             signal_type=SignalType.DEPARTURE_SIGNAL, parent=self, flipped=True
@@ -316,17 +322,17 @@ class REStation(QMainWindow):
         )
         self.signal_Se2.move(232, 387)
 
-        self.pr_L7_track = AbstractTrack(1, parent=self, no_buttons=True)
-        self.pr_L7_track.move(-1, 352)
+        self.pr_2L_track = AbstractTrack(1, parent=self, no_buttons=True)
+        self.pr_2L_track.move(-1, 352)
 
-        self.pr_L6_track = AbstractTrack(1, parent=self, no_buttons=True)
-        self.pr_L6_track.move(-1, 430)
+        self.pr_1L_track = AbstractTrack(1, parent=self, no_buttons=True)
+        self.pr_1L_track.move(-1, 430)
 
-        self.track_L7 = AbstractTrack(2, parent=self, no_buttons=True)
-        self.track_L7.move(97, 352)
+        self.track_2L = AbstractTrack(2, parent=self, no_buttons=True)
+        self.track_2L.move(97, 352)
 
-        self.track_L6 = AbstractTrack(2, parent=self, no_buttons=True)
-        self.track_L6.move(97, 430)
+        self.track_1L = AbstractTrack(2, parent=self, no_buttons=True)
+        self.track_1L.move(97, 430)
 
         self.signal_L5 = AbstractTrackSignal(
             signal_type=SignalType.DEPARTURE_SIGNAL, parent=self
@@ -391,6 +397,36 @@ class REStation(QMainWindow):
         self.summon_S_button = AbstractButton(ButtonType.NORMAL, self)
         self.summon_S_button.move(780, 684)
 
+        self.station_left_label = QLabel(self.station_name_left, self)
+        self.station_left_label.move(10, 505)
+        self.station_left_label.setAlignment(Qt.AlignCenter)
+        self.station_left_label.setFont(QFont("Arial", 9))
+        self.station_left_label.setFixedSize(125, 20)
+        self.station_left_label.setStyleSheet("background-color: white")
+
+        self.station_right_label = QLabel(self.station_name_right, self)
+        self.station_right_label.move(965, 465)
+        self.station_right_label.setAlignment(Qt.AlignCenter)
+        self.station_right_label.setFixedSize(125, 20)
+        self.station_right_label.setFont(QFont("Arial", 9))
+        self.station_right_label.setStyleSheet("background-color: white")
+
+        self.station_turn_label = QLabel(self.station_name_turn, self)
+        self.station_turn_label.move(10, 320)
+        self.station_turn_label.setAlignment(Qt.AlignCenter)
+        self.station_turn_label.setFixedSize(125, 20)
+        self.station_turn_label.setFont(QFont("Arial", 9))
+        self.station_turn_label.setStyleSheet("background-color: white")
+
+        self.AHR_1L = AHR(parent=self, type="S")
+        self.AHR_1L.move(5, 610)
+
+        self.AHR_2L = AHR(parent=self, type="S")
+        self.AHR_2L.move(145, 155)
+
+        self.AHR_S = AHR(parent=self, type="L")
+        self.AHR_S.move(905, 610)
+
     def stop_blinking(self):
         self.track_1.stop_blinking()
         self.track_2.stop_blinking()
@@ -399,8 +435,24 @@ class REStation(QMainWindow):
         self.track_5.stop_blinking()
         self.track_S_button.stop_blinking()
         self.track_S_button_shunt.stop_blinking()
-        self.track_L6_button.stop_blinking()
-        self.track_L6_button_shunt.stop_blinking()
-        self.track_L7_button.stop_blinking()
-        self.track_L7_button_shunt.stop_blinking()
+        self.track_1L_button.stop_blinking()
+        self.track_1L_button_shunt.stop_blinking()
+        self.track_2L_button.stop_blinking()
+        self.track_2L_button_shunt.stop_blinking()
         self.track_4a_shunt_button.stop_blinking()
+
+    def disable_2L_track(self):
+        self.pr_2L_track.set_state(TrackState.OCCUPIED)
+        self.track_2L_button.setEnabled(False)
+
+    def set_left_station_name(self, station_name: str):
+        self.station_name_left = station_name
+        self.station_left_label.setText(station_name)
+
+    def set_right_station_name(self, station_name: str):
+        self.station_name_right = station_name
+        self.station_right_label.setText(station_name)
+
+    def set_turn_station_name(self, station_name: str):
+        self.station_name_turn = station_name
+        self.station_turn_label.setText(station_name)
