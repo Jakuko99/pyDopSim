@@ -31,6 +31,7 @@ from game.data_types.api_package import (
     IndicatorColor,
     ButtonType,
 )
+from game.track_interlocking.api_package import AHR
 from utils.api_package import queue_handler
 
 myappid = f"Jakub.PyDopSim.beta"
@@ -416,6 +417,15 @@ class REStation(QMainWindow):
         self.station_turn_label.setFixedSize(125, 20)
         self.station_turn_label.setFont(QFont("Arial", 9))
         self.station_turn_label.setStyleSheet("background-color: white")
+
+        self.AHR_1L = AHR(parent=self, type="S")
+        self.AHR_1L.move(5, 610)
+
+        self.AHR_2L = AHR(parent=self, type="S")
+        self.AHR_2L.move(145, 155)
+
+        self.AHR_S = AHR(parent=self, type="L")
+        self.AHR_S.move(905, 610)
 
     def stop_blinking(self):
         self.track_1.stop_blinking()
