@@ -39,7 +39,12 @@ ctypes.windll.shell32.SetCurrentProcessExplicitAppUserModelID(myappid)
 
 
 class REStation(QMainWindow):
-    def __init__(self, station_name: str, log_pipe: Queue = None):
+    def __init__(
+        self,
+        station_name: str,
+        log_pipe: Queue = None,
+        button_click_callback=lambda x: None,
+    ):
         super().__init__()
         self.setGeometry(0, 0, 1100, 780)
         self.setWindowTitle(f"PyDopSim: RE - {station_name}")
@@ -54,6 +59,7 @@ class REStation(QMainWindow):
         self.logger = logging.getLogger("App.REStation")
         self.logger.setLevel(logging.DEBUG)
         self.logger.info("REStation initialized")
+        self._button_click_callback = button_click_callback
         self.station_platforms = StationPlatforms(station_name=station_name)
 
         self.station_name = station_name
@@ -454,6 +460,20 @@ class REStation(QMainWindow):
         self.AHR_S = AHR(parent=self, type="L")
         self.AHR_S.move(905, 610)
 
+        self.track_1.click_callback = self.button_callback
+        self.track_2.click_callback = self.button_callback
+        self.track_3.click_callback = self.button_callback
+        self.track_5.click_callback = self.button_callback
+        self.track_4.click_callback = self.button_callback
+
+        self.track_1L_button._on_clicked = self.button_callback
+        self.track_1L_button_shunt._on_clicked = self.button_callback
+        self.track_2L_button._on_clicked = self.button_callback
+        self.track_2L_button_shunt._on_clicked = self.button_callback
+        self.track_S_button._on_clicked = self.button_callback
+        self.track_S_button_shunt._on_clicked = self.button_callback
+        self.track_4a_shunt_button._on_clicked = self.button_callback
+
     def stop_blinking(self):
         self.track_1.stop_blinking()
         self.track_2.stop_blinking()
@@ -483,3 +503,6 @@ class REStation(QMainWindow):
     def set_turn_station_name(self, station_name: str):
         self.station_name_turn = station_name
         self.station_turn_label.setText(station_name)
+
+    def button_callback(self, button_name: str):
+        self._button_click_callback(button_name)

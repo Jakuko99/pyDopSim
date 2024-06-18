@@ -24,7 +24,9 @@ class StationTest:
             self.log_pipe = (
                 queue_handler.get_logging_pipe()
             )  # grab the logging pipe from the queue handler
-        self.window = REStation(station_name=station_name)
+        self.window = REStation(
+            station_name=station_name, button_click_callback=self.track_callback
+        )
         self.window.setWindowTitle(
             "Station test window"
         )  # override default window title for testing
@@ -46,20 +48,6 @@ class StationTest:
         self.window.switch_8_controller.set_update_function(self.switch_8_action)
         self.window.switch_9_controller.set_update_function(self.switch_9_action)
         self.window.switch_10_controller.set_update_function(self.switch_10_action)
-
-        self.window.track_1.click_callback = self.track_callback
-        self.window.track_2.click_callback = self.track_callback
-        self.window.track_3.click_callback = self.track_callback
-        self.window.track_5.click_callback = self.track_callback
-        self.window.track_4.click_callback = self.track_callback
-
-        self.window.track_1L_button._on_clicked = self.track_callback
-        self.window.track_1L_button_shunt._on_clicked = self.track_callback
-        self.window.track_2L_button._on_clicked = self.track_callback
-        self.window.track_2L_button_shunt._on_clicked = self.track_callback
-        self.window.track_S_button._on_clicked = self.track_callback
-        self.window.track_S_button_shunt._on_clicked = self.track_callback
-        self.window.track_4a_shunt_button._on_clicked = self.track_callback
 
         self.window.check_switch_positions.set_onPress(self.check_switch_positions)
         self.window.check_switch_positions.set_onRelease(self.revert_switch_positions)
