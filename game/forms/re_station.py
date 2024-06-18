@@ -506,3 +506,8 @@ class REStation(QMainWindow):
 
     def button_callback(self, button_name: str):
         self._button_click_callback(button_name)
+
+    def get_switch(self, name: str) -> AbstractSwitch:
+        return getattr(
+            self, f"switch_{name}", AbstractSwitch(switch_type=SwitchType.UP_45_LEFT)
+        )

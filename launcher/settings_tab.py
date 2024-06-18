@@ -1,4 +1,4 @@
-from PyQt5.QtWidgets import QWidget, QLabel, QPushButton, QComboBox
+from PyQt5.QtWidgets import QWidget, QLabel, QPushButton, QComboBox, QCheckBox
 
 
 class SettingsTab(QWidget):
@@ -6,13 +6,6 @@ class SettingsTab(QWidget):
         super().__init__(parent)
         self.parent = parent
 
-        self.station_label = QLabel("Stanica:", self)
-        self.station_label.move(10, 10)
-
-        self.station_combobox = QComboBox(self)
-        self.station_combobox.move(10, 30)
-        self.station_combobox.resize(200, 30)
-
-        self.start_button = QPushButton("Spustiť", self)
-        self.start_button.move(10, 70)
-        self.start_button.resize(200, 30)
+        self.allow_2L_checkbox = QCheckBox("Povoliť 2L v teste stanice", self)
+        self.allow_2L_checkbox.setChecked(True)
+        self.allow_2L_checkbox.move(5, 5)

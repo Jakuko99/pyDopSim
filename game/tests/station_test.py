@@ -24,9 +24,11 @@ class StationTest:
             self.log_pipe = (
                 queue_handler.get_logging_pipe()
             )  # grab the logging pipe from the queue handler
+            
         self.window = REStation(
             station_name=station_name, button_click_callback=self.track_callback
         )
+
         self.window.setWindowTitle(
             "Station test window"
         )  # override default window title for testing
