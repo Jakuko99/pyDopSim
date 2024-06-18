@@ -7,21 +7,29 @@ from game.data_types.api_package import IndicatorState, IndicatorColor
 
 
 class AbstractTrackButton(QWidget):
-    def __init__(self, button_color: IndicatorColor, parent=None):
+    def __init__(
+        self,
+        button_color: IndicatorColor,
+        parent=None,
+        button_name: str = None,
+        standalone: bool = False,
+    ):
         QWidget.__init__(self, parent=parent)
-        self.color: str = button_color
+        self.color: IndicatorColor = button_color
+        self.button_name: str = button_name
+        self.standalone: bool = standalone
         self.setGeometry(0, 0, 40, 40)
         self.state: IndicatorState = IndicatorState.OFF
         self._state: IndicatorState = IndicatorState.OFF
-        self.right_click_function = lambda: None
-        self.middle_click_function = lambda: None
+        self.right_click_function = lambda x: None
+        self.middle_click_function = lambda x: None
         self.off_pixmap = QIcon(
             f"assets/track_button_{button_color.name.lower()}_off.png"
         )
         self.on_pixmap = QIcon(
             f"assets/track_button_{button_color.name.lower()}_on.png"
         )
-        self._on_clicked = lambda: None
+        self._on_clicked = lambda x: None
 
         self.timer = QTimer(self)
         self.timer.timeout.connect(self._update)
@@ -36,7 +44,13 @@ class AbstractTrackButton(QWidget):
     def on_clicked(self):
         if self.state == IndicatorState.OFF:
             self.set_state(IndicatorState.BLINKING)
-            self._on_clicked()
+            if not self.standalone:
+                self._on_clicked()
+            else:
+                self._on_clicked(
+                    f"T_{self.button_name}_{'S' if self.color == IndicatorColor.WHITE else 'D'}"
+                )
+
         elif self.state == IndicatorState.BLINKING:
             self.set_state(IndicatorState.OFF)
 
@@ -71,9 +85,19 @@ class AbstractTrackButton(QWidget):
 
     def mousePressEvent(self, QMouseEvent):
         if QMouseEvent.button() == Qt.RightButton:
-            self.right_click_function()
+            if not self.standalone:
+                self.right_click_function()
+            else:
+                self.right_click_function(
+                    f"T_{self.button_name}_{'S' if self.color == IndicatorColor.WHITE else 'D'}"
+                )
         if QMouseEvent.button() == Qt.MiddleButton:
-            self.middle_click_function()
+            if not self.standalone:
+                self.middle_click_function()
+            else:
+                self.middle_click_function(
+                    f"T_{self.button_name}_{'S' if self.color == IndicatorColor.WHITE else 'D'}"
+                )
 
     def stop_blinking(self):
         self.timer.stop()

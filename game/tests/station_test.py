@@ -24,7 +24,11 @@ class StationTest:
             self.log_pipe = (
                 queue_handler.get_logging_pipe()
             )  # grab the logging pipe from the queue handler
-        self.window = REStation(station_name=station_name, log_pipe=self.log_pipe)
+            
+        self.window = REStation(
+            station_name=station_name, button_click_callback=self.track_callback
+        )
+
         self.window.setWindowTitle(
             "Station test window"
         )  # override default window title for testing
@@ -47,15 +51,6 @@ class StationTest:
         self.window.switch_9_controller.set_update_function(self.switch_9_action)
         self.window.switch_10_controller.set_update_function(self.switch_10_action)
 
-        self.window.track_1.click_callaback = self.track1_callback
-        self.window.track_2.click_callaback = self.track2_callback
-        self.window.track_3.click_callaback = self.track3_callback
-        self.window.track_5.click_callaback = self.track5_callback
-        self.window.track_4.click_callaback = self.track4_callback
-        self.window.track_4.right_click_callback = (
-            lambda x: self.window.track_4.set_state(TrackState.FREE)
-        )
-
         self.window.check_switch_positions.set_onPress(self.check_switch_positions)
         self.window.check_switch_positions.set_onRelease(self.revert_switch_positions)
 
@@ -67,6 +62,9 @@ class StationTest:
         )  # test button
         self.window.stop_flashing_button.move(5, 5)
         self.window.stop_flashing_button.clicked.connect(self.window.stop_blinking)
+
+    def track_callback(self, button_id: str):
+        print(f"Clicked button {button_id}")
 
     def track1_callback(self, button_id: int):
         if button_id == 2:
