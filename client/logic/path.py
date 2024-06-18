@@ -6,6 +6,8 @@ class Path:
         self.start_signal: str = start_signal
         self.end_signal: str = end_signal
         self.switches: dict[str:SwitchPosition] = dict()
+        self.tracks: list[str] = list()
+        self.shunt_path: bool = False
 
     def add_switch(self, switch: dict):
         self.switches.update(switch)
@@ -13,6 +15,9 @@ class Path:
     def add_switches(self, switches: dict[str:SwitchPosition]):
         for switch in switches:
             self.switches.update(switch)
+
+    def add_track(self, track: str):
+        self.tracks.append(track)
 
     def verify(self, relief: REStation):
         for switch in self.switches:

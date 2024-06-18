@@ -44,6 +44,7 @@ class REStation(QMainWindow):
         station_name: str,
         log_pipe: Queue = None,
         button_click_callback=lambda x: None,
+        button_rightclick_callback=lambda x: None,
     ):
         super().__init__()
         self.setGeometry(0, 0, 1100, 780)
@@ -60,6 +61,7 @@ class REStation(QMainWindow):
         self.logger.setLevel(logging.DEBUG)
         self.logger.info("REStation initialized")
         self._button_click_callback = button_click_callback
+        self._button_rightclick_callback = button_rightclick_callback
         self.station_platforms = StationPlatforms(station_name=station_name)
 
         self.station_name = station_name
@@ -461,18 +463,38 @@ class REStation(QMainWindow):
         self.AHR_S.move(905, 610)
 
         self.track_1.click_callback = self.button_callback
+        self.track_1.right_click_callback = self.button_right_click_callback
         self.track_2.click_callback = self.button_callback
+        self.track_2.right_click_callback = self.button_right_click_callback
         self.track_3.click_callback = self.button_callback
+        self.track_3.right_click_callback = self.button_right_click_callback
         self.track_5.click_callback = self.button_callback
+        self.track_5.right_click_callback = self.button_right_click_callback
         self.track_4.click_callback = self.button_callback
+        self.track_4.right_click_callback = self.button_right_click_callback
 
         self.track_1L_button._on_clicked = self.button_callback
+        self.track_1L_button.right_click_function = self.button_right_click_callback
         self.track_1L_button_shunt._on_clicked = self.button_callback
+        self.track_1L_button_shunt.right_click_function = (
+            self.button_right_click_callback
+        )
         self.track_2L_button._on_clicked = self.button_callback
+        self.track_2L_button.right_click_function = self.button_right_click_callback
         self.track_2L_button_shunt._on_clicked = self.button_callback
+        self.track_2L_button_shunt.right_click_function = (
+            self.button_right_click_callback
+        )
         self.track_S_button._on_clicked = self.button_callback
+        self.track_S_button.right_click_function = self.button_right_click_callback
         self.track_S_button_shunt._on_clicked = self.button_callback
+        self.track_S_button_shunt.right_click_function = (
+            self.button_right_click_callback
+        )
         self.track_4a_shunt_button._on_clicked = self.button_callback
+        self.track_4a_shunt_button.right_click_function = (
+            self.button_right_click_callback
+        )
 
     def stop_blinking(self):
         self.track_1.stop_blinking()
@@ -507,7 +529,13 @@ class REStation(QMainWindow):
     def button_callback(self, button_name: str):
         self._button_click_callback(button_name)
 
+    def button_right_click_callback(self, button_name: str):
+        self._button_rightclick_callback(button_name)
+
     def get_switch(self, name: str) -> AbstractSwitch:
         return getattr(
             self, f"switch_{name}", AbstractSwitch(switch_type=SwitchType.UP_45_LEFT)
         )
+
+    def get_track(self, name: str) -> AbstractTrack:
+        return getattr(self, f"track_{name}", AbstractTrack(1))

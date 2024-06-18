@@ -22,6 +22,9 @@ re_paths = REPaths()  # singleton
 
 _1L_path_S1 = Path("1L", "S1")
 _1L_path_S1.add_switch({"1_3": SwitchPosition.Z_DOWN_STRAIGHT})
+_1L_path_S1.add_switch({"2": SwitchPosition.STRAIGHT})
+_1L_path_S1.add_track("1")
+_1L_path_S1.add_track("1L")
 re_paths.add_path(_1L_path_S1)
 
 _1L_path_S2 = Path("1L", "S2")
@@ -35,7 +38,7 @@ _1L_path_S3.add_switch({"1_3": SwitchPosition.TURNED})
 _1L_path_S3.add_switch({"5": SwitchPosition.STRAIGHT})
 re_paths.add_path(_1L_path_S3)
 
-_1L_path_Se3 = Path("Se1", "Se3")
+_1L_path_Se3 = Path("1L", "Se3")
 _1L_path_Se3.add_switch({"1_3": SwitchPosition.Z_DOWN_STRAIGHT})
 _1L_path_Se3.add_switch({"2": SwitchPosition.TURNED})
 _1L_path_Se3.add_switch({"4": SwitchPosition.TURNED})
