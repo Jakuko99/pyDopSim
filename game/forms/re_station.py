@@ -158,24 +158,30 @@ class REStation(QMainWindow):
         self.clock.setFixedSize(400, 100)
         self.clock.move(465, 705)
 
-        self.track_1 = AbstractTrack(track_segments=2, parent=self)
+        self.track_1 = AbstractTrack(track_segments=2, parent=self, track_name="1")
         self.track_1.move(420, 413)
 
-        self.track_2 = AbstractTrack(track_segments=2, parent=self)
+        self.track_2 = AbstractTrack(track_segments=2, parent=self, track_name="2")
         self.track_2.move(420, 491)
 
-        self.track_3 = AbstractTrack(track_segments=2, parent=self)
+        self.track_3 = AbstractTrack(track_segments=2, parent=self, track_name="3")
         self.track_3.move(420, 335)
 
-        self.track_4 = AbstractTrack(track_segments=2, parent=self, shunt_track=True)
+        self.track_4 = AbstractTrack(
+            track_segments=2, parent=self, shunt_track=True, track_name="4"
+        )
         self.track_4.move(420, 568)
 
         self.track_4a = AbstractTrack(
-            track_segments=1, parent=self, shunt_track=True, no_buttons=True
+            track_segments=1,
+            parent=self,
+            shunt_track=True,
+            no_buttons=True,
+            track_name="4a",
         )
         self.track_4a.move(819, 586)
 
-        self.track_5 = AbstractTrack(track_segments=2, parent=self)
+        self.track_5 = AbstractTrack(track_segments=2, parent=self, track_name="5")
         self.track_5.move(420, 257)
 
         self.switch_1_3 = AbstractSwitch(switch_type=SwitchType.Z_TYPE, parent=self)
@@ -233,37 +239,58 @@ class REStation(QMainWindow):
         self.switch_10.add_associated_track(self.switch_10_track)
 
         self.track_S_button = AbstractTrackButton(
-            button_color=IndicatorColor.GREEN, parent=self
+            button_color=IndicatorColor.GREEN,
+            parent=self,
+            button_name="S",
+            standalone=True,
         )
         self.track_S_button.move(1005, 421)
 
         self.track_S_button_shunt = AbstractTrackButton(
-            button_color=IndicatorColor.WHITE, parent=self
+            button_color=IndicatorColor.WHITE,
+            parent=self,
+            button_name="S",
+            standalone=True,
         )
         self.track_S_button_shunt.move(852, 421)
 
         self.track_1L_button = AbstractTrackButton(
-            button_color=IndicatorColor.GREEN, parent=self
+            button_color=IndicatorColor.GREEN,
+            parent=self,
+            button_name="1L",
+            standalone=True,
         )
         self.track_1L_button.move(55, 421)
 
         self.track_1L_button_shunt = AbstractTrackButton(
-            button_color=IndicatorColor.WHITE, parent=self
+            button_color=IndicatorColor.WHITE,
+            parent=self,
+            button_name="1L",
+            standalone=True,
         )
         self.track_1L_button_shunt.move(215, 421)
 
         self.track_2L_button = AbstractTrackButton(
-            button_color=IndicatorColor.GREEN, parent=self
+            button_color=IndicatorColor.GREEN,
+            parent=self,
+            button_name="2L",
+            standalone=True,
         )
         self.track_2L_button.move(55, 343)
 
         self.track_2L_button_shunt = AbstractTrackButton(
-            button_color=IndicatorColor.WHITE, parent=self
+            button_color=IndicatorColor.WHITE,
+            parent=self,
+            button_name="2L",
+            standalone=True,
         )
         self.track_2L_button_shunt.move(215, 343)
 
         self.track_4a_shunt_button = AbstractTrackButton(
-            button_color=IndicatorColor.WHITE, parent=self
+            button_color=IndicatorColor.WHITE,
+            parent=self,
+            button_name="4a",
+            standalone=True,
         )
         self.track_4a_shunt_button.move(780, 577)
 

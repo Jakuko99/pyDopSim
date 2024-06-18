@@ -13,8 +13,9 @@ class AbstractTrack(QWidget):
         shunt_track: bool = False,
         no_buttons: bool = False,
         parent=None,
-        click_callaback=lambda x: None,
+        click_callback=lambda x: None,
         right_click_callback=lambda x: None,
+        track_name: str = None,
     ):
         QWidget.__init__(self, parent)
         if no_buttons:
@@ -22,9 +23,10 @@ class AbstractTrack(QWidget):
         else:
             self.setGeometry(0, 0, (track_segments * 60) + 180, 46)
         self.track_segments: int = track_segments
+        self.track_name: str = track_name
         font = QFont("Arial", 11)
         self.segments: QLabel = []
-        self.click_callaback = click_callaback
+        self.click_callback = click_callback
         self.right_click_callback = right_click_callback
         self.no_buttons: bool = no_buttons
         self.shunt_track: bool = shunt_track
@@ -50,8 +52,12 @@ class AbstractTrack(QWidget):
 
             self.button_white1 = AbstractTrackButton(IndicatorColor.WHITE, parent=self)
             self.button_white1.set_functions(
-                left_click_function=lambda: self.click_callaback(1),
-                right_click_function=lambda: self.right_click_callback(1),
+                left_click_function=lambda: self.click_callback(
+                    f"T_{self.track_name}_S1"
+                ),
+                right_click_function=lambda: self.right_click_callback(
+                    f"T_{self.track_name}_S1"
+                ),
             )
             self.button_white1.move(10, 8)
 
@@ -60,8 +66,12 @@ class AbstractTrack(QWidget):
                     IndicatorColor.GREEN, parent=self
                 )
                 self.button_green1.set_functions(
-                    left_click_function=lambda: self.click_callaback(2),
-                    right_click_function=lambda: self.right_click_callback(2),
+                    left_click_function=lambda: self.click_callback(
+                        f"T_{self.track_name}_D1"
+                    ),
+                    right_click_function=lambda: self.right_click_callback(
+                        f"T_{self.track_name}_D1"
+                    ),
                 )
                 self.button_green1.move(50, 8)
 
@@ -69,15 +79,23 @@ class AbstractTrack(QWidget):
                     IndicatorColor.GREEN, parent=self
                 )
                 self.button_green2.set_functions(
-                    left_click_function=lambda: self.click_callaback(3),
-                    right_click_function=lambda: self.right_click_callback(3),
+                    left_click_function=lambda: self.click_callback(
+                        f"T_{self.track_name}_D2"
+                    ),
+                    right_click_function=lambda: self.right_click_callback(
+                        f"T_{self.track_name}_D2"
+                    ),
                 )
                 self.button_green2.move(120 + (track_segments * 60) - 30, 8)
 
             self.button_white2 = AbstractTrackButton(IndicatorColor.WHITE, parent=self)
             self.button_white2.set_functions(
-                left_click_function=lambda: self.click_callaback(4),
-                right_click_function=lambda: self.right_click_callback(4),
+                left_click_function=lambda: self.click_callback(
+                    f"T_{self.track_name}_S2"
+                ),
+                right_click_function=lambda: self.right_click_callback(
+                    f"T_{self.track_name}_S2"
+                ),
             )
             self.button_white2.move(160 + (track_segments * 60) - 30, 8)
 

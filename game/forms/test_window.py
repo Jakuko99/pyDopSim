@@ -82,7 +82,7 @@ class TestWindow(QMainWindow):
         self.track = AbstractTrack(
             2,
             self,
-            click_callaback=lambda x: self.logger.debug(f"Track button clicked: {x}"),
+            click_callback=lambda x: self.logger.debug(f"Track button clicked: {x}"),
         )
         self.track.move(5, 160)
 
