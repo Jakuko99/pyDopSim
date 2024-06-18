@@ -6,6 +6,7 @@ from queue import Queue
 
 from client.api_package import Client
 from game.tests.api_package import StationTest
+from game.forms.api_package import LogWindow
 from .game_info import GameInfo
 from .game_tab import GameTab
 from .settings_tab import SettingsTab
@@ -42,6 +43,9 @@ class Launcher(QMainWindow):
         self.game_tab = GameTab(self)
         self.game_tab.test_station_button.clicked.connect(self.run_station_test)
         self.game_tab.connect_button.clicked.connect(self.connect_to_server)
+        self.game_tab.log_button.clicked.connect(
+            lambda: LogWindow(parent=self, queue=self.log_pipe).show()
+        )
         self.tab_widget.addTab(self.game_tab, "Simulácia")
 
         self.settings_tab = SettingsTab(self)
@@ -75,6 +79,7 @@ class Launcher(QMainWindow):
         while (
             not self.client.connected
         ):  # wait for client to connect, maybe rework later
+            self.client.connection_established = True  # TODO: remove this line
             self.client.run()
 
     def connect_to_server(self):

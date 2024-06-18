@@ -456,3 +456,8 @@ class REStation(QMainWindow):
     def set_turn_station_name(self, station_name: str):
         self.station_name_turn = station_name
         self.station_turn_label.setText(station_name)
+
+    def get_switch(self, name: str) -> AbstractSwitch:
+        return getattr(
+            self, f"switch_{name}", AbstractSwitch(switch_type=SwitchType.UP_45_LEFT)
+        )

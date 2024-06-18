@@ -111,9 +111,11 @@ class StationTest:
         self.window.switch_1_3.set_position(
             SwitchPosition.Z_DOWN_STRAIGHT
             if state == LeverState.LEFT
-            else SwitchPosition.TURNED
-            if state == LeverState.MIDDLE
-            else SwitchPosition.Z_UP_STRAIGHT
+            else (
+                SwitchPosition.TURNED
+                if state == LeverState.MIDDLE
+                else SwitchPosition.Z_UP_STRAIGHT
+            )
         )
 
     def switch_5_action(self, state: LeverState):
@@ -121,9 +123,11 @@ class StationTest:
         self.window.switch_5.set_position(
             SwitchPosition.STRAIGHT
             if state == LeverState.LEFT
-            else SwitchPosition.AUTO
-            if state == LeverState.MIDDLE
-            else SwitchPosition.TURNED
+            else (
+                SwitchPosition.AUTO
+                if state == LeverState.MIDDLE
+                else SwitchPosition.TURNED
+            )
         )
 
     def switch_2_action(self, state: LeverState):
@@ -131,9 +135,11 @@ class StationTest:
         self.window.switch_2.set_position(
             SwitchPosition.STRAIGHT
             if state == LeverState.LEFT
-            else SwitchPosition.AUTO
-            if state == LeverState.MIDDLE
-            else SwitchPosition.TURNED
+            else (
+                SwitchPosition.AUTO
+                if state == LeverState.MIDDLE
+                else SwitchPosition.TURNED
+            )
         )
 
     def switch_4_action(self, state: LeverState):
@@ -141,9 +147,11 @@ class StationTest:
         self.window.switch_4.set_position(
             SwitchPosition.STRAIGHT
             if state == LeverState.LEFT
-            else SwitchPosition.AUTO
-            if state == LeverState.MIDDLE
-            else SwitchPosition.TURNED
+            else (
+                SwitchPosition.AUTO
+                if state == LeverState.MIDDLE
+                else SwitchPosition.TURNED
+            )
         )
 
     def switch_6_7_action(self, state: LeverState):
@@ -151,9 +159,11 @@ class StationTest:
         self.window.switch_6_7.set_position(
             SwitchPosition.Z_DOWN_STRAIGHT
             if state == LeverState.LEFT
-            else SwitchPosition.TURNED
-            if state == LeverState.MIDDLE
-            else SwitchPosition.Z_UP_STRAIGHT
+            else (
+                SwitchPosition.TURNED
+                if state == LeverState.MIDDLE
+                else SwitchPosition.Z_UP_STRAIGHT
+            )
         )
 
     def switch_8_action(self, state: LeverState):
@@ -161,9 +171,11 @@ class StationTest:
         self.window.switch_8.set_position(
             SwitchPosition.STRAIGHT
             if state == LeverState.LEFT
-            else SwitchPosition.AUTO
-            if state == LeverState.MIDDLE
-            else SwitchPosition.TURNED
+            else (
+                SwitchPosition.AUTO
+                if state == LeverState.MIDDLE
+                else SwitchPosition.TURNED
+            )
         )
 
     def switch_9_action(self, state: LeverState):
@@ -171,9 +183,11 @@ class StationTest:
         self.window.switch_9.set_position(
             SwitchPosition.STRAIGHT
             if state == LeverState.LEFT
-            else SwitchPosition.AUTO
-            if state == LeverState.MIDDLE
-            else SwitchPosition.TURNED
+            else (
+                SwitchPosition.AUTO
+                if state == LeverState.MIDDLE
+                else SwitchPosition.TURNED
+            )
         )
 
     def switch_10_action(self, state: LeverState):
@@ -181,9 +195,11 @@ class StationTest:
         self.window.switch_10.set_position(
             SwitchPosition.STRAIGHT
             if state == LeverState.LEFT
-            else SwitchPosition.AUTO
-            if state == LeverState.MIDDLE
-            else SwitchPosition.TURNED
+            else (
+                SwitchPosition.AUTO
+                if state == LeverState.MIDDLE
+                else SwitchPosition.TURNED
+            )
         )
 
     def check_switch_positions(

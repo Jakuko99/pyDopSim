@@ -66,6 +66,7 @@ class ConnectDialog(QDialog):
         self.available_stations.move(230, 30)
         self.available_stations.setFixedSize(165, 215)
         self.available_stations.doubleClicked.connect(self.station_selected)
+        self.available_stations.addItem("Vrútky")  # TODO: remove later
 
         self.available_stations_label = QLabel("Dostupné stanice:", self)
         self.available_stations_label.setFont(self.font_obj)
@@ -75,12 +76,7 @@ class ConnectDialog(QDialog):
         self.logger.info(
             f"Trying to connect to server at {self.server_ip.text()}:{self.server_port.text()}"
         )
-
-        self.on_confirm_callback(
-            self.server_ip.text(),
-            int(self.server_port.text()),
-            self.available_stations.currentItem().text(),
-        )
+        # load available stations here
 
     def close_func(self):
         self.logger.info("Connection to server aborted")
@@ -88,3 +84,9 @@ class ConnectDialog(QDialog):
 
     def station_selected(self):
         selected_item: str = self.available_stations.currentItem().text()
+        self.on_confirm_callback(
+            self.server_ip.text(),
+            int(self.server_port.text()),
+            selected_item,
+        )  # call callback with selected station
+        self.close()
