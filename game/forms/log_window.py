@@ -26,6 +26,11 @@ class LogWindow(QMainWindow):
         self.save_log_action.setIcon(QIcon("assets/save_icon.png"))
         self.context_menu.addAction(self.save_log_action)
 
+        self.full_screen_action = QAction("Celá obrazovka", self)
+        self.full_screen_action.triggered.connect(self.switch_full_screen)
+        self.full_screen_action.setIcon(QIcon("assets/fullscreen_icon.png"))
+        self.context_menu.addAction(self.full_screen_action)
+
         self.log_area = QTextEdit(self)
         self.log_area.setReadOnly(True)
         self.log_area.setStyleSheet("background-color: black")
@@ -48,6 +53,14 @@ class LogWindow(QMainWindow):
         if not filename[0] == "":
             with open(filename[0], "w") as f:
                 f.write(self.log_area.toPlainText())
+
+    def switch_full_screen(self):
+        if self.isFullScreen():
+            self.showNormal()
+            self.context_menu.actions()[1].setText("Celá obrazovka")
+        else:
+            self.showFullScreen()
+            self.context_menu.actions()[1].setText("Opustiť celú obrazovku")
 
     def update_log(self):
         try:
