@@ -2,6 +2,7 @@ import logging
 from PyQt5.QtWidgets import QMainWindow, QTextEdit, QMenu, QAction, QFileDialog
 from PyQt5.QtGui import QFont, QColor, QIcon
 from PyQt5.QtCore import QTimer
+from PyQt5.QtCore import Qt
 from queue import Queue, Empty
 
 

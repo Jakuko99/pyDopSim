@@ -51,7 +51,7 @@ class DebugDialog(QDialog):
 
         self.object_combo = QComboBox(self)
         self.object_combo.move(5, 5)
-        self.station_obj = parent.__dict__
+        self.station_obj = dict(parent.__dict__)
 
         del self.station_obj["logger"]  # remove extra attributes
         del self.station_obj["log_pipe"]
@@ -59,6 +59,8 @@ class DebugDialog(QDialog):
         del self.station_obj["font_obj"]
         del self.station_obj["title"]
         del self.station_obj["clock"]
+        del self.station_obj["_button_click_callback"]
+        del self.station_obj["_button_rightclick_callback"]
 
         self.object_combo.addItems(parent.__dict__.keys())
         self.object_combo.setFont(self.font_obj)

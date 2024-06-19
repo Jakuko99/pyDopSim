@@ -278,7 +278,7 @@ class AbstractSwitch(QWidget):
         else:
             raise ValueError(f"Invalid switch position for switch {self.switch_type}")
 
-        self.set_state(self.occupancy_status)  # update state of the switch
+        self.set_state(self.occupancy_status, position)  # update state of the switch
 
     def add_associated_track(
         self,

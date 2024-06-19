@@ -15,10 +15,6 @@ class SignalFinder:
                 if button_id == "T_1L_S":
                     return "Se1"
                 return "1L"
-            elif "T_2L" in button_id:
-                if button_id == "T_2L_S":
-                    return "Se2"
-                return "2L"
 
         elif "T_2" in button_id:
             if button_id == "T_2_S1" or button_id == "T_2_D1":
@@ -26,6 +22,8 @@ class SignalFinder:
             elif button_id == "T_2_S2" or button_id == "T_2_D2":
                 return "L2"
             elif "T_2L" in button_id:
+                if button_id == "T_2L_S":
+                    return "Se2"
                 return "2L"
 
         elif "T_3" in button_id:
@@ -49,10 +47,9 @@ class SignalFinder:
                 return "L5"
 
         elif "T_S" in button_id:
-            return "S"
-
-        elif "T_1L" in button_id:
-            return "1L"
+            if button_id == "T_S_D":
+                return "S"
+            return "Se6"
 
         else:
             return None

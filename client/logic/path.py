@@ -2,12 +2,12 @@ from game.api_package import REStation, SwitchPosition
 
 
 class Path:
-    def __init__(self, start_signal: str, end_signal: str):
+    def __init__(self, start_signal: str, end_signal: str, shunt_path: bool = False):
         self.start_signal: str = start_signal
         self.end_signal: str = end_signal
         self.switches: dict[str:SwitchPosition] = dict()
         self.tracks: list[str] = list()
-        self.shunt_path: bool = False
+        self.shunt_path: bool = shunt_path
 
     def add_switch(self, switch: dict):
         self.switches.update(switch)
