@@ -14,6 +14,9 @@ class PathBuilder:
         if relief_type == "RE":
             self.path_collection: REPaths = re_paths
             self.active_paths: list[Path] = []
+            self.logger.info(
+                f"Loaded {len(self.path_collection.paths)} paths for RE station"
+            )
 
     def build_path(self, start_signal: str, end_signal: str):
         path: Path = self.path_collection.get_path(start_signal, end_signal)

@@ -12,10 +12,6 @@ class Path:
     def add_switch(self, switch: dict):
         self.switches.update(switch)
 
-    def add_switches(self, switches: dict[str:SwitchPosition]):
-        for switch in switches:
-            self.switches.update(switch)
-
     def add_track(self, track: str):
         self.tracks.append(track)
 
