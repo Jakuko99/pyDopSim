@@ -1,24 +1,16 @@
 from PyQt5.QtWidgets import QWidget, QPushButton, QMenu, QAction
 from PyQt5.QtCore import Qt, QSize
 from PyQt5.QtGui import QIcon
-from queue import Queue
 
-from game.forms.log_window import LogWindow
 from game.dialogs.debug_dialog import DebugDialog
-from utils.api_package import queue_handler
 
 
 class AbstractStationButton(QWidget):
-    def __init__(self, log_pipe: Queue = None, parent=None):
+    def __init__(self, parent=None):
         self._parent = parent
         QWidget.__init__(self, parent=parent)
-        if log_pipe:
-            self.log_pipe: Queue = log_pipe
-        else:
-            self.log_pipe = queue_handler.get_logging_pipe()
 
         self.setGeometry(0, 0, 80, 55)
-        self.log_window = LogWindow(self, log_pipe)
         self.right_click_function = lambda: None
         self.middle_click_function = lambda: None
         self.debug: bool = False
@@ -28,11 +20,6 @@ class AbstractStationButton(QWidget):
         self.client_info: QAction = QAction("Informácie o klientovi", self)
         self.client_info.setIcon(QIcon("assets/client_icon.png"))
         self.context_menu.addAction(self.client_info)
-
-        self.log_action = QAction("Zobraziť log", self)
-        self.log_action.triggered.connect(self.log_window.show)
-        self.log_action.setIcon(QIcon("assets/log_icon.png"))
-        self.context_menu.addAction(self.log_action)
 
         self.debug_action = QAction("Debug okno", self)
         self.debug_action.setVisible(False)

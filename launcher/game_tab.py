@@ -13,13 +13,18 @@ class GameTab(QWidget):
         self.connect_button.setFixedSize(200, 25)
         self.connect_button.setFont(self._font)
 
+        self.start_server_button = QPushButton("Spustiť server", self)
+        self.start_server_button.move(200, 40)
+        self.start_server_button.setFixedSize(200, 25)
+        self.start_server_button.setFont(self._font)
+
         self.log_button = QPushButton("Zobraziť log", self)
-        self.log_button.move(200, 40)
+        self.log_button.move(200, 70)
         self.log_button.setFixedSize(200, 25)
         self.log_button.setFont(self._font)
 
         self.test_station_button = QPushButton("Test stanice", self)
-        self.test_station_button.move(200, 70)
+        self.test_station_button.move(200, 100)
         self.test_station_button.setFixedSize(200, 25)
         self.test_station_button.setFont(self._font)
 

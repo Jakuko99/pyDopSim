@@ -19,6 +19,7 @@ class Launcher(QMainWindow):
         self.log_pipe: Queue = log_pipe
         self.logger = logging.getLogger("App.Launcher")
         self.connect_dialog = ConnectDialog(self, self.run_client)
+        self.log_window = LogWindow(parent=self, queue=self.log_pipe)
 
         self.setWindowIcon(QIcon("assets/app_icon.png"))
         self.setWindowTitle("PyDopSim Launcher")
@@ -43,9 +44,7 @@ class Launcher(QMainWindow):
         self.game_tab = GameTab(self)
         self.game_tab.test_station_button.clicked.connect(self.run_station_test)
         self.game_tab.connect_button.clicked.connect(self.connect_to_server)
-        self.game_tab.log_button.clicked.connect(
-            lambda: LogWindow(parent=self, queue=self.log_pipe).show()
-        )
+        self.game_tab.log_button.clicked.connect(self.log_window.show)
         self.tab_widget.addTab(self.game_tab, "Simulácia")
 
         self.settings_tab = SettingsTab(self)

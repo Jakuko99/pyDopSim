@@ -152,13 +152,13 @@ class REStation(QMainWindow):
         self.switch_10_controller = AbstractLeverSlim(self)
         self.switch_10_controller.move(1027, 35)
 
-        self.station_button = AbstractStationButton(parent=self, log_pipe=self.log_pipe)
+        self.station_button = AbstractStationButton(parent=self)
         self.station_button.move(476, 632)
         self.station_button.setFunctions(
             lambda: (
                 self.station_platforms.show()
                 if not self.station_platforms.isVisible()
-                else self.station_platforms.raise_()
+                else self.station_platforms.activateWindow()
             )
         )  # bring window forward if already open
 

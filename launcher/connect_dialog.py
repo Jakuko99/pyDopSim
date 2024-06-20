@@ -59,7 +59,7 @@ class ConnectDialog(QDialog):
         self.cancel_button = QPushButton("Zrušiť", self)
         self.cancel_button.setFont(self.font_obj)
         self.cancel_button.move(120, 215)
-        self.cancel_button.clicked.connect(self.close_func)
+        self.cancel_button.clicked.connect(self.closeEvent)
 
         self.available_stations = QListWidget(self)
         self.available_stations.setFont(self.font_obj)
@@ -78,9 +78,12 @@ class ConnectDialog(QDialog):
         )
         # load available stations here
 
-    def close_func(self):
-        self.logger.info("Connection to server aborted")
-        self.close()
+    def closeEvent(self, event):
+        self.logger.debug("Connect dialog dismissed")
+        if not type(event) == bool:
+            event.accept()
+        else:
+            self.close()
 
     def station_selected(self):
         selected_item: str = self.available_stations.currentItem().text()
