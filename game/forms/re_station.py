@@ -496,6 +496,17 @@ class REStation(QMainWindow):
             self.button_right_click_callback
         )
 
+        self.connect_status_indicator = AbstractIndicator(
+            parent=self, indicator_color=IndicatorColor.GREEN, text="Stav\npripojenia"
+        )
+        self.connect_status_indicator.move(300, 10)
+
+        self.failed_status_indicator = AbstractIndicator(
+            parent=self, indicator_color=IndicatorColor.RED, text="Strata\npripojenia"
+        )
+        self.failed_status_indicator.move(300, 75)
+        self.failed_status_indicator.set_state(IndicatorState.BLINKING)
+
     def stop_blinking(self):
         self.track_1.stop_blinking()
         self.track_2.stop_blinking()

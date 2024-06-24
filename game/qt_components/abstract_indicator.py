@@ -21,7 +21,7 @@ class AbstractIndicator(QWidget):
         self.timer.timeout.connect(self._update)
 
         self.body = QLabel("", self)
-        self.body.setGeometry(15, 0, 22, 22)
+        self.body.setGeometry(20, 0, 22, 22)
         self.body.setPixmap(self.off_pixmap)
         self.body.setScaledContents(True)
 
@@ -29,7 +29,7 @@ class AbstractIndicator(QWidget):
         self.label.setAlignment(Qt.AlignmentFlag.AlignCenter)
         self.label.setFont(QFont("Arial", 10))
         self.label.setStyleSheet("background-color: white; color: black;")
-        self.label.move(0, 23)
+        self.label.move(-5, 23)
 
     def set_state(self, state: IndicatorState):
         self.timer.stop()

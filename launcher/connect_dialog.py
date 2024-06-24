@@ -46,7 +46,7 @@ class ConnectDialog(QDialog):
         self.server_port_label.setFont(self.font_obj)
         self.server_port_label.move(5, 80)
 
-        self.server_port = QLineEdit("8000", self)
+        self.server_port = QLineEdit("8020", self)
         self.server_port.setFont(self.font_obj)
         self.server_port.setFixedWidth(140)
         self.server_port.move(70, 80)

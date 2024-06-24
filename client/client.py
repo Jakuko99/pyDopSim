@@ -66,6 +66,10 @@ class Client:
         signal_id = self.signal_finder.find_signal_by_button(button_id)
         self.path_builder.cancel_path(start_signal=signal_id)
 
+        self.first_button_id = None  # reset the buttons
+        self.second_button_id = None
+        self.relief.stop_blinking()
+
     def run(self):
         # put startup code here
         self.logger.info(f"Starting client for {self.station_name}")
