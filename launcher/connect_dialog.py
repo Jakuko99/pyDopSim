@@ -8,7 +8,7 @@ from PyQt5.QtWidgets import (
     QDialog,
     QListWidget,
 )
-from PyQt5.QtGui import QFont
+from PyQt5.QtGui import QFont, QIntValidator
 import logging
 import requests
 
@@ -50,6 +50,7 @@ class ConnectDialog(QDialog):
         self.server_port = QLineEdit("8020", self)
         self.server_port.setFont(self.font_obj)
         self.server_port.setFixedWidth(140)
+        self.server_port.setValidator(QIntValidator(0, 65535))
         self.server_port.move(70, 80)
 
         self.connect_button = QPushButton("Pripojiť", self)
@@ -76,6 +77,7 @@ class ConnectDialog(QDialog):
         self.logger.info(
             f"Trying to connect to server at {self.server_ip.text()}:{self.server_port.text()}"
         )
+
         try:
             request = requests.get(
                 f"http://{self.server_ip.text()}:{self.server_port.text()}/available_stations"
@@ -86,11 +88,27 @@ class ConnectDialog(QDialog):
                     self.available_stations.addItem(station)
 
         except requests.exceptions.ConnectionError:
-            self.logger.error("Failed to get available stations")
+            self.logger.error("Failed to get available stations, server not reachable")
             QMessageBox.critical(
                 self,
                 "Chyba pripojenia",
                 f"Nepodarilo sa pripojiť k serveru na {self.server_ip.text()}:{self.server_port.text()}",
+            )
+
+        except requests.exceptions.InvalidURL:
+            self.logger.error("Invalid URL entered")
+            QMessageBox.critical(
+                self,
+                "Chyba URL",
+                f"Zadaná URL adresa {self.server_ip.text()}:{self.server_port.text()} nie je platná",
+            )
+
+        except Exception as e:
+            self.logger.error(f"Failed to get available stations: {e}")
+            QMessageBox.critical(
+                self,
+                "Neznáma chyba",
+                f"Nastala chyba pri získavaní dostupných staníc: {e}",
             )
 
     def closeEvent(self, event):
