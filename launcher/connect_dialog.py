@@ -10,6 +10,7 @@ from PyQt5.QtWidgets import (
 )
 from PyQt5.QtGui import QFont
 import logging
+import requests
 
 
 class ConnectDialog(QDialog):
@@ -66,7 +67,6 @@ class ConnectDialog(QDialog):
         self.available_stations.move(230, 30)
         self.available_stations.setFixedSize(165, 215)
         self.available_stations.doubleClicked.connect(self.station_selected)
-        self.available_stations.addItem("Vrútky")  # TODO: remove later
 
         self.available_stations_label = QLabel("Dostupné stanice:", self)
         self.available_stations_label.setFont(self.font_obj)
@@ -76,7 +76,22 @@ class ConnectDialog(QDialog):
         self.logger.info(
             f"Trying to connect to server at {self.server_ip.text()}:{self.server_port.text()}"
         )
-        # load available stations here
+        try:
+            request = requests.get(
+                f"http://{self.server_ip.text()}:{self.server_port.text()}/available_stations"
+            )
+            if request.status_code == 200:
+                self.available_stations.clear()
+                for station in request.json():
+                    self.available_stations.addItem(station)
+
+        except requests.exceptions.ConnectionError:
+            self.logger.error("Failed to get available stations")
+            QMessageBox.critical(
+                self,
+                "Chyba pripojenia",
+                f"Nepodarilo sa pripojiť k serveru na {self.server_ip.text()}:{self.server_port.text()}",
+            )
 
     def closeEvent(self, event):
         self.logger.debug("Connect dialog dismissed")

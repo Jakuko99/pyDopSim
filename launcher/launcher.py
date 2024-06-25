@@ -11,6 +11,7 @@ from .game_info import GameInfo
 from .game_tab import GameTab
 from .settings_tab import SettingsTab
 from .connect_dialog import ConnectDialog
+from server.api_package import ServerGUI
 
 
 class Launcher(QMainWindow):
@@ -19,7 +20,8 @@ class Launcher(QMainWindow):
         self.log_pipe: Queue = log_pipe
         self.logger = logging.getLogger("App.Launcher")
         self.connect_dialog = ConnectDialog(self, self.run_client)
-        self.log_window = LogWindow(parent=self, queue=self.log_pipe)
+        self.log_window = LogWindow(queue=self.log_pipe)
+        self.server: ServerGUI = ServerGUI()
 
         self.setWindowIcon(QIcon("assets/app_icon.png"))
         self.setWindowTitle("PyDopSim Launcher")
@@ -45,6 +47,7 @@ class Launcher(QMainWindow):
         self.game_tab.test_station_button.clicked.connect(self.run_station_test)
         self.game_tab.connect_button.clicked.connect(self.connect_to_server)
         self.game_tab.log_button.clicked.connect(self.log_window.show)
+        self.game_tab.start_server_button.clicked.connect(self.start_server)
         self.tab_widget.addTab(self.game_tab, "Simulácia")
 
         self.settings_tab = SettingsTab(self)
@@ -84,3 +87,6 @@ class Launcher(QMainWindow):
     def connect_to_server(self):
         self.logger.debug("Opening connect dialog")
         self.connect_dialog.show()
+
+    def start_server(self):
+        self.server.show()

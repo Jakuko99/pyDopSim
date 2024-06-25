@@ -8,7 +8,13 @@ class QueueHandler(logging.StreamHandler):
         self.queue: Queue = Queue()
 
     def emit(self, record: logging.LogRecord):
-        msg = self.format(record)
+        if (
+            record.name == "uvicorn.error" or record.name == "uvicorn.access"
+        ):  # rename uvicorn loggers
+            record.name = "App.RESTServer.uvicorn"
+
+        msg: str = self.format(record)
+
         self.queue.put({"log": msg, "level": record.levelname})
 
     def get_logging_pipe(self) -> Queue:
