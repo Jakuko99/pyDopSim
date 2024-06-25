@@ -9,7 +9,7 @@ class PyDopSimServer:
     def __init__(self):
         self.host: str = None
         self.rest_port: int = 8020
-        self.port: int = None
+        self.port: int = 8021
 
         self.logger = logging.getLogger("App.PyDopSimServer")
         self.logger.setLevel(logging.DEBUG)
@@ -17,5 +17,9 @@ class PyDopSimServer:
         self.logger.info("PyDopSimServer initialized")
         self.rest = RESTServer(self.rest_port)
 
+    def set_ports(self, rest_port: int, tcp_port: int):
+        self.rest_port = rest_port
+        self.port = tcp_port
+
     def run(self):
-        self.rest.run()
+        self.rest.run(port=self.rest_port)

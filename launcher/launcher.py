@@ -89,4 +89,5 @@ class Launcher(QMainWindow):
         self.connect_dialog.show()
 
     def start_server(self):
+        self.logger.debug("Opening server GUI")
         self.server.show()

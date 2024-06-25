@@ -53,8 +53,11 @@ class RESTServer:
         )
         self.rest.include_router(self.router)
 
-    def run(self):
+    def run(self, port: int = None):
         self._assign_routes()
+        if port:
+            self.port = port
+
         self.thread = Thread(target=self.server_thread)
         self.thread.start()
 
