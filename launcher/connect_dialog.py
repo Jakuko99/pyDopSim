@@ -38,7 +38,7 @@ class ConnectDialog(QDialog):
         self.server_label.setFont(self.font_obj)
         self.server_label.move(5, 45)
 
-        self.server_ip = QLineEdit(self)
+        self.server_ip = QLineEdit("localhost", self)
         self.server_ip.setFixedWidth(140)
         self.server_ip.setFont(self.font_obj)
         self.server_ip.move(70, 45)
@@ -120,9 +120,31 @@ class ConnectDialog(QDialog):
 
     def station_selected(self):
         selected_item: str = self.available_stations.currentItem().text()
-        self.on_confirm_callback(
-            self.server_ip.text(),
-            int(self.server_port.text()),
-            selected_item,
-        )  # call callback with selected station
-        self.close()
+        try:
+            request = requests.put(
+                f"http://{self.server_ip.text()}:{self.server_port.text()}/take_station/{selected_item}"
+            )
+            if request.status_code == 200:
+                if "server_tcp_port" in request.json():
+                    self.logger.info(f"Station {selected_item} taken")
+                    self.on_confirm_callback(
+                        self.server_ip.text(),
+                        int(request.json().get("server_tcp_port")),
+                        selected_item,
+                    )  # call callback with selected station
+                    self.close()
+
+                elif "error" in request.json():
+                    self.logger.error(f"Station {selected_item} already taken")
+                    QMessageBox.critical(
+                        self,
+                        "Stanica už obsadená",
+                        f"Stanica {selected_item} už je obsadená",
+                    )
+        except Exception as e:
+            self.logger.error(f"Failed to take station: {e}")
+            QMessageBox.critical(
+                self,
+                "Neznáma chyba",
+                f"Nastala chyba pri pripájaní ku stanici: {e}",
+            )

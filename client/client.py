@@ -37,7 +37,7 @@ class Client:
     def set_server_info(self, host: str, port: int):
         self.host = host
         self.port = port
-        self.logger.debug(f"Server info is set to {host}:{port}")
+        self.logger.debug(f"Server address is set to {host}:{port}")
 
     def connect(self):
         pass  # TODO: figure out how to connect to the server

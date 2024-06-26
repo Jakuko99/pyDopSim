@@ -15,6 +15,7 @@ class RESTServer:
 
     def __init__(self, port: int = 8020):
         self.port: int = port
+        self.tcp_port: int = 8021
 
         self.logger = logging.getLogger("App.RESTServer")
         self.logger.setLevel(logging.DEBUG)
@@ -39,8 +40,20 @@ class RESTServer:
         return {
             station: status.name
             for station, status in self.stations.items()
-            if status == StationStatus.AVAILABLE
+            if status == StationStatus.OFFLINE
         }
+
+    async def take_station(self, station_name: str) -> dict:
+        if self.stations.get(station_name, None) == StationStatus.OFFLINE:
+            self.stations[station_name] = StationStatus.ONLINE
+            return {"server_tcp_port": self.tcp_port}
+        return {"error": "TAKEN"}
+
+    async def release_station(self, station_name: str):
+        if self.stations.get(station_name, None) == StationStatus.ONLINE:
+            self.stations[station_name] = StationStatus.OFFLINE
+            return True
+        return False
 
     def _assign_routes(self):
         self.router.add_api_route("/", self.root, methods=["GET"])
@@ -51,12 +64,19 @@ class RESTServer:
         self.router.add_api_route(
             "/available_stations", self.get_available_stations, methods=["GET"]
         )
+        self.router.add_api_route(
+            "/take_station/{station_name}", self.take_station, methods=["PUT"]
+        )
+        self.router.add_api_route(
+            "/release_station/{station_name}", self.release_station, methods=["PUT"]
+        )
         self.rest.include_router(self.router)
 
-    def run(self, port: int = None):
+    def run(self, port: int = None, tcp_port: int = 8021):
         self._assign_routes()
         if port:
             self.port = port
+        self.tcp_port = tcp_port
 
         self.thread = Thread(target=self.server_thread)
         self.thread.start()

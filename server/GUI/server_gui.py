@@ -34,3 +34,16 @@ class ServerGUI(QMainWindow):
         self.tcp_port_input.setValidator(QIntValidator(0, 65535))
         self.tcp_port_input.setFont(self._font)
         self.tcp_port_input.setText("8021")
+
+        self.start_button = QPushButton("Spustiť server", self)
+        self.start_button.move(5, 75)
+        self.start_button.clicked.connect(self.start_server)
+
+    def start_server(self):
+        self.server.set_ports(
+            rest_port=int(self.rest_port_input.text()),
+            tcp_port=int(self.tcp_port_input.text()),
+        )
+        self.server.rest.stations["Vrakuna"] = data_types.StationStatus.OFFLINE
+        self.server.rest.stations["Ruzinov"] = data_types.StationStatus.OFFLINE
+        self.server.run()

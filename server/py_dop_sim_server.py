@@ -18,8 +18,11 @@ class PyDopSimServer:
         self.rest = RESTServer(self.rest_port)
 
     def set_ports(self, rest_port: int, tcp_port: int):
+        self.logger.debug(
+            f"Setting REST port to {rest_port} and TCP port to {tcp_port}"
+        )
         self.rest_port = rest_port
         self.port = tcp_port
 
     def run(self):
-        self.rest.run(port=self.rest_port)
+        self.rest.run(port=self.rest_port, tcp_port=self.port)
