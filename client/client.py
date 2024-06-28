@@ -1,4 +1,4 @@
-import socket  # use REST or TCP for the server framework
+import requests
 from queue import Queue
 import logging
 
@@ -14,7 +14,8 @@ class Client:
         self.allow_debug: bool = allow_debug
         self.connection_established: bool = False
         self.host: str = None
-        self.port: int = 8040
+        self.port: int = 8021
+        self.server_port: int = 8020
 
         self.logger = logging.getLogger("App.Client")
         self.logger.setLevel(logging.DEBUG)
@@ -25,6 +26,7 @@ class Client:
             button_click_callback=self.build_requested_path,
             button_rightclick_callback=self.cancel_requested_path,
         )
+        self.relief._on_exit = self.release_station
         self.path_builder = PathBuilder(relief=self.relief, relief_type="RE")
         self.signal_finder = SignalFinder(relief=self.relief)
 
@@ -38,6 +40,9 @@ class Client:
         self.host = host
         self.port = port
         self.logger.debug(f"Server address is set to {host}:{port}")
+
+    def set_rest_port(self, port: int):
+        self.server_port: int = port
 
     def connect(self):
         pass  # TODO: figure out how to connect to the server
@@ -69,6 +74,17 @@ class Client:
         self.first_button_id = None  # reset the buttons
         self.second_button_id = None
         self.relief.stop_blinking()
+
+    def release_station(self):
+        try:
+            request = requests.put(
+                f"http://{self.host}:{self.server_port}/release_station/{self.station_name}"
+            )
+            if request.status_code == 200:
+                self.logger.info(f"Station {self.station_name} released")
+
+        except Exception as e:
+            self.logger.error(f"Failed to release station: {e}")
 
     def run(self):
         # put startup code here

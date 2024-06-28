@@ -1,6 +1,7 @@
 from PyQt5.QtWidgets import (
     QMainWindow,
     QLabel,
+    QMessageBox,
 )
 from PyQt5.QtGui import QPixmap, QFont, QIcon
 from PyQt5.QtCore import Qt
@@ -63,6 +64,7 @@ class REStation(QMainWindow):
         self._button_click_callback = button_click_callback
         self._button_rightclick_callback = button_rightclick_callback
         self.station_platforms = StationPlatforms(station_name=station_name)
+        self._on_exit = lambda: None
 
         self.station_name = station_name
         self.station_name_left: str = self.station_name
@@ -550,3 +552,7 @@ class REStation(QMainWindow):
 
     def get_track(self, name: str) -> AbstractTrack:
         return getattr(self, f"track_{name}", AbstractTrack(1))
+
+    def closeEvent(self, event):
+        self._on_exit()  # call the exit callback
+        event.accept()

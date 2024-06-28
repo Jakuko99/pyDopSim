@@ -131,6 +131,7 @@ class ConnectDialog(QDialog):
                         self.server_ip.text(),
                         int(request.json().get("server_tcp_port")),
                         selected_item,
+                        int(request.json().get("server_rest_port")),
                     )  # call callback with selected station
                     self.close()
 

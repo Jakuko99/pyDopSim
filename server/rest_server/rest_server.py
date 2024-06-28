@@ -46,14 +46,12 @@ class RESTServer:
     async def take_station(self, station_name: str) -> dict:
         if self.stations.get(station_name, None) == StationStatus.OFFLINE:
             self.stations[station_name] = StationStatus.ONLINE
-            return {"server_tcp_port": self.tcp_port}
+            return {"server_tcp_port": self.tcp_port, "server_rest_port": self.port}
         return {"error": "TAKEN"}
 
     async def release_station(self, station_name: str):
         if self.stations.get(station_name, None) == StationStatus.ONLINE:
             self.stations[station_name] = StationStatus.OFFLINE
-            return True
-        return False
 
     def _assign_routes(self):
         self.router.add_api_route("/", self.root, methods=["GET"])
