@@ -501,12 +501,12 @@ class REStation(QMainWindow):
         self.connect_status_indicator = AbstractIndicator(
             parent=self, indicator_color=IndicatorColor.GREEN, text="Stav\npripojenia"
         )
-        self.connect_status_indicator.move(300, 10)
+        self.connect_status_indicator.move(295, 10)
 
         self.failed_status_indicator = AbstractIndicator(
             parent=self, indicator_color=IndicatorColor.RED, text="Strata\npripojenia"
         )
-        self.failed_status_indicator.move(300, 75)
+        self.failed_status_indicator.move(295, 75)
         self.failed_status_indicator.set_state(IndicatorState.BLINKING)
 
     def stop_blinking(self):
@@ -526,6 +526,14 @@ class REStation(QMainWindow):
     def disable_2L_track(self):
         self.pr_2L_track.set_state(TrackState.OCCUPIED)
         self.track_2L_button.setEnabled(False)
+
+    def disable_1L_track(self):
+        self.pr_1L_track.set_state(TrackState.OCCUPIED)
+        self.track_1L_button.setEnabled(False)
+
+    def disable_S_track(self):
+        self.pr_S_track.set_state(TrackState.OCCUPIED)
+        self.track_S_button.setEnabled(False)
 
     def set_left_station_name(self, station_name: str):
         self.station_name_left = station_name

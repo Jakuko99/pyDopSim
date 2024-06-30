@@ -2,20 +2,20 @@ from enum import Enum, auto
 
 
 class TrainType(Enum):
-    IC = auto()
-    EC = auto()
-    EN = auto()
-    SC = auto()
-    Ex = auto()
-    R = auto()
-    REX = auto()
-    Os = auto()
-    Pn = auto()
-    Zr = auto()
-    Nex = auto()
-    Nv = auto()
-    Rv = auto()
-    Sv = auto()
-    Mn = auto()
-    Vlec = auto()
-    Sluz = auto()
+    IC = "IC"
+    EC = "EC"
+    EN = "EN"
+    SC = "SC"
+    Ex = "Ex"
+    R = "R"
+    REX = "REX"
+    Os = "Os"
+    Pn = "Pn"
+    Zr = "Zr"
+    Nex = "Nex"
+    Nv = "Nv"
+    Rv = "Rv"
+    Sv = "Sv"
+    Mn = "Mn"
+    Vlec = "Vlec"
+    Sluz = "Sluz"

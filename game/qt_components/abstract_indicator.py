@@ -9,7 +9,7 @@ class AbstractIndicator(QWidget):
     def __init__(self, indicator_color: IndicatorColor, text: str, parent=None):
         QWidget.__init__(self, parent=parent)
         self.color: str = indicator_color
-        self.setGeometry(0, 0, 60, 60)
+        self.setGeometry(0, 0, 70, 60)
         self.state: IndicatorState = IndicatorState.OFF
 
         self.off_pixmap = QPixmap("assets/indicator_off.png")
@@ -29,7 +29,7 @@ class AbstractIndicator(QWidget):
         self.label.setAlignment(Qt.AlignmentFlag.AlignCenter)
         self.label.setFont(QFont("Arial", 10))
         self.label.setStyleSheet("background-color: white; color: black;")
-        self.label.move(-5, 23)
+        self.label.move(0, 23)
 
     def set_state(self, state: IndicatorState):
         self.timer.stop()

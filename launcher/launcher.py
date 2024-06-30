@@ -63,9 +63,17 @@ class Launcher(QMainWindow):
     def run_station_test(self):
         self.logger.debug("Running station test")
         self.station_test = StationTest(log_pipe=self.log_pipe)
+        if not self.settings_tab.allow_1L_checkbox.isChecked():
+            self.station_test.window.disable_1L_track()
+            self.station_test.window.AHR_1L.setVisible(False)
+
         if not self.settings_tab.allow_2L_checkbox.isChecked():
             self.station_test.window.disable_2L_track()
             self.station_test.window.AHR_2L.setVisible(False)
+
+        if not self.settings_tab.allow_S_checkbox.isChecked():
+            self.station_test.window.disable_S_track()
+            self.station_test.window.AHR_S.setVisible(False)
 
         self.station_test.add_test_bindings()
         self.station_test.run()
