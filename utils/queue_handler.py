@@ -11,7 +11,7 @@ class QueueHandler(logging.StreamHandler):
         if (
             record.name == "uvicorn.error" or record.name == "uvicorn.access"
         ):  # rename uvicorn loggers
-            record.name = "App.RESTServer.uvicorn"
+            record.name = "App.Server.REST.uvicorn"
 
         msg: str = self.format(record)
 

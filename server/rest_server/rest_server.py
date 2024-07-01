@@ -1,4 +1,5 @@
 import os
+import signal
 import uvicorn
 from fastapi import FastAPI, APIRouter, Request
 from fastapi.responses import JSONResponse, HTMLResponse, FileResponse
@@ -24,7 +25,7 @@ class RESTServer:
         self.port: int = port
         self.tcp_port: int = 8021
 
-        self.logger = logging.getLogger("App.RESTServer")
+        self.logger = logging.getLogger("App.Server.REST")
         self.logger.setLevel(logging.DEBUG)
         self.logger.info("REST server initialized")
         self.thread_queue: Queue = Queue()
@@ -111,6 +112,8 @@ class RESTServer:
         self.stations[station_name] = StationStatus.AVAILABLE
 
     def stop(self):
+        # os.kill(os.getpid(), signal.SIGINT) # kills entire program
+        self.logger.error("Stopping REST server is not implemented yet")
         pass  # TODO: add way to stop the server
 
     def server_thread(self):

@@ -8,7 +8,11 @@ from .logic.api_package import PathBuilder, SignalFinder
 
 class Client:
     def __init__(
-        self, station_name: str, log_pipe: Queue = None, allow_debug: bool = False
+        self,
+        station_name: str,
+        log_pipe: Queue = None,
+        allow_debug: bool = False,
+        additional_config: dict = None,
     ):
         self.station_name: str = station_name
         self.allow_debug: bool = allow_debug
@@ -16,6 +20,7 @@ class Client:
         self.host: str = None
         self.port: int = 8021
         self.server_port: int = 8020
+        self.additional_config: dict = additional_config
 
         self.logger = logging.getLogger("App.Client")
         self.logger.setLevel(logging.DEBUG)
@@ -86,9 +91,30 @@ class Client:
         except Exception as e:
             self.logger.error(f"Failed to release station: {e}")
 
+    def parse_config(self):
+        if self.additional_config.get("allow_2L", True) is False:  # allow by default
+            self.relief.disable_2L_track()
+
+        if self.additional_config.get("allow_S", True) is False:
+            self.relief.disable_S_track()
+
+        if self.additional_config.get("allow_1L", True) is False:
+            self.relief.disable_1L_track()
+
+        self.relief.set_left_station_name(
+            self.additional_config.get("left_station", self.station_name)
+        )
+        self.relief.set_right_station_name(
+            self.additional_config.get("right_station", self.station_name)
+        )
+        self.relief.set_turn_station_name(
+            self.additional_config.get("turn_station", self.station_name)
+        )
+
     def run(self):
         # put startup code here
         self.logger.info(f"Starting client for {self.station_name}")
+        self.parse_config()
         self.relief.show()
 
     @property

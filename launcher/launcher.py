@@ -26,7 +26,7 @@ class Launcher(QMainWindow):
         self.setWindowIcon(QIcon("assets/app_icon.png"))
         self.setWindowTitle("PyDopSim Launcher")
         self.setFixedSize(600, 600)
-        self._font = QFont("Arial", 10)
+        self._font = QFont("Arial", 11)
 
         self.cover = QLabel(self)
         self.cover.setPixmap(QPixmap("assets/menu_photo.png"))
@@ -35,7 +35,7 @@ class Launcher(QMainWindow):
         self.cover.resize(600, 336)
 
         self.version_label = QLabel(f"**Verzia:** {GameInfo.VERSION}", self)
-        self.version_label.move(250, 336)
+        self.version_label.move(250, 335)
         self.version_label.setTextFormat(Qt.TextFormat.MarkdownText)
         self.version_label.setFont(self._font)
 
@@ -78,14 +78,15 @@ class Launcher(QMainWindow):
         self.station_test.add_test_bindings()
         self.station_test.run()
 
-    def run_client(self, host: str, port: int, station_name: str, rest_port: int):
+    def run_client(self, host: str, port: int, station_name: str, rest_response: dict):
         self.client = Client(
             station_name=station_name,
             log_pipe=self.log_pipe,
             allow_debug=self.game_tab.allow_debug_checkbox.isChecked(),
+            additional_config=rest_response,
         )
         self.client.set_server_info(host, port)
-        self.client.set_rest_port(int(rest_port))
+        self.client.set_rest_port(rest_response.get("server_rest_port", 8020))
         self.client.connect()
         while (
             not self.client.connected

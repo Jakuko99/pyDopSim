@@ -524,26 +524,32 @@ class REStation(QMainWindow):
         self.track_4a_shunt_button.stop_blinking()
 
     def disable_2L_track(self):
+        self.logger.debug("Disabling 2L track")
         self.pr_2L_track.set_state(TrackState.OCCUPIED)
         self.track_2L_button.setEnabled(False)
 
     def disable_1L_track(self):
+        self.logger.debug("Disabling 1L track")
         self.pr_1L_track.set_state(TrackState.OCCUPIED)
         self.track_1L_button.setEnabled(False)
 
     def disable_S_track(self):
+        self.logger.debug("Disabling S track")
         self.pr_S_track.set_state(TrackState.OCCUPIED)
         self.track_S_button.setEnabled(False)
 
     def set_left_station_name(self, station_name: str):
+        self.logger.debug(f"Setting left station name to {station_name}")
         self.station_name_left = station_name
         self.station_left_label.setText(station_name)
 
     def set_right_station_name(self, station_name: str):
+        self.logger.debug(f"Setting right station name to {station_name}")
         self.station_name_right = station_name
         self.station_right_label.setText(station_name)
 
     def set_turn_station_name(self, station_name: str):
+        self.logger.debug(f"Setting turn station name to {station_name}")
         self.station_name_turn = station_name
         self.station_turn_label.setText(station_name)
 
