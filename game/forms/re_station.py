@@ -527,16 +527,22 @@ class REStation(QMainWindow):
         self.logger.debug("Disabling 2L track")
         self.pr_2L_track.set_state(TrackState.OCCUPIED)
         self.track_2L_button.setEnabled(False)
+        self.AHR_2L.hide()
+        self.station_turn_label.hide()
 
     def disable_1L_track(self):
         self.logger.debug("Disabling 1L track")
         self.pr_1L_track.set_state(TrackState.OCCUPIED)
         self.track_1L_button.setEnabled(False)
+        self.AHR_1L.hide()
+        self.station_left_label.hide()
 
     def disable_S_track(self):
         self.logger.debug("Disabling S track")
         self.pr_S_track.set_state(TrackState.OCCUPIED)
         self.track_S_button.setEnabled(False)
+        self.AHR_S.hide()
+        self.station_right_label.hide()
 
     def set_left_station_name(self, station_name: str):
         self.logger.debug(f"Setting left station name to {station_name}")

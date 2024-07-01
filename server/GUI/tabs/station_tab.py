@@ -1,15 +1,19 @@
+import os
+import json
 from PyQt5.QtWidgets import (
     QWidget,
     QLabel,
     QPushButton,
     QComboBox,
     QCheckBox,
-    QListView,
+    QListWidget,
     QLineEdit,
     QGroupBox,
     QFileDialog,
 )
 from PyQt5.QtGui import QFont, QIntValidator
+
+from ..objects.api_package import Station
 
 
 class StationTab(QWidget):
@@ -17,34 +21,35 @@ class StationTab(QWidget):
         super().__init__(parent)
         self.parent = parent
         self.setFont(QFont("Arial", 11))
-
-        self.station_name_label = QLabel("Názov stanice (N):", self)
-        self.station_name_label.move(5, 5)
+        self.stations: dict[str:Station] = dict()
 
         self.station_name_input = QLineEdit(self)
-        self.station_name_input.move(140, 5)
-
-        self.station_name_G_label = QLabel("Názov stanice (G):", self)
-        self.station_name_G_label.move(5, 35)
+        self.station_name_input.move(5, 5)
+        self.station_name_input.setPlaceholderText("Názov stanice")
 
         self.station_name_G_input = QLineEdit(self)
-        self.station_name_G_input.move(140, 35)
+        self.station_name_G_input.move(5, 35)
+        self.station_name_G_input.setPlaceholderText("zo stanice")
+
+        self.station_name_L_input = QLineEdit(self)
+        self.station_name_L_input.move(5, 65)
+        self.station_name_L_input.setPlaceholderText("v stanici")
 
         self.allow_2L_checkbox = QCheckBox("Povoliť 2L", self)
-        self.allow_2L_checkbox.move(5, 65)
+        self.allow_2L_checkbox.move(5, 95)
 
         self.add_station_button = QPushButton("Pridať stanicu", self)
-        self.add_station_button.move(5, 95)
+        self.add_station_button.move(5, 125)
 
-        self.station_list = QListView(self)
+        self.station_list = QListWidget(self)
         self.station_list.move(300, 5)
         self.station_list.setFixedSize(290, 400)
 
         self.remove_station_button = QPushButton("Odstrániť stanicu", self)
-        self.remove_station_button.move(470, 410)
+        self.remove_station_button.move(445, 410)
 
         self.show_advanced_checkbox = QCheckBox("Zobraziť rozšírené nastavenia", self)
-        self.show_advanced_checkbox.move(5, 125)
+        self.show_advanced_checkbox.move(5, 155)
         self.show_advanced_checkbox.stateChanged.connect(
             lambda: self.advanced_settings_group.setVisible(
                 self.show_advanced_checkbox.isChecked()
@@ -52,8 +57,8 @@ class StationTab(QWidget):
         )
 
         self.advanced_settings_group = QGroupBox("Rozšírené nastavenia", self)
-        self.advanced_settings_group.move(5, 150)
-        self.advanced_settings_group.setFixedSize(290, 300)
+        self.advanced_settings_group.move(5, 180)
+        self.advanced_settings_group.setFixedSize(290, 325)
         self.advanced_settings_group.hide()
 
         self.load_track_file = QPushButton("Načítať trať", self)
@@ -68,15 +73,32 @@ class StationTab(QWidget):
 
     def load_track_file_func(self):
         file_name, _ = QFileDialog.getOpenFileName(
-            self, "Načítať trať", "", "JSON súbory (*.json)"
+            self,
+            caption="Načítať trať",
+            filter="JSON súbory (*.json)",
+            directory=os.getcwd(),
         )
         if file_name:
             self.parent.logger.debug(f"Loading track file: {file_name}")
-            pass
+            with open(file_name, "r", encoding="utf-8") as f:
+                track: dict = json.load(f)
+                for station, values in track["stations"].items():
+                    self.stations[station] = Station(
+                        station_name=station,
+                        left_station=values["left_station"],
+                        right_station=values["right_station"],
+                        turn_station=values["turn_station"],
+                    )
+
+            self.station_list.clear()
+            self.station_list.addItems(self.stations.keys())
 
     def save_track_file_func(self):
         file_name, _ = QFileDialog.getSaveFileName(
-            self, "Uložiť trať", "", "JSON súbory (*.json)"
+            self,
+            caption="Uložiť trať",
+            filter="JSON súbory (*.json)",
+            directory=os.getcwd(),
         )
         if file_name:
             self.parent.logger.debug(f"Saving track file: {file_name}")

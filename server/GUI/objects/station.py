@@ -1,0 +1,24 @@
+from server.data_types.api_package import StationStatus
+
+
+class Station:
+    def __init__(
+        self,
+        station_name: str,
+        left_station: str,
+        right_station: str,
+        turn_station: str = None,
+    ):
+        self.station_name: str = station_name
+        self.left_station: str = left_station
+        self.right_station: str = right_station
+        self.turn_station: str = turn_station
+        self.status: StationStatus = StationStatus.OFFLINE
+
+        self.station_name_N: str = self.station_name
+        self.station_name_G: str = None
+        self.station_name_L: str = None
+
+    def add_inflections(self, station_name_G: str, station_name_L: str):
+        self.station_name_G = station_name_G
+        self.station_name_L = station_name_L

@@ -92,24 +92,26 @@ class Client:
             self.logger.error(f"Failed to release station: {e}")
 
     def parse_config(self):
-        if self.additional_config.get("allow_2L", True) is False:  # allow by default
-            self.relief.disable_2L_track()
-
-        if self.additional_config.get("allow_S", True) is False:
-            self.relief.disable_S_track()
-
-        if self.additional_config.get("allow_1L", True) is False:
+        if self.additional_config.get("left_station", None):
+            self.relief.set_left_station_name(
+                self.additional_config.get("left_station", self.station_name)
+            )
+        else:
             self.relief.disable_1L_track()
 
-        self.relief.set_left_station_name(
-            self.additional_config.get("left_station", self.station_name)
-        )
-        self.relief.set_right_station_name(
-            self.additional_config.get("right_station", self.station_name)
-        )
-        self.relief.set_turn_station_name(
-            self.additional_config.get("turn_station", self.station_name)
-        )
+        if self.additional_config.get("right_station", None):
+            self.relief.set_right_station_name(
+                self.additional_config.get("right_station", self.station_name)
+            )
+        else:
+            self.relief.disable_S_track()
+
+        if self.additional_config.get("turn_station", None):
+            self.relief.set_turn_station_name(
+                self.additional_config.get("turn_station", self.station_name)
+            )
+        else:
+            self.relief.disable_2L_track()
 
     def run(self):
         # put startup code here

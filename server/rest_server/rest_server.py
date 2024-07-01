@@ -12,6 +12,7 @@ from queue import Queue
 from utils.api_package import queue_handler
 from server.data_types.api_package import StationStatus
 from game.data_types.api_package import TrainType
+from server.GUI.objects.api_package import Station
 
 rest_path = f"{os.path.dirname(os.path.abspath(__file__))}"
 assets_path = rest_path.replace(r"server\rest_server", "assets")
@@ -32,7 +33,7 @@ class RESTServer:
         self.uvicorn_server = None
         self.templates = Jinja2Templates(directory=f"{rest_path}/templates")
 
-        self.stations: dict[str:StationStatus] = dict()
+        self.stations: dict[str:Station] = dict()
 
     async def root(self, request: Request) -> HTMLResponse:
         return self.templates.TemplateResponse("index.html", {"request": request})
@@ -41,18 +42,18 @@ class RESTServer:
         return FileResponse(f"{assets_path}/{filename}")
 
     async def get_stations(self) -> dict:
-        return self.stations
+        return {name: station.__dict__ for name, station in self.stations.items()}
 
     async def get_station(self, station_name: str) -> dict:
-        return {
-            station_name: self.stations.get(station_name, StationStatus.UNKNOWN.name)
-        }
+        station: Station = self.stations.get(station_name, None)
+        if station:
+            return {station_name: station.__dict__}
 
     async def get_available_stations(self) -> dict:
         return {
-            station: status.name
-            for station, status in self.stations.items()
-            if status == StationStatus.OFFLINE
+            station_name: station.status.name
+            for station_name, station in self.stations.items()
+            if station.status == StationStatus.OFFLINE
         }
 
     async def register_train(
@@ -62,16 +63,21 @@ class RESTServer:
 
     async def take_station(self, station_name: str) -> JSONResponse:
         if self.stations.get(station_name, None):
-            if self.stations.get(station_name) == StationStatus.OFFLINE:
-                self.stations[station_name] = StationStatus.ONLINE
-                return {"server_tcp_port": self.tcp_port, "server_rest_port": self.port}
+            if self.stations.get(station_name).status == StationStatus.OFFLINE:
+                self.stations[station_name].status = StationStatus.ONLINE
+                return_dict: dict = {
+                    "server_tcp_port": self.tcp_port,
+                    "server_rest_port": self.port,
+                }
+                return_dict.update(self.stations[station_name].__dict__)
+                return return_dict
             return {"error": "TAKEN"}
         raise HTTPException(status_code=404, detail="Station not found")
 
     async def release_station(self, station_name: str) -> JSONResponse:
         if self.stations.get(station_name, None):
-            if self.stations.get(station_name, None) == StationStatus.ONLINE:
-                self.stations[station_name] = StationStatus.OFFLINE
+            if self.stations.get(station_name, None).status == StationStatus.ONLINE:
+                self.stations[station_name].status = StationStatus.OFFLINE
                 return {"message": "Station released successfully"}
             return {"error": "Station not taken"}
         raise HTTPException(status_code=404, detail="Station not found")

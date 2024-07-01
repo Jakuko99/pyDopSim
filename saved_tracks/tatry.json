@@ -1,0 +1,86 @@
+{
+    "stations": {
+        "Štrba": {
+            "turn_station": "Štrbské Pleso",
+            "right_station": "Svit",
+            "left_station": null
+        },
+        "Svit": {
+            "turn_station": null,
+            "right_station": "Poprad-Tatry",
+            "left_station": "Štrba"
+        },
+        "Poprad-Tatry": {
+            "turn_station": "Starý Smokovec",
+            "right_station": "Studený Potok",
+            "left_station": "Svit"
+        },
+        "Studený Potok": {
+            "turn_station": null,
+            "right_station": "Tatranská Lomnica",
+            "left_station": "Poprad-Tatry"
+        },
+        "Tatranská Lomnica": {
+            "turn_station": "Starý Smokovec",
+            "right_station": null,
+            "left_station": "Studený Potok"
+        },
+        "Starý Smokovec": {
+            "turn_station": "Poprad-Tatry",
+            "right_station": "Tatranská Lomnica",
+            "left_station": "Vyšné Hágy"
+        },
+        "Vyšné Hágy": {
+            "turn_station": null,
+            "right_station": "Starý Smokovec",
+            "left_station": "Štrbské Pleso"
+        },
+        "Štrbské Pleso": {
+            "right_station": "Vyšné Hágy",
+            "left_station": null,
+            "turn_station": "Štrba"
+        }
+    },
+    "inflections":{ 
+        "Štrba": {
+            "nominative" : "Štrba",
+            "genitive" : "zo Štrby",
+            "local" : "v Štrbe"
+        },
+        "Svit": {
+            "nominative" : "Svit",
+            "genitive" : "zo Svitu",
+            "local" : "v Svite"
+        },
+        "Poprad-Tatry": {
+            "nominative" : "Poprad-Tatry",
+            "genitive" : "z Popradu-Tatier",
+            "local" : "v Poprad-Tatrách"
+        },
+        "Studený Potok": {
+            "nominative" : "Studený Potok",
+            "genitive" : "zo Studeného Potoka",
+            "local" : "v Studenom Potoku"
+        },
+        "Tatranská Lomnica": {
+            "nominative" : "Tatranská Lomnica",
+            "genitive" : "z Tatranskej Lomnice",
+            "local" : "v Tatranskej Lomnici"
+        },
+        "Starý Smokovec": {
+            "nominative" : "Starý Smokovec",
+            "genitive" : "zo Starého Smokovca",
+            "local" : "v Starom Smokovci"
+        },
+        "Vyšné Hágy": {
+            "nominative" : "Vyšné Hágy",
+            "genitive" : "z Vyšných Hágov",
+            "local" : "vo Vyšných Hágoch"
+        },
+        "Štrbské Pleso": {
+            "nominative" : "Štrbské Pleso",
+            "genitive" : "zo Štrbského Plesa",
+            "local" : "v Štrbskom Plese"
+        }
+    }
+}

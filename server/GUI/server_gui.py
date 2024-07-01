@@ -47,7 +47,8 @@ class ServerGUI(QMainWindow):
                 rest_port=int(self.config_tab.rest_port_input.text()),
                 tcp_port=int(self.config_tab.tcp_port_input.text()),
             )
-            self.server.rest.stations["Vrútky"] = data_types.StationStatus.OFFLINE
-            self.server.rest.stations["Žilina"] = data_types.StationStatus.OFFLINE
+
+            self.server.add_station_dict(self.station_tab.stations)
+
             self.start_button.setText("Zastaviť server")
             self.server.run()

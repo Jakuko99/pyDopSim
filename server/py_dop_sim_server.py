@@ -26,6 +26,10 @@ class PyDopSimServer:
         self.rest_port = rest_port
         self.port = tcp_port
 
+    def add_station_dict(self, stations: dict):
+        self.logger.debug(f"Adding {len(stations)} stations to the server")
+        self.rest.stations = stations
+
     def run(self):
         self.running = True
         self.rest.run(port=self.rest_port, tcp_port=self.port)
