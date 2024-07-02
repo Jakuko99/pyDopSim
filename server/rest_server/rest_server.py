@@ -118,9 +118,7 @@ class RESTServer:
         self.stations[station_name] = StationStatus.AVAILABLE
 
     def stop(self):
-        # os.kill(os.getpid(), signal.SIGINT) # kills entire program
-        self.logger.error("Stopping REST server is not implemented yet")
-        pass  # TODO: add way to stop the server
+        os.kill(os.getpid(), signal.SIGINT)  # kills entire program
 
     def server_thread(self):
         self.logger.info(f"Starting REST server on port {self.port}")

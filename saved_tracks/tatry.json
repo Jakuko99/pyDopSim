@@ -37,50 +37,50 @@
         },
         "Štrbské Pleso": {
             "right_station": "Vyšné Hágy",
-            "left_station": null,
-            "turn_station": "Štrba"
+            "left_station": "Štrba",
+            "turn_station": null
         }
     },
-    "inflections":{ 
+    "inflections": {
         "Štrba": {
-            "nominative" : "Štrba",
-            "genitive" : "zo Štrby",
-            "local" : "v Štrbe"
+            "nominative": "Štrba",
+            "genitive": "zo Štrby",
+            "local": "v Štrbe"
         },
         "Svit": {
-            "nominative" : "Svit",
-            "genitive" : "zo Svitu",
-            "local" : "v Svite"
+            "nominative": "Svit",
+            "genitive": "zo Svitu",
+            "local": "v Svite"
         },
         "Poprad-Tatry": {
-            "nominative" : "Poprad-Tatry",
-            "genitive" : "z Popradu-Tatier",
-            "local" : "v Poprad-Tatrách"
+            "nominative": "Poprad-Tatry",
+            "genitive": "z Popradu-Tatier",
+            "local": "v Poprad-Tatrách"
         },
         "Studený Potok": {
-            "nominative" : "Studený Potok",
-            "genitive" : "zo Studeného Potoka",
-            "local" : "v Studenom Potoku"
+            "nominative": "Studený Potok",
+            "genitive": "zo Studeného Potoka",
+            "local": "v Studenom Potoku"
         },
         "Tatranská Lomnica": {
-            "nominative" : "Tatranská Lomnica",
-            "genitive" : "z Tatranskej Lomnice",
-            "local" : "v Tatranskej Lomnici"
+            "nominative": "Tatranská Lomnica",
+            "genitive": "z Tatranskej Lomnice",
+            "local": "v Tatranskej Lomnici"
         },
         "Starý Smokovec": {
-            "nominative" : "Starý Smokovec",
-            "genitive" : "zo Starého Smokovca",
-            "local" : "v Starom Smokovci"
+            "nominative": "Starý Smokovec",
+            "genitive": "zo Starého Smokovca",
+            "local": "v Starom Smokovci"
         },
         "Vyšné Hágy": {
-            "nominative" : "Vyšné Hágy",
-            "genitive" : "z Vyšných Hágov",
-            "local" : "vo Vyšných Hágoch"
+            "nominative": "Vyšné Hágy",
+            "genitive": "z Vyšných Hágov",
+            "local": "vo Vyšných Hágoch"
         },
         "Štrbské Pleso": {
-            "nominative" : "Štrbské Pleso",
-            "genitive" : "zo Štrbského Plesa",
-            "local" : "v Štrbskom Plese"
+            "nominative": "Štrbské Pleso",
+            "genitive": "zo Štrbského Plesa",
+            "local": "v Štrbskom Plese"
         }
     }
 }

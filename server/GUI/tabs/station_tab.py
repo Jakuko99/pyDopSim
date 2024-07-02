@@ -63,13 +63,13 @@ class StationTab(QWidget):
 
         self.load_track_file = QPushButton("Načítať trať", self)
         self.load_track_file.clicked.connect(self.load_track_file_func)
-        self.load_track_file.setFixedSize(100, 25)
-        self.load_track_file.move(5, 510)
+        self.load_track_file.setFixedSize(100, 30)
+        self.load_track_file.move(5, 505)
 
         self.save_track_file = QPushButton("Uložiť trať", self)
         self.save_track_file.clicked.connect(self.save_track_file_func)
-        self.save_track_file.setFixedSize(100, 25)
-        self.save_track_file.move(110, 510)
+        self.save_track_file.setFixedSize(100, 30)
+        self.save_track_file.move(110, 505)
 
     def load_track_file_func(self):
         file_name, _ = QFileDialog.getOpenFileName(
@@ -89,6 +89,12 @@ class StationTab(QWidget):
                         right_station=values["right_station"],
                         turn_station=values["turn_station"],
                     )
+
+                for station, inflection in track["inflections"].items():
+                    if self.stations.get(station, None):
+                        self.stations[station].add_inflections(
+                            inflection["genitive"], inflection["local"]
+                        )
 
             self.station_list.clear()
             self.station_list.addItems(self.stations.keys())
