@@ -75,4 +75,4 @@ class AbstractStationButton(QWidget):
     def enable_debug(self):
         self.debug = True
         self.debug_dialog = DebugDialog(self._parent)
-        self.context_menu.actions()[2].setVisible(True)
+        self.context_menu.actions()[1].setVisible(True)

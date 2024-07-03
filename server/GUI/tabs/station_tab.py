@@ -14,6 +14,7 @@ from PyQt5.QtWidgets import (
 from PyQt5.QtGui import QFont, QIntValidator
 
 from ..objects.api_package import Station
+from ..station_view import StationView
 
 
 class StationTab(QWidget):
@@ -43,10 +44,11 @@ class StationTab(QWidget):
 
         self.station_list = QListWidget(self)
         self.station_list.move(300, 5)
-        self.station_list.setFixedSize(290, 400)
+        self.station_list.setFixedSize(290, 225)
+        self.station_list.itemClicked.connect(self.station_list_item_clicked)
 
         self.remove_station_button = QPushButton("Odstrániť stanicu", self)
-        self.remove_station_button.move(445, 410)
+        self.remove_station_button.move(445, 235)
 
         self.show_advanced_checkbox = QCheckBox("Zobraziť rozšírené nastavenia", self)
         self.show_advanced_checkbox.move(5, 155)
@@ -56,20 +58,33 @@ class StationTab(QWidget):
             )
         )
 
-        self.advanced_settings_group = QGroupBox("Rozšírené nastavenia", self)
+        self.station_scheme = StationView(self)
+        self.station_scheme.move(50, 250)
+
+        self.advanced_settings_group = QGroupBox(self)
         self.advanced_settings_group.move(5, 180)
-        self.advanced_settings_group.setFixedSize(290, 325)
+        self.advanced_settings_group.setStyleSheet("background-color: white;")
+        self.advanced_settings_group.setFixedSize(290, 320)
         self.advanced_settings_group.hide()
 
         self.load_track_file = QPushButton("Načítať trať", self)
         self.load_track_file.clicked.connect(self.load_track_file_func)
-        self.load_track_file.setFixedSize(100, 30)
+        self.load_track_file.setFixedSize(110, 30)
         self.load_track_file.move(5, 505)
 
         self.save_track_file = QPushButton("Uložiť trať", self)
         self.save_track_file.clicked.connect(self.save_track_file_func)
-        self.save_track_file.setFixedSize(100, 30)
-        self.save_track_file.move(110, 505)
+        self.save_track_file.setFixedSize(110, 30)
+        self.save_track_file.move(120, 505)
+
+    def station_list_item_clicked(self, item):
+        station = self.stations.get(item.text(), None)
+        if station:
+            self.station_scheme.set_station_names(
+                name_1L=station.left_station,
+                name_2L=station.turn_station,
+                name_S=station.right_station,
+            )
 
     def load_track_file_func(self):
         file_name, _ = QFileDialog.getOpenFileName(

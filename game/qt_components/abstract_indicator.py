@@ -21,7 +21,7 @@ class AbstractIndicator(QWidget):
         self.timer.timeout.connect(self._update)
 
         self.body = QLabel("", self)
-        self.body.setGeometry(20, 0, 22, 22)
+        self.body.setGeometry(25, 0, 22, 22)
         self.body.setPixmap(self.off_pixmap)
         self.body.setScaledContents(True)
 
