@@ -3,42 +3,50 @@
         "Štrba": {
             "turn_station": "Štrbské Pleso",
             "right_station": "Svit",
-            "left_station": null
+            "left_station": null,
+            "station_type": "RE"
         },
         "Svit": {
             "turn_station": null,
             "right_station": "Poprad-Tatry",
-            "left_station": "Štrba"
+            "left_station": "Štrba",
+            "station_type": "RE"
         },
         "Poprad-Tatry": {
             "turn_station": "Starý Smokovec",
             "right_station": "Studený Potok",
-            "left_station": "Svit"
+            "left_station": "Svit",
+            "station_type": "RE"
         },
         "Studený Potok": {
             "turn_station": null,
             "right_station": "Tatranská Lomnica",
-            "left_station": "Poprad-Tatry"
+            "left_station": "Poprad-Tatry",
+            "station_type": "RE"
         },
         "Tatranská Lomnica": {
             "turn_station": "Starý Smokovec",
             "right_station": null,
-            "left_station": "Studený Potok"
+            "left_station": "Studený Potok",
+            "station_type": "RE"
         },
         "Starý Smokovec": {
             "turn_station": "Poprad-Tatry",
             "right_station": "Tatranská Lomnica",
-            "left_station": "Vyšné Hágy"
+            "left_station": "Vyšné Hágy",
+            "station_type": "RE"
         },
         "Vyšné Hágy": {
             "turn_station": null,
             "right_station": "Starý Smokovec",
-            "left_station": "Štrbské Pleso"
+            "left_station": "Štrbské Pleso",
+            "station_type": "RE"
         },
         "Štrbské Pleso": {
             "right_station": "Vyšné Hágy",
             "left_station": "Štrba",
-            "turn_station": null
+            "turn_station": null,
+            "station_type": "RE"
         }
     },
     "inflections": {

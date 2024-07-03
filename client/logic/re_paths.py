@@ -286,13 +286,272 @@ shunting_L5_Se6.add_track("S")
 re_paths.add_path(shunting_L5_Se6)
 
 # ----- normal paths -----
-path_L1_S1 = Path("1L", "S1")
-path_L1_S1.add_switch(
+path_1L_S1 = Path("1L", "S1")
+path_1L_S1.add_switch(
     {
         "1_3": SwitchPosition.Z_DOWN_STRAIGHT,
         "2": SwitchPosition.STRAIGHT,
     }
 )
-path_L1_S1.add_track("1")
-path_L1_S1.add_track("1L")
-re_paths.add_path(path_L1_S1)
+path_1L_S1.add_track("1")
+path_1L_S1.add_track("1L")
+re_paths.add_path(path_1L_S1)
+
+path_1L_S2 = Path("1L", "S2")
+path_1L_S2.add_switch(
+    {
+        "1_3": SwitchPosition.Z_DOWN_STRAIGHT,
+        "2": SwitchPosition.TURNED,
+        "4": SwitchPosition.STRAIGHT,
+    }
+)
+path_1L_S2.add_track("2")
+path_1L_S2.add_track("1L")
+re_paths.add_path(path_1L_S2)
+
+path_1L_S3 = Path("1L", "S3")
+path_1L_S3.add_switch(
+    {
+        "1_3": SwitchPosition.TURNED,
+        "5": SwitchPosition.STRAIGHT,
+    }
+)
+path_1L_S3.add_track("3")
+path_1L_S3.add_track("1L")
+re_paths.add_path(path_1L_S3)
+
+path_1L_S5 = Path("1L", "S5")
+path_1L_S5.add_switch(
+    {
+        "1_3": SwitchPosition.TURNED,
+        "5": SwitchPosition.TURNED,
+    }
+)
+path_1L_S5.add_track("5")
+path_1L_S5.add_track("1L")
+re_paths.add_path(path_1L_S5)
+
+path_2L_S3 = Path("2L", "S3")
+path_2L_S3.add_switch(
+    {
+        "1_3": SwitchPosition.Z_UP_STRAIGHT,
+        "5": SwitchPosition.STRAIGHT,
+    }
+)
+path_2L_S3.add_track("3")
+path_2L_S3.add_track("2L")
+re_paths.add_path(path_2L_S3)
+
+path_2L_S5 = Path("2L", "S5")
+path_2L_S5.add_switch(
+    {
+        "1_3": SwitchPosition.Z_UP_STRAIGHT,
+        "5": SwitchPosition.TURNED,
+    }
+)
+path_2L_S5.add_track("5")
+path_2L_S5.add_track("2L")
+re_paths.add_path(path_2L_S5)
+
+path_S1_1L = Path("S1", "1L")
+path_S1_1L.add_switch(
+    {
+        "2": SwitchPosition.STRAIGHT,
+        "1_3": SwitchPosition.Z_DOWN_STRAIGHT,
+    }
+)
+path_S1_1L.add_track("1L")
+re_paths.add_path(path_S1_1L)
+
+path_S2_1L = Path("S2", "1L")
+path_S2_1L.add_switch(
+    {
+        "4": SwitchPosition.STRAIGHT,
+        "2": SwitchPosition.TURNED,
+        "1_3": SwitchPosition.Z_DOWN_STRAIGHT,
+    }
+)
+path_S2_1L.add_track("1L")
+re_paths.add_path(path_S2_1L)
+
+path_S3_1L = Path("S3", "1L")
+path_S3_1L.add_switch(
+    {
+        "5": SwitchPosition.STRAIGHT,
+        "1_3": SwitchPosition.TURNED,
+    }
+)
+path_S3_1L.add_track("1L")
+re_paths.add_path(path_S3_1L)
+
+path_S5_1L = Path("S5", "1L")
+path_S5_1L.add_switch(
+    {
+        "5": SwitchPosition.TURNED,
+        "1_3": SwitchPosition.TURNED,
+    }
+)
+path_S5_1L.add_track("1L")
+re_paths.add_path(path_S5_1L)
+
+path_S3_2L = Path("S3", "2L")
+path_S3_2L.add_switch(
+    {
+        "5": SwitchPosition.STRAIGHT,
+        "1_3": SwitchPosition.Z_UP_STRAIGHT,
+    }
+)
+path_S3_2L.add_track("2L")
+re_paths.add_path(path_S3_2L)
+
+path_S5_2L = Path("S5", "2L")
+path_S5_2L.add_switch(
+    {
+        "5": SwitchPosition.TURNED,
+        "1_3": SwitchPosition.Z_UP_STRAIGHT,
+    }
+)
+path_S5_2L.add_track("2L")
+re_paths.add_path(path_S5_2L)
+
+path_S_L1 = Path("S", "L1")
+path_S_L1.add_switch(
+    {
+        "9": SwitchPosition.STRAIGHT,
+        "10": SwitchPosition.STRAIGHT,
+    }
+)
+path_S_L1.add_track("S")
+path_S_L1.add_track("1")
+re_paths.add_path(path_S_L1)
+
+path_S_L2 = Path("S", "L2")
+path_S_L2.add_switch(
+    {
+        "10": SwitchPosition.STRAIGHT,
+        "9": SwitchPosition.TURNED,
+        "6_7": SwitchPosition.Z_UP_STRAIGHT,
+    }
+)
+path_S_L2.add_track("2")
+path_S_L2.add_track("S")
+re_paths.add_path(path_S_L2)
+
+path_S_L3 = Path("S", "L3")
+path_S_L3.add_switch(
+    {
+        "10": SwitchPosition.TURNED,
+        "8": SwitchPosition.STRAIGHT,
+    }
+)
+path_S_L3.add_track("3")
+path_S_L3.add_track("S")
+re_paths.add_path(path_S_L3)
+
+path_S_L5 = Path("S", "L5")
+path_S_L5.add_switch(
+    {
+        "10": SwitchPosition.TURNED,
+        "8": SwitchPosition.TURNED,
+    }
+)
+path_S_L5.add_track("5")
+path_S_L5.add_track("S")
+re_paths.add_path(path_S_L5)
+
+path_L1_S = Path("L1", "S")
+path_L1_S.add_switch(
+    {
+        "9": SwitchPosition.STRAIGHT,
+        "10": SwitchPosition.STRAIGHT,
+    }
+)
+path_L1_S.add_track("S")
+re_paths.add_path(path_L1_S)
+
+path_L2_S = Path("L2", "S")
+path_L2_S.add_switch(
+    {
+        "10": SwitchPosition.STRAIGHT,
+        "9": SwitchPosition.TURNED,
+        "6_7": SwitchPosition.Z_UP_STRAIGHT,
+    }
+)
+path_L2_S.add_track("S")
+re_paths.add_path(path_L2_S)
+
+path_L3_S = Path("L3", "S")
+path_L3_S.add_switch(
+    {
+        "10": SwitchPosition.TURNED,
+        "8": SwitchPosition.STRAIGHT,
+    }
+)
+path_L3_S.add_track("S")
+re_paths.add_path(path_L3_S)
+
+path_L5_S = Path("L5", "S")
+path_L5_S.add_switch(
+    {
+        "10": SwitchPosition.TURNED,
+        "8": SwitchPosition.TURNED,
+    }
+)
+path_L5_S.add_track("S")
+re_paths.add_path(path_L5_S)
+
+path_1L_S = Path("1L", "S")
+path_1L_S.add_switch(
+    {
+        "1_3": SwitchPosition.Z_DOWN_STRAIGHT,
+        "2": SwitchPosition.STRAIGHT,
+        "9": SwitchPosition.STRAIGHT,
+        "10": SwitchPosition.STRAIGHT,
+    }
+)
+path_1L_S.add_track("1", require_free=True)
+path_1L_S.add_track("1L")
+path_1L_S.add_track("S")
+re_paths.add_path(path_1L_S)
+
+path_2L_S = Path("2L", "S")
+path_2L_S.add_switch(
+    {
+        "1_3": SwitchPosition.Z_UP_STRAIGHT,
+        "5": SwitchPosition.STRAIGHT,
+        "8": SwitchPosition.STRAIGHT,
+        "10": SwitchPosition.TURNED,
+    }
+)
+path_2L_S.add_track("3", require_free=True)
+path_2L_S.add_track("2L")
+path_2L_S.add_track("S")
+re_paths.add_path(path_2L_S)
+
+path_S_1L = Path("S", "1L")
+path_S_1L.add_switch(
+    {
+        "2": SwitchPosition.STRAIGHT,
+        "1_3": SwitchPosition.Z_DOWN_STRAIGHT,
+        "9": SwitchPosition.STRAIGHT,
+        "10": SwitchPosition.STRAIGHT,
+    }
+)
+path_S_1L.add_track("1L")
+path_S_1L.add_track("S")
+path_S_1L.add_track("1", require_free=True)
+re_paths.add_path(path_S_1L)
+
+path_S_2L = Path("S", "2L")
+path_S_2L.add_switch(
+    {
+        "1_3": SwitchPosition.Z_UP_STRAIGHT,
+        "5": SwitchPosition.STRAIGHT,
+        "8": SwitchPosition.STRAIGHT,
+        "10": SwitchPosition.TURNED,
+    }
+)
+path_S_2L.add_track("2L")
+path_S_2L.add_track("S")
+path_S_2L.add_track("3", require_free=True)
+re_paths.add_path(path_S_2L)

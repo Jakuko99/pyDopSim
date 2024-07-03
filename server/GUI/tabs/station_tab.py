@@ -26,15 +26,18 @@ class StationTab(QWidget):
 
         self.station_name_input = QLineEdit(self)
         self.station_name_input.move(5, 5)
-        self.station_name_input.setPlaceholderText("Názov stanice")
+        self.station_name_input.setPlaceholderText("názov stanice")
+        self.station_name_input.setFixedWidth(200)
 
         self.station_name_G_input = QLineEdit(self)
         self.station_name_G_input.move(5, 35)
         self.station_name_G_input.setPlaceholderText("zo stanice")
+        self.station_name_G_input.setFixedWidth(200)
 
         self.station_name_L_input = QLineEdit(self)
         self.station_name_L_input.move(5, 65)
         self.station_name_L_input.setPlaceholderText("v stanici")
+        self.station_name_L_input.setFixedWidth(200)
 
         self.allow_2L_checkbox = QCheckBox("Povoliť 2L", self)
         self.allow_2L_checkbox.move(5, 95)
@@ -78,13 +81,16 @@ class StationTab(QWidget):
         self.save_track_file.move(120, 505)
 
     def station_list_item_clicked(self, item):
-        station = self.stations.get(item.text(), None)
+        station: Station = self.stations.get(item.text(), None)
         if station:
             self.station_scheme.set_station_names(
                 name_1L=station.left_station,
                 name_2L=station.turn_station,
                 name_S=station.right_station,
             )
+            self.station_name_input.setText(station.station_name_N)
+            self.station_name_G_input.setText(station.station_name_G)
+            self.station_name_L_input.setText(station.station_name_L)
 
     def load_track_file_func(self):
         file_name, _ = QFileDialog.getOpenFileName(
@@ -103,6 +109,7 @@ class StationTab(QWidget):
                         left_station=values["left_station"],
                         right_station=values["right_station"],
                         turn_station=values["turn_station"],
+                        station_type=values["station_type"],
                     )
 
                 for station, inflection in track["inflections"].items():
@@ -113,6 +120,9 @@ class StationTab(QWidget):
 
             self.station_list.clear()
             self.station_list.addItems(self.stations.keys())
+
+            if hasattr(self.parent, "overview_tab"):
+                self.parent.overview_tab.update_table(self.stations)
 
     def save_track_file_func(self):
         file_name, _ = QFileDialog.getSaveFileName(
