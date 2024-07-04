@@ -18,6 +18,8 @@ class AbstractStationButton(QWidget):
             self.log_pipe = queue_handler.get_logging_pipe()
 
         self.setGeometry(0, 0, 80, 55)
+        self.setToolTip("Hlavné menu stanice")
+        self.setToolTipDuration(750)
         self.log_window = LogWindow(self, log_pipe)
         self.right_click_function = lambda: None
         self.middle_click_function = lambda: None

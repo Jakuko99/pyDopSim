@@ -12,3 +12,5 @@ from .abstract_button import AbstractButton
 from .abstract_station_button import AbstractStationButton
 from .abstract_train_layout import AbstractTrainLayout
 from .abstract_clock import AbstractClock
+from .abstract_telephone_button import AbstractTelephoneButton
+from .abstract_diary_button import AbstractDiaryButton

@@ -19,6 +19,8 @@ from game.qt_components.api_package import (
     AbstractStationButton,
     AbstractClock,
     AbstractTrackButton,
+    AbstractTelephoneButton,
+    AbstractDiaryButton,
 )
 from game.forms.station_platforms import StationPlatforms
 from game.data_types.api_package import (
@@ -78,6 +80,12 @@ class REStation(QMainWindow):
         self.font_obj.setBold(True)
         self.title.setFixedSize(356, 55)
         self.title.setFont(self.font_obj)
+
+        self.phone_button = AbstractTelephoneButton(parent=self)
+        self.phone_button.move(570, 632)
+
+        self.diary_button = AbstractDiaryButton(parent=self)
+        self.diary_button.move(205, 690)
 
         self.path_build = AbstractIndicatorSlim(
             indicator_color=IndicatorColor.RED, parent=self

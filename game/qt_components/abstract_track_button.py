@@ -19,6 +19,9 @@ class AbstractTrackButton(QWidget):
         self.button_name: str = button_name
         self.standalone: bool = standalone
         self.setGeometry(0, 0, 40, 40)
+        self.setToolTip("ĽTM - stlačiť, PTM - povytiahnuť")
+        self.setToolTipDuration(500)
+
         self.state: IndicatorState = IndicatorState.OFF
         self._state: IndicatorState = IndicatorState.OFF
         self.right_click_function = lambda x: None

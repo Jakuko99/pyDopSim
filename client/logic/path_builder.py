@@ -24,4 +24,3 @@ class PathBuilder:
             self.logger.debug(f"Path from {start_signal} to {end_signal} is built")
         else:
             self.logger.error(f"Path from {start_signal} to {end_signal} is not found")
-    

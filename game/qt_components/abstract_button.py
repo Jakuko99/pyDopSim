@@ -9,6 +9,10 @@ class AbstractButton(QWidget):
     def __init__(self, button_type: ButtonType = ButtonType.NORMAL, parent=None):
         QWidget.__init__(self, parent=parent)
         self.setGeometry(0, 0, 40, 40)
+        self.setToolTip(
+            "ĽTM - stlačiť, PTM - povytiahnuť, STM - obsluha núdzovej funkcie"
+        )
+        self.setToolTipDuration(750)
         self.right_click_function = lambda: None
         self.middle_click_function = lambda: None
 
