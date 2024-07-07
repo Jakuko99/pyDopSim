@@ -5,7 +5,6 @@ from PyQt5.QtWidgets import (
     QComboBox,
     QLineEdit,
     QMessageBox,
-    QMainWindow,
     QComboBox,
     QDialog,
 )

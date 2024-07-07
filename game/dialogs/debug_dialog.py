@@ -1,15 +1,11 @@
 import os
 from PyQt5.QtWidgets import (
-    QMainWindow,
     QLabel,
     QPushButton,
     QComboBox,
-    QLineEdit,
-    QAction,
     QDialog,
 )
-from PyQt5.QtGui import QPixmap, QFont, QIcon
-from PyQt5.QtCore import Qt
+from PyQt5.QtGui import QFont, QIcon
 import logging
 
 from game.qt_components.api_package import (
