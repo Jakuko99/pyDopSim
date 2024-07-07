@@ -2,7 +2,7 @@ from enum import Enum, auto
 
 
 class StationStatus(Enum):
-    ONLINE = auto()
-    OFFLINE = auto()
-    UNKNOWN = auto()
-    BUSY = auto()
+    ONLINE = "ONLINE"
+    OFFLINE = "OFFLINE"
+    UNKNOWN = "UNKNOWN"
+    BUSY = "BUSY"

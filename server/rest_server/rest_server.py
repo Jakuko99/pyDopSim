@@ -61,10 +61,19 @@ class RESTServer:
     ) -> JSONResponse:
         raise HTTPException(status_code=501, detail="Not implemented")
 
-    async def take_station(self, station_name: str) -> JSONResponse:
+    async def remove_train(self, train_id: str) -> JSONResponse:
+        raise HTTPException(status_code=501, detail="Not implemented")
+
+    async def modify_train(
+        self, train_id: str, train_type: TrainType, new_number: int
+    ) -> JSONResponse:
+        raise HTTPException(status_code=501, detail="Not implemented")
+
+    async def take_station(self, station_name: str, client_name: str) -> JSONResponse:
         if self.stations.get(station_name, None):
             if self.stations.get(station_name).status == StationStatus.OFFLINE:
                 self.stations[station_name].status = StationStatus.ONLINE
+                self.stations[station_name].player_name = client_name
                 return_dict: dict = {
                     "server_tcp_port": self.tcp_port,
                     "server_rest_port": self.port,
@@ -78,6 +87,7 @@ class RESTServer:
         if self.stations.get(station_name, None):
             if self.stations.get(station_name, None).status == StationStatus.ONLINE:
                 self.stations[station_name].status = StationStatus.OFFLINE
+                self.stations[station_name].player_name = None
                 return {"message": "Station released successfully"}
             return {"error": "Station not taken"}
         raise HTTPException(status_code=404, detail="Station not found")
@@ -101,6 +111,16 @@ class RESTServer:
             "/register_train/{train_id}",
             self.register_train,
             methods=["POST"],
+        )
+        self.router.add_api_route(
+            "/modify_train/{train_id}",
+            self.modify_train,
+            methods=["PUT"],
+        )
+        self.router.add_api_route(
+            "/remove_train/{train_id}",
+            self.remove_train,
+            methods=["DELETE"],
         )
         self.router.add_api_route("/assets/{filename}", self.get_file, methods=["GET"])
         self.rest.include_router(self.router)

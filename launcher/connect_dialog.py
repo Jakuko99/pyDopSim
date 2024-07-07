@@ -122,7 +122,7 @@ class ConnectDialog(QDialog):
         selected_item: str = self.available_stations.currentItem().text()
         try:
             request = requests.put(
-                f"http://{self.server_ip.text()}:{self.server_port.text()}/take_station/{selected_item}"
+                f"http://{self.server_ip.text()}:{self.server_port.text()}/take_station/{selected_item}?client_name={self.player_name.text()}",
             )
             if request.status_code == 200:
                 if "server_tcp_port" in request.json():
