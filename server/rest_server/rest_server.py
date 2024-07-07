@@ -1,6 +1,7 @@
 import os
 import signal
 import uvicorn
+import pandas as pd
 from fastapi import FastAPI, APIRouter, Request
 from fastapi.responses import JSONResponse, HTMLResponse, FileResponse
 from fastapi.exceptions import HTTPException
@@ -36,7 +37,32 @@ class RESTServer:
         self.stations: dict[str:Station] = dict()
 
     async def root(self, request: Request) -> HTMLResponse:
-        return self.templates.TemplateResponse("index.html", {"request": request})
+        table_columns = [
+            "Názov stanice",
+            "Stav",
+            "Typ stanice",
+            "Hráč",
+            "Ľavá stanica",
+            "Pravá stanica",
+            "Stanica v odbočke",
+        ]
+        table_rows = []
+        for station_name, station in self.stations.items():
+            row = [
+                station_name,
+                station.status.name,
+                station.station_type,
+                station.player_name,
+                station.left_station,
+                station.right_station,
+                station.turn_station,
+            ]
+            table_rows.append(["-" if item is None else item for item in row])
+        df = pd.DataFrame(table_rows, columns=table_columns)
+
+        return self.templates.TemplateResponse(
+            "index.html", {"request": request, "table_html": df.to_html(index=False)}
+        )
 
     async def get_file(self, filename: str) -> FileResponse:
         return FileResponse(f"{assets_path}/{filename}")

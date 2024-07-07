@@ -6,6 +6,15 @@
     <title>PyDopSim Dashboard</title>
 </head>
 
+
+<script>
+    function refreshPage() {
+        setInterval(function() {
+            window.location.reload();
+        }, 30000);
+    }
+</script>
+
 <style>
     form {
         text-align: center;        
@@ -22,11 +31,22 @@
         margin-right: auto;        
         width: 10%;
     }
+
+    table, th, td {
+        text-align: center;
+        vertical-align: middle;     
+        margin-left: auto;
+        margin-right: auto;
+    }
+    table tr > *:nth-child(1) { width:15%; }   
 </style>
 
-<body>    
+<body onload="refreshPage()">    
     <img src="assets/app_icon.png" alt="PyDopSim logo" class="center">    
     <h1 style="text-align: center; font-size: 45px;">PyDopSim Dashboard</h1>
+    
+    {{ table_html | safe }}
+       
     <!--- add other website elements -->
 </body>
 
