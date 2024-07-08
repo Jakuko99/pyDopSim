@@ -10,7 +10,7 @@ from PyQt5.QtWidgets import (
     QTableWidgetItem,
 )
 from PyQt5.QtGui import QFont, QIntValidator
-from ..objects.api_package import Station
+from server.objects.api_package import Station
 
 
 class OverviewTab(QWidget):

@@ -1,3 +1,5 @@
+from uuid import UUID, uuid4
+
 from server.data_types.api_package import StationStatus
 
 
@@ -10,6 +12,7 @@ class Station:
         turn_station: str = None,
         station_type: str = None,
     ):
+        self.uuid: UUID = uuid4()
         self.station_name: str = station_name
         self.left_station: str = left_station
         self.right_station: str = right_station

@@ -13,7 +13,7 @@ from PyQt5.QtWidgets import (
 )
 from PyQt5.QtGui import QFont, QIntValidator
 
-from ..objects.api_package import Station
+from server.objects.api_package import Station
 from ..station_view import StationView
 
 

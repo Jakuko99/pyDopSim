@@ -39,13 +39,44 @@
         margin-right: auto;
     }
     table tr > *:nth-child(1) { width:15%; }   
+
+    .row {
+        display: flex;
+    }
+
+    .column {
+        flex: 50%;
+    }
 </style>
 
 <body onload="refreshPage()">    
     <img src="assets/app_icon.png" alt="PyDopSim logo" class="center">    
     <h1 style="text-align: center; font-size: 45px;">PyDopSim Dashboard</h1>
     
-    {{ table_html | safe }}
+    <div class="row">
+        <div class="column">
+            <h2 style="text-align: center;">Zoznam staníc</h2>
+            {{ table_html | safe }}
+        </div>
+        <div class="column">
+            <h2 style="text-align: center;">Zoznam vlakov</h2>
+            <table>
+                <tr>
+                    <th>ID</th>
+                    <th>Číslo vlaku</th>
+                    <th>Typ vlaku</th>
+                    <th>Stav</th>
+                </tr>
+                {% for train in trains %}
+                <tr>
+                    <td>{{ train.id }}</td>
+                    <td>{{ train.train_number }}</td>
+                    <td>{{ train.train_type }}</td>
+                    <td>{{ train.state }}</td>
+                </tr>
+                {% endfor %}
+            </table>
+    </div>
        
     <!--- add other website elements -->
 </body>

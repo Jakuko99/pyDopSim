@@ -13,7 +13,8 @@ from queue import Queue
 from utils.api_package import queue_handler
 from server.data_types.api_package import StationStatus
 from game.data_types.api_package import TrainType
-from server.GUI.objects.api_package import Station
+from server.objects.api_package import Station
+from utils.api_package import sqlite_handler
 
 rest_path = f"{os.path.dirname(os.path.abspath(__file__))}"
 assets_path = rest_path.replace(r"server\rest_server", "assets")
