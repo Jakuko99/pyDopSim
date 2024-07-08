@@ -71,7 +71,7 @@ class TestWindow(QMainWindow):
         self.button2.move(240, 125)
         self.button2.clicked.connect(self.change_signal2)
 
-        self.station_button = AbstractStationButton(parent=self, log_pipe=self.log_pipe)
+        self.station_button = AbstractStationButton(parent=self)
         self.station_button.move(360, 20)
         self.station_button.setFunctions(self.show_platforms)
 
@@ -153,12 +153,12 @@ class TestWindow(QMainWindow):
         )
 
         self.abstract_track_button_green = AbstractTrackButton(
-            IndicatorColor.GREEN, lambda: None, self
+            IndicatorColor.GREEN, self, button_name="1", standalone=True
         )
         self.abstract_track_button_green.move(125, 400)
 
         self.abstract_track_button_white = AbstractTrackButton(
-            IndicatorColor.WHITE, lambda: None, self
+            IndicatorColor.WHITE, self, button_name="2", standalone=True
         )
         self.abstract_track_button_white.move(175, 400)
 

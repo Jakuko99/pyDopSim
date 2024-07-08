@@ -7,7 +7,7 @@ class SqliteHandler:
     def __init__(self, db_path: str):
         self.logger = logging.getLogger("App.Server.SqliteHandler")
         self.logger.setLevel(logging.DEBUG)
-        self.logger.info(f"Initializing SqliteHandler with database at {db_path}")
+        self.logger.info("Initializing SqliteHandler")
 
         try:
             self.conn: sqlite3.Connection = sqlite3.connect(db_path)
@@ -28,3 +28,10 @@ class SqliteHandler:
 
 
 sqlite_handler = SqliteHandler("pydopsim.db")  # singleton for database connection
+
+if __name__ == "__main__":  # test script
+    import pandas as pd
+
+    with sqlite_handler.get_cursor() as c:
+        df = pd.read_sql_query("SELECT * FROM stations", c.connection)
+        print(df)
