@@ -34,3 +34,13 @@ class ConfigTab(QWidget):
         self.tcp_port_input.setValidator(QIntValidator(0, 65535))
         self.tcp_port_input.setFont(self._font)
         self.tcp_port_input.setText("8021")
+
+        self.clear_db_button = QPushButton("Vymazať databázu", self)
+        self.clear_db_button.move(5, 75)
+        self.clear_db_button.setFont(self._font)
+        self.clear_db_button.setFixedWidth(150)
+
+        self.create_db_tables = QPushButton("Vytvoriť tabuľky", self)
+        self.create_db_tables.move(5, 105)
+        self.create_db_tables.setFont(self._font)
+        self.create_db_tables.setFixedWidth(150)

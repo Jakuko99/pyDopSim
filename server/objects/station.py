@@ -32,3 +32,18 @@ class Station:
 
     def set_player_name(self, name: str):
         self.player_name = name
+
+    def __dict__(self):
+        return {
+            "uuid": str(self.uuid),
+            "station_name": self.station_name,
+            "left_station": self.left_station,
+            "right_station": self.right_station,
+            "turn_station": self.turn_station,
+            "status": self.status.value,
+            "station_type": self.station_type,
+            "station_name_N": self.station_name_N,
+            "station_name_G": self.station_name_G,
+            "station_name_L": self.station_name_L,
+            "player_name": self.player_name,
+        }

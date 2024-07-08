@@ -1,6 +1,7 @@
 import logging
 import sqlite3
 from contextlib import contextmanager
+from typing import Iterator
 
 
 class SqliteHandler:
@@ -15,7 +16,7 @@ class SqliteHandler:
             self.logger.error(e)
 
     @contextmanager
-    def get_cursor(self):
+    def get_cursor(self) -> Iterator[sqlite3.Cursor]:
         cursor: sqlite3.Cursor = self.conn.cursor()
         try:
             yield cursor
@@ -26,12 +27,17 @@ class SqliteHandler:
         finally:
             cursor.close()
 
+    @contextmanager
+    def get_connection(self) -> Iterator[sqlite3.Connection]:
+        cursor: sqlite3.Cursor = self.conn.cursor()
+        try:
+            yield cursor.connection
+            self.conn.commit()
+        except sqlite3.Error as e:
+            self.logger.error(e)
+            self.conn.rollback()
+        finally:
+            cursor.close()
+
 
 sqlite_handler = SqliteHandler("pydopsim.db")  # singleton for database connection
-
-if __name__ == "__main__":  # test script
-    import pandas as pd
-
-    with sqlite_handler.get_cursor() as c:
-        df = pd.read_sql_query("SELECT * FROM stations", c.connection)
-        print(df)
