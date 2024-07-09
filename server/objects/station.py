@@ -30,10 +30,7 @@ class Station:
         self.station_name_G = station_name_G
         self.station_name_L = station_name_L
 
-    def set_player_name(self, name: str):
-        self.player_name = name
-
-    def __dict__(self):
+    def __dict__(self) -> dict:
         return {
             "uuid": str(self.uuid),
             "station_name": self.station_name,

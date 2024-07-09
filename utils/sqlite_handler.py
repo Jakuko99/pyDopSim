@@ -11,7 +11,9 @@ class SqliteHandler:
         self.logger.info("Initializing SqliteHandler")
 
         try:
-            self.conn: sqlite3.Connection = sqlite3.connect(db_path)
+            self.conn: sqlite3.Connection = sqlite3.connect(
+                db_path, check_same_thread=False
+            )
         except sqlite3.Error as e:
             self.logger.error(e)
 
@@ -85,6 +87,17 @@ class SqliteHandler:
                 "origin_station"	STR,
                 PRIMARY KEY("uuid"),
                 FOREIGN KEY("origin_station") REFERENCES "stations"("uuid")
+                );
+                """
+            )
+            cursor.execute(
+                """
+                CREATE TABLE IF NOT EXISTS "station_names"(
+                "station_name"	STR,
+                "station_name_N"	STR,
+                "station_name_G"	STR,
+                "station_name_L"	STR,
+                PRIMARY KEY("station_name")
                 );
                 """
             )

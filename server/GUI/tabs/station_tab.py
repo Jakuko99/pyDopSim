@@ -1,5 +1,6 @@
 import os
 import json
+import pandas as pd
 from PyQt5.QtWidgets import (
     QWidget,
     QLabel,
@@ -15,6 +16,7 @@ from PyQt5.QtGui import QFont, QIntValidator
 
 from server.objects.api_package import Station
 from ..station_view import StationView
+from utils.api_package import sqlite_handler
 
 
 class StationTab(QWidget):
@@ -80,6 +82,27 @@ class StationTab(QWidget):
         self.save_track_file.setFixedSize(110, 30)
         self.save_track_file.move(120, 505)
 
+        with sqlite_handler.get_connection() as cur:  # TODO: use dataframes instead of dicts everywhere
+            stations = pd.read_sql("SELECT * FROM stations", cur)
+            for _, station in stations.iterrows():
+                self.stations[
+                    station["station_name"]
+                ] = Station(  # TODO: will be replaced by dataframe
+                    station_name=station["station_name"],
+                    left_station=station["left_station"],
+                    right_station=station["right_station"],
+                    turn_station=station["turn_station"],
+                    station_type=station["station_type"],
+                )
+                self.stations[station["station_name"]].add_inflections(
+                    station["station_name_G"], station["station_name_L"]
+                )
+            self.parent.logger.debug(
+                f"Loaded {len(self.stations)} stations from database"
+            )
+
+        self.station_list.addItems(self.stations.keys())
+
     def station_list_item_clicked(self, item):
         station: Station = self.stations.get(item.text(), None)
         if station:
@@ -120,6 +143,16 @@ class StationTab(QWidget):
 
             self.station_list.clear()
             self.station_list.addItems(self.stations.keys())
+
+            station_fields: list = list(
+                self.stations[list(self.stations.keys())[0]].__dict__().keys()
+            )
+            station_df = pd.DataFrame(
+                columns=station_fields,
+                data=[station.__dict__() for station in self.stations.values()],
+            )
+            with sqlite_handler.get_connection() as conn:
+                station_df.to_sql("stations", conn, if_exists="replace", index=False)
 
             if hasattr(self.parent, "overview_tab"):
                 self.parent.overview_tab.update_table(self.stations)

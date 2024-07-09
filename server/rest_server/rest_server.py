@@ -48,15 +48,17 @@ class RESTServer:
             "Stanica v odbočke",
         ]
         table_rows = []
-        for station_name, station in self.stations.items():
+        with sqlite_handler.get_connection() as conn:
+            station_df = pd.read_sql("SELECT * FROM stations", conn)
+        for _, station in station_df.iterrows():
             row = [
-                station_name,
-                station.status.name,
-                station.station_type,
-                station.player_name,
-                station.left_station,
-                station.right_station,
-                station.turn_station,
+                station["station_name"],
+                station["status"],
+                station["station_type"],
+                station["player_name"],
+                station["left_station"],
+                station["right_station"],
+                station["turn_station"],
             ]
             table_rows.append(["-" if item is None else item for item in row])
         df = pd.DataFrame(table_rows, columns=table_columns)

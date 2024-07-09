@@ -73,5 +73,7 @@ class ServerGUI(QMainWindow):
         if question_box == QMessageBox.Yes:
             with sqlite_handler.get_cursor() as cursor:
                 cursor.execute("DELETE FROM stations")
+                cursor.execute("DELETE FROM trains")
+                cursor.execute("DELETE FROM station_names")
 
             self.logger.info("Database cleared")
