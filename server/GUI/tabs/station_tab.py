@@ -47,13 +47,17 @@ class StationTab(QWidget):
         self.add_station_button = QPushButton("Pridať stanicu", self)
         self.add_station_button.move(5, 125)
 
+        self.routes_combobox = QComboBox(self)
+        self.routes_combobox.move(300, 5)
+        self.routes_combobox.setFixedSize(290, 30)
+
         self.station_list = QListWidget(self)
-        self.station_list.move(300, 5)
-        self.station_list.setFixedSize(290, 225)
+        self.station_list.move(300, 40)
+        self.station_list.setFixedSize(290, 200)
         self.station_list.itemClicked.connect(self.station_list_item_clicked)
 
         self.remove_station_button = QPushButton("Odstrániť stanicu", self)
-        self.remove_station_button.move(445, 235)
+        self.remove_station_button.move(445, 245)
 
         self.show_advanced_checkbox = QCheckBox("Zobraziť rozšírené nastavenia", self)
         self.show_advanced_checkbox.move(5, 155)
@@ -64,7 +68,7 @@ class StationTab(QWidget):
         )
 
         self.station_scheme = StationView(self)
-        self.station_scheme.move(50, 250)
+        self.station_scheme.move(50, 260)
 
         self.advanced_settings_group = QGroupBox(self)
         self.advanced_settings_group.move(5, 180)
@@ -124,7 +128,9 @@ class StationTab(QWidget):
         )
         if file_name:
             self.parent.logger.debug(f"Loading track file: {file_name}")
-            with open(file_name, "r", encoding="utf-8") as f:
+            with open(
+                file_name, "r", encoding="utf-8"
+            ) as f:  # TODO: file parsing needs to be remade
                 track: dict = json.load(f)
                 for station, values in track["stations"].items():
                     self.stations[station] = Station(

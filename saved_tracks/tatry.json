@@ -1,4 +1,17 @@
 {
+    "route": {
+        "name": "Tatry",
+        "stations": [
+            "Štrba",
+            "Svit",
+            "Poprad-Tatry",
+            "Studený Potok",
+            "Tatranská Lomnica",
+            "Starý Smokovec",
+            "Vyšné Hágy",
+            "Štrbské Pleso"
+        ]
+    },
     "stations": {
         "Štrba": {
             "turn_station": "Štrbské Pleso",

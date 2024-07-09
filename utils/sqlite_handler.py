@@ -54,18 +54,19 @@ class SqliteHandler:
             cursor.execute(
                 """
                CREATE TABLE IF NOT EXISTS "stations" (
-                "uuid"	STR,
+                "uid"	STR,
                 "station_name"	STR,
                 "left_station"	STR,
                 "right_station"	STR,
                 "turn_station"	STR,
                 "station_type"	STR,
                 "status"	STR,
-                "station_name_N"	INTEGER,
-                "station_name_G"	INTEGER,
-                "station_name_L"	INTEGER,
-                "player_name"	INTEGER,
-                PRIMARY KEY("uuid")
+                "player_name"	STR,
+                "route_uid"	STR,
+                "station_inflections"	STR,
+                FOREIGN KEY("route_uid") REFERENCES "routes"("uid"),
+                FOREIGN KEY("station_inflections") REFERENCES "station_names"("station_name"),
+                PRIMARY KEY("uid")
                 );
             """
             )
@@ -81,12 +82,12 @@ class SqliteHandler:
             cursor.execute(
                 """
                 CREATE TABLE IF NOT EXISTS "trains"(
-                "uuid"	STR,
+                "uid"	STR,
                 "train_number" INTEGER,
                 "train_type"	STR,
                 "origin_station"	STR,
-                PRIMARY KEY("uuid"),
-                FOREIGN KEY("origin_station") REFERENCES "stations"("uuid")
+                PRIMARY KEY("uid"),
+                FOREIGN KEY("origin_station") REFERENCES "stations"("uid")
                 );
                 """
             )
@@ -98,6 +99,15 @@ class SqliteHandler:
                 "station_name_G"	STR,
                 "station_name_L"	STR,
                 PRIMARY KEY("station_name")
+                );
+                """
+            )
+            cursor.execute(
+                """
+                CREATE TABLE IF NOT EXISTS "routes"(
+                "uid"	STR,
+                "route_name"	STR,
+                PRIMARY KEY("uid")
                 );
                 """
             )
