@@ -39,8 +39,3 @@ class ConfigTab(QWidget):
         self.clear_db_button.move(5, 75)
         self.clear_db_button.setFont(self._font)
         self.clear_db_button.setFixedWidth(150)
-
-        self.create_db_tables = QPushButton("Vytvoriť tabuľky", self)
-        self.create_db_tables.move(5, 105)
-        self.create_db_tables.setFont(self._font)
-        self.create_db_tables.setFixedWidth(150)
