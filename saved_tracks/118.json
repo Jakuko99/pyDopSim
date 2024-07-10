@@ -1,0 +1,107 @@
+{
+    "route": {
+        "name": "118",
+        "stations": [
+            "Zvolen osobná stanica",
+            "Sliač kúpele",
+            "Banská Bystrica",
+            "Uľanka",
+            "Čremošné",
+            "Horná Štubňa",
+            "Kremnica",
+            "Hronská Dúbrava"
+        ]
+    },
+    "stations": {
+        "Zvolen osobná stanica": {
+            "turn_station": "Hronská Dúbrava",
+            "right_station": "Sliač kúpele",
+            "left_station": null,
+            "station_type": "RE"
+        },
+        "Sliač Kúpele": {
+            "turn_station": null,
+            "right_station": "Banská Bystrica",
+            "left_station": "Zvolen osobná stanica",
+            "station_type": "RE"
+        },
+        "Banská Bystrica": {
+            "turn_station": null,
+            "right_station": "Uľanka",
+            "left_station": "Sliač kúpele",
+            "station_type": "RE"
+        },
+        "Uľanka": {
+            "turn_station": null,
+            "right_station": "Banská Bystrica",
+            "left_station": "Čremošné",
+            "station_type": "RE"
+        },
+        "Čremošné": {
+            "turn_station": null,
+            "right_station": "Uľanka",
+            "left_station": "Horná Štubňa",
+            "station_type": "RE"
+        },
+        "Horná Štubňa": {
+            "turn_station": "Kremnica",
+            "right_station": null,
+            "left_station": "Uľanka",
+            "station_type": "RE"
+        },
+        "Kremnica": {
+            "turn_station": null,
+            "right_station": "Horná Štubňa",
+            "left_station": "Hronská Dúbrava",
+            "station_type": "RE"
+        },
+        "Hronská Dúbrava": {
+            "turn_station": "Kremnica",
+            "right_station": "Zvolen osobná stanica",
+            "left_station": null,
+            "station_type": "RE"
+        }
+    },
+    "inflections": {
+        "Zvolen osobná stanica": {
+            "nominative": "Zvolen osobná stanica",
+            "genitive": "zo Zvolen osobná stanica",
+            "local": "v Zvolen osobnej stanici"
+        },
+        "Sliač kúpele": {
+            "nominative": "Sliač Kúpele",
+            "genitive": "z Sliač Kúpeľov",
+            "local": "v Sliač Kúpeľoch"
+        },
+        "Banská Bystrica": {
+            "nominative": "Banská Bystrica",
+            "genitive": "z Banskej Bystrice",
+            "local": "v Banskej Bystrici"
+        },
+        "Uľanka": {
+            "nominative": "Uľanka",
+            "genitive": "z Uľanky",
+            "local": "v Uľanke"
+        },
+        "Čremošné": {
+            "nominative": "Čremošné",
+            "genitive": "zo Čremošného",
+            "local": "v Čremošnom"
+        },
+        "Horná Štubňa": {
+            "nominative": "Horná Štubňa",
+            "genitive": "z Hornej Štubne",
+            "local": "v Hornej Štubni"
+        },
+        "Kremnica": {
+            "nominative": "Kremnica",
+            "genitive": "z Kremnice",
+            "local": "v Kreminici"
+        },
+        "Hronská Dúbrava": {
+            "nominative": "Hronská Dúbrava",
+            "genitive": "z Hronskej Dúbravy",
+            "local": "v Hronskej Dúbrave"
+        }
+    }
+}

@@ -34,6 +34,9 @@ class ServerGUI(QMainWindow):
         self.station_tab = tabs.StationTab(self)
         self.tab_view.addTab(self.station_tab, "Stanice")
 
+        self.creator_tab = tabs.CreatorTab(self)
+        self.tab_view.addTab(self.creator_tab, "Vytvorenie trate")
+
         self.overview_tab = tabs.OverviewTab(self)
         self.tab_view.addTab(self.overview_tab, "Prehľad")
 
@@ -75,5 +78,7 @@ class ServerGUI(QMainWindow):
                 cursor.execute("DELETE FROM stations")
                 cursor.execute("DELETE FROM trains")
                 cursor.execute("DELETE FROM station_names")
+                cursor.execute("DELETE FROM routes")
 
+            self.station_tab.fetch_data_from_db()
             self.logger.info("Database cleared")

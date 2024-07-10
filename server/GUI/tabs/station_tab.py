@@ -12,6 +12,7 @@ from PyQt5.QtWidgets import (
     QLineEdit,
     QGroupBox,
     QFileDialog,
+    QMessageBox,
 )
 from PyQt5.QtGui import QFont, QIntValidator
 
@@ -27,56 +28,17 @@ class StationTab(QWidget):
         self.setFont(QFont("Arial", 11))
         self.stations: pd.DataFrame = pd.DataFrame()
 
-        self.station_name_input = QLineEdit(self)
-        self.station_name_input.move(5, 5)
-        self.station_name_input.setPlaceholderText("názov stanice")
-        self.station_name_input.setFixedWidth(200)
-
-        self.station_name_G_input = QLineEdit(self)
-        self.station_name_G_input.move(5, 35)
-        self.station_name_G_input.setPlaceholderText("zo stanice")
-        self.station_name_G_input.setFixedWidth(200)
-
-        self.station_name_L_input = QLineEdit(self)
-        self.station_name_L_input.move(5, 65)
-        self.station_name_L_input.setPlaceholderText("v stanici")
-        self.station_name_L_input.setFixedWidth(200)
-
-        self.allow_2L_checkbox = QCheckBox("Povoliť 2L", self)
-        self.allow_2L_checkbox.move(5, 95)
-
-        self.add_station_button = QPushButton("Pridať stanicu", self)
-        self.add_station_button.move(5, 125)
-
         self.routes_combobox = QComboBox(self)
-        self.routes_combobox.move(300, 5)
+        self.routes_combobox.move(5, 5)
         self.routes_combobox.setFixedSize(290, 30)
-        self.routes_combobox.currentIndexChanged.connect(self.route_combobox_changed)
 
         self.station_list = QListWidget(self)
-        self.station_list.move(300, 40)
-        self.station_list.setFixedSize(290, 200)
+        self.station_list.move(5, 40)
+        self.station_list.setFixedSize(290, 240)
         self.station_list.itemClicked.connect(self.station_list_item_clicked)
-
-        self.remove_station_button = QPushButton("Odstrániť stanicu", self)
-        self.remove_station_button.move(445, 245)
-
-        self.show_advanced_checkbox = QCheckBox("Zobraziť rozšírené nastavenia", self)
-        self.show_advanced_checkbox.move(5, 155)
-        self.show_advanced_checkbox.stateChanged.connect(
-            lambda: self.advanced_settings_group.setVisible(
-                self.show_advanced_checkbox.isChecked()
-            )
-        )
 
         self.station_scheme = StationView(self)
         self.station_scheme.move(50, 260)
-
-        self.advanced_settings_group = QGroupBox(self)
-        self.advanced_settings_group.move(5, 180)
-        self.advanced_settings_group.setStyleSheet("background-color: white;")
-        self.advanced_settings_group.setFixedSize(290, 320)
-        self.advanced_settings_group.hide()
 
         self.load_track_file = QPushButton("Načítať trať", self)
         self.load_track_file.clicked.connect(self.load_track_file_func)
@@ -88,6 +50,15 @@ class StationTab(QWidget):
         self.save_track_file.setFixedSize(110, 30)
         self.save_track_file.move(120, 505)
 
+        self.fetch_data_from_db()
+        self.routes_combobox.currentIndexChanged.connect(
+            self.route_combobox_changed
+        )  # prevend duplicate calls
+
+    def fetch_data_from_db(self):
+        self.routes_combobox.clear()
+        self.station_list.clear()
+
         with sqlite_handler.get_connection() as cur:
             routes = pd.read_sql("SELECT * FROM routes", cur)
             self.stations = pd.read_sql("SELECT * FROM stations", cur)
@@ -96,16 +67,18 @@ class StationTab(QWidget):
                 f"Loaded {len(self.stations)} stations from database"
             )
 
-            station_per_route = self.stations.groupby("route_uid").size()
-            for route in routes.itertuples():
-                self.routes_combobox.addItem(
-                    f"{route.route_name} ({station_per_route.get(route.uid, 0)})"
+            if not routes.empty:
+                station_per_route = self.stations.groupby("route_uid").size()
+                for route in routes.itertuples():
+                    self.routes_combobox.addItem(
+                        f"{route.route_name} ({station_per_route.get(route.uid, 0)})"
+                    )
+                self.station_list.addItems(
+                    self.stations.loc[
+                        self.stations["route_uid"] == routes.iloc[0]["uid"],
+                        "station_name",
+                    ].to_list()
                 )
-            self.station_list.addItems(
-                self.stations.loc[
-                    self.stations["route_uid"] == routes.iloc[0]["uid"], "station_name"
-                ].to_list()
-            )
 
     def station_list_item_clicked(self, item):
         self.station_scheme.set_station_names(
@@ -121,8 +94,17 @@ class StationTab(QWidget):
         )
 
     def route_combobox_changed(self, index):
+        if index == -1:
+            return
+
         self.station_list.clear()
-        route_uid = self.routes_combobox.currentText().split(" ")[0]
+
+        with sqlite_handler.get_cursor() as cur:
+            route_name = self.routes_combobox.currentText().split(" ")[0]
+            route_uid = cur.execute(
+                f"SELECT uid FROM routes WHERE route_name = '{route_name}'"
+            ).fetchone()[0]
+
         self.station_list.addItems(
             self.stations.loc[
                 self.stations["route_uid"] == route_uid, "station_name"
@@ -142,9 +124,24 @@ class StationTab(QWidget):
                 try:
                     track: dict = json.load(f)
                     new_route = Route()
+                    new_route.uid = uuid4()
                     new_route.route_name = track["route"]["name"]
 
                     with sqlite_handler.get_cursor() as cur:
+                        if (
+                            cur.execute(
+                                f"SELECT COUNT(*) FROM routes WHERE route_name = '{new_route.route_name}';"
+                            ).fetchone()[0]
+                            == 1
+                        ):
+                            QMessageBox.warning(
+                                self, "Chyba", "Trať už v databáze existuje"
+                            )
+                            self.parent.logger.error(
+                                f"Route {new_route.route_name} already exists in database"
+                            )
+                            return
+
                         cur.execute(
                             f"INSERT INTO routes (uid, route_name) VALUES ('{str(new_route.uid)}', '{new_route.route_name}')"
                         )
@@ -180,12 +177,14 @@ class StationTab(QWidget):
                     )
                     with sqlite_handler.get_connection() as conn:
                         self.stations.to_sql(
-                            "stations", conn, if_exists="replace", index=False
+                            "stations", conn, if_exists="append", index=False
                         )
 
                 except KeyError as e:
                     self.parent.logger.error(f"Error loading track file: {e}")
                     return
+
+        self.fetch_data_from_db()
 
     def save_track_file_func(self):
         file_name, _ = QFileDialog.getSaveFileName(

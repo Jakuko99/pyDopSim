@@ -46,6 +46,7 @@ class RESTServer:
             "Ľavá stanica",
             "Pravá stanica",
             "Stanica v odbočke",
+            "Trať",
         ]
         table_rows = []
         with sqlite_handler.get_connection() as conn:
@@ -59,6 +60,9 @@ class RESTServer:
                 station["left_station"],
                 station["right_station"],
                 station["turn_station"],
+                conn.execute(
+                    f"SELECT route_name FROM routes WHERE uid = '{station['route_uid']}';"
+                ).fetchone()[0],
             ]
             table_rows.append(["-" if item is None else item for item in row])
         df = pd.DataFrame(table_rows, columns=table_columns)
