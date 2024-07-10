@@ -73,9 +73,10 @@ class SqliteHandler:
             cursor.execute(
                 """
                 CREATE TABLE IF NOT EXISTS "servers" (
-                server_id INTEGER PRIMARY KEY,
+                server_id INTEGER,
                 server_ip STR,
-                server_port INTEGER
+                server_port INTEGER,
+                PRIMARY KEY("server_id" AUTOINCREMENT)
                 );
                 """
             )

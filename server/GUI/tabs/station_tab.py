@@ -1,6 +1,7 @@
 import os
 import json
 import pandas as pd
+from uuid import uuid4
 from PyQt5.QtWidgets import (
     QWidget,
     QLabel,
@@ -14,7 +15,7 @@ from PyQt5.QtWidgets import (
 )
 from PyQt5.QtGui import QFont, QIntValidator
 
-from server.objects.api_package import Station
+from server.objects.api_package import Station, Route, StationName
 from ..station_view import StationView
 from utils.api_package import sqlite_handler
 
@@ -24,7 +25,7 @@ class StationTab(QWidget):
         super().__init__(parent)
         self.parent = parent
         self.setFont(QFont("Arial", 11))
-        self.stations: dict[str:Station] = dict()
+        self.stations: pd.DataFrame = pd.DataFrame()
 
         self.station_name_input = QLineEdit(self)
         self.station_name_input.move(5, 5)
@@ -50,6 +51,7 @@ class StationTab(QWidget):
         self.routes_combobox = QComboBox(self)
         self.routes_combobox.move(300, 5)
         self.routes_combobox.setFixedSize(290, 30)
+        self.routes_combobox.currentIndexChanged.connect(self.route_combobox_changed)
 
         self.station_list = QListWidget(self)
         self.station_list.move(300, 40)
@@ -86,38 +88,46 @@ class StationTab(QWidget):
         self.save_track_file.setFixedSize(110, 30)
         self.save_track_file.move(120, 505)
 
-        with sqlite_handler.get_connection() as cur:  # TODO: use dataframes instead of dicts everywhere
-            stations = pd.read_sql("SELECT * FROM stations", cur)
-            for _, station in stations.iterrows():
-                self.stations[
-                    station["station_name"]
-                ] = Station(  # TODO: will be replaced by dataframe
-                    station_name=station["station_name"],
-                    left_station=station["left_station"],
-                    right_station=station["right_station"],
-                    turn_station=station["turn_station"],
-                    station_type=station["station_type"],
-                )
-                self.stations[station["station_name"]].add_inflections(
-                    station["station_name_G"], station["station_name_L"]
-                )
+        with sqlite_handler.get_connection() as cur:
+            routes = pd.read_sql("SELECT * FROM routes", cur)
+            self.stations = pd.read_sql("SELECT * FROM stations", cur)
+
             self.parent.logger.debug(
                 f"Loaded {len(self.stations)} stations from database"
             )
 
-        self.station_list.addItems(self.stations.keys())
+            station_per_route = self.stations.groupby("route_uid").size()
+            for route in routes.itertuples():
+                self.routes_combobox.addItem(
+                    f"{route.route_name} ({station_per_route.get(route.uid, 0)})"
+                )
+            self.station_list.addItems(
+                self.stations.loc[
+                    self.stations["route_uid"] == routes.iloc[0]["uid"], "station_name"
+                ].to_list()
+            )
 
     def station_list_item_clicked(self, item):
-        station: Station = self.stations.get(item.text(), None)
-        if station:
-            self.station_scheme.set_station_names(
-                name_1L=station.left_station,
-                name_2L=station.turn_station,
-                name_S=station.right_station,
-            )
-            self.station_name_input.setText(station.station_name_N)
-            self.station_name_G_input.setText(station.station_name_G)
-            self.station_name_L_input.setText(station.station_name_L)
+        self.station_scheme.set_station_names(
+            name_1L=self.stations.loc[
+                self.stations["station_name"] == item.text(), "left_station"
+            ].values[0],
+            name_2L=self.stations.loc[
+                self.stations["station_name"] == item.text(), "turn_station"
+            ].values[0],
+            name_S=self.stations.loc[
+                self.stations["station_name"] == item.text(), "right_station"
+            ].values[0],
+        )
+
+    def route_combobox_changed(self, index):
+        self.station_list.clear()
+        route_uid = self.routes_combobox.currentText().split(" ")[0]
+        self.station_list.addItems(
+            self.stations.loc[
+                self.stations["route_uid"] == route_uid, "station_name"
+            ].to_list()
+        )
 
     def load_track_file_func(self):
         file_name, _ = QFileDialog.getOpenFileName(
@@ -127,41 +137,55 @@ class StationTab(QWidget):
             directory=os.getcwd(),
         )
         if file_name:
-            self.parent.logger.debug(f"Loading track file: {file_name}")
-            with open(
-                file_name, "r", encoding="utf-8"
-            ) as f:  # TODO: file parsing needs to be remade
-                track: dict = json.load(f)
-                for station, values in track["stations"].items():
-                    self.stations[station] = Station(
-                        station_name=station,
-                        left_station=values["left_station"],
-                        right_station=values["right_station"],
-                        turn_station=values["turn_station"],
-                        station_type=values["station_type"],
-                    )
+            self.parent.logger.debug(f"Loading route file: {file_name}")
+            with open(file_name, "r", encoding="utf-8") as f:
+                try:
+                    track: dict = json.load(f)
+                    new_route = Route()
+                    new_route.route_name = track["route"]["name"]
 
-                for station, inflection in track["inflections"].items():
-                    if self.stations.get(station, None):
-                        self.stations[station].add_inflections(
-                            inflection["genitive"], inflection["local"]
+                    with sqlite_handler.get_cursor() as cur:
+                        cur.execute(
+                            f"INSERT INTO routes (uid, route_name) VALUES ('{str(new_route.uid)}', '{new_route.route_name}')"
                         )
 
-            self.station_list.clear()
-            self.station_list.addItems(self.stations.keys())
+                    for station, values in track["inflections"].items():
+                        s = StationName()
+                        s.station_name = station
+                        s.station_name_N = values["nominative"]
+                        s.station_name_G = values["genitive"]
+                        s.station_name_L = values["local"]
 
-            station_fields: list = list(
-                self.stations[list(self.stations.keys())[0]].__dict__().keys()
-            )
-            station_df = pd.DataFrame(
-                columns=station_fields,
-                data=[station.__dict__() for station in self.stations.values()],
-            )
-            with sqlite_handler.get_connection() as conn:
-                station_df.to_sql("stations", conn, if_exists="replace", index=False)
+                        with sqlite_handler.get_cursor() as cur:
+                            cur.execute(
+                                f"INSERT INTO station_names (station_name, station_name_N, station_name_G, station_name_L) VALUES ('{s.station_name}', '{s.station_name_N}', '{s.station_name_G}', '{s.station_name_L}')"
+                            )
 
-            if hasattr(self.parent, "overview_tab"):
-                self.parent.overview_tab.update_table(self.stations)
+                    stations: list = []
+                    for station, values in track["stations"].items():
+                        s = Station()
+                        s.uid = uuid4()  # regenerate uid each time
+                        s.station_name = station
+                        s.left_station = values["left_station"]
+                        s.right_station = values["right_station"]
+                        s.turn_station = values["turn_station"]
+                        s.station_type = values["station_type"]
+                        s.route_uid = new_route.uid
+                        s.station_inflections = station
+                        stations.append(s.__list__())
+
+                    self.stations = pd.DataFrame(
+                        columns=s.__dict__().keys(),
+                        data=stations,
+                    )
+                    with sqlite_handler.get_connection() as conn:
+                        self.stations.to_sql(
+                            "stations", conn, if_exists="replace", index=False
+                        )
+
+                except KeyError as e:
+                    self.parent.logger.error(f"Error loading track file: {e}")
+                    return
 
     def save_track_file_func(self):
         file_name, _ = QFileDialog.getSaveFileName(
