@@ -45,15 +45,15 @@ class StationTab(QWidget):
         self.load_track_file.setFixedSize(110, 30)
         self.load_track_file.move(5, 505)
 
-        self.save_track_file = QPushButton("Uložiť trať", self)
-        self.save_track_file.clicked.connect(self.save_track_file_func)
+        self.save_track_file = QPushButton("Vymazať trať", self)
+        self.save_track_file.clicked.connect(self.remove_track_func)
         self.save_track_file.setFixedSize(110, 30)
         self.save_track_file.move(120, 505)
 
         self.fetch_data_from_db()
         self.routes_combobox.currentIndexChanged.connect(
             self.route_combobox_changed
-        )  # prevend duplicate calls
+        )  # prevent duplicate calls
 
     def fetch_data_from_db(self):
         self.routes_combobox.clear()
@@ -186,13 +186,5 @@ class StationTab(QWidget):
 
         self.fetch_data_from_db()
 
-    def save_track_file_func(self):
-        file_name, _ = QFileDialog.getSaveFileName(
-            self,
-            caption="Uložiť trať",
-            filter="JSON súbory (*.json)",
-            directory=os.getcwd(),
-        )
-        if file_name:
-            self.parent.logger.debug(f"Saving track file: {file_name}")
-            pass
+    def remove_track_func(self):
+        pass

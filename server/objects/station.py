@@ -17,7 +17,7 @@ class Station:
 
     def __dict__(self) -> dict:
         return {
-            "uuid": str(self.uid),
+            "uid": str(self.uid),
             "station_name": self.station_name,
             "left_station": self.left_station,
             "right_station": self.right_station,

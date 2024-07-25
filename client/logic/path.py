@@ -7,9 +7,9 @@ class Path:
         self.end_signal: str = end_signal
         self.switches: dict[str:SwitchPosition] = dict()
         self.tracks: list[str] = list()
-        self.free_tracks: list[
-            str
-        ] = list()  # Tracks that need to be free to take this path
+        self.free_tracks: list[str] = (
+            list()
+        )  # Tracks that need to be free to take this path
         self.shunt_path: bool = shunt_path
 
     def add_switch(self, switch: dict):
