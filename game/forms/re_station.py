@@ -23,6 +23,7 @@ from game.qt_components.api_package import (
     AbstractDiaryButton,
 )
 from game.forms.station_platforms import StationPlatforms
+import game.dialogs.api_package as dialogs
 from game.data_types.api_package import (
     SignalSign,
     TrackState,
@@ -63,6 +64,7 @@ class REStation(QMainWindow):
         self.logger.info("REStation initialized")
         self._button_click_callback = button_click_callback
         self.station_platforms = StationPlatforms(station_name=station_name)
+        self.telephone_dialog = dialogs.TelephoneDialog()
 
         self.station_name = station_name
         self.station_name_left: str = self.station_name
@@ -83,6 +85,7 @@ class REStation(QMainWindow):
 
         self.phone_button = AbstractTelephoneButton(parent=self)
         self.phone_button.move(570, 632)
+        self.phone_button.set_click_function(self.telephone_dialog.show)
 
         self.diary_button = AbstractDiaryButton(parent=self)
         self.diary_button.move(205, 690)

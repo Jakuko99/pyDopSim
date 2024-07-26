@@ -13,25 +13,25 @@ class AHR(QWidget):
         self.background = QLabel(self)
         self.background.setPixmap(QPixmap(f"assets/panAHR{type.upper()}black.bmp"))
         self.background.setScaledContents(True)
-        self.background.setFixedSize(191, 160)
+        self.background.setFixedSize(201, 170)
 
         self.RBP_button = AbstractButton(parent=self)
-        self.RBP_button.move(12 if type == "L" else 137, 85)
+        self.RBP_button.move(12 if type == "L" else 145, 90)
 
         self.UST_button = AbstractButton(parent=self)
-        self.UST_button.move(137 if type == "L" else 12, 85)
+        self.UST_button.move(145 if type == "L" else 12, 90)
 
         self.UVT = AbstractIndicatorSlim(
             parent=self, indicator_color=IndicatorColor.WHITE
         )
-        self.UVT.move(77, 28)
+        self.UVT.move(80, 33)
 
         self.UST = AbstractIndicatorSlim(
             parent=self, indicator_color=IndicatorColor.RED
         )
-        self.UST.move(15 if type == "S" else 139, 28)
+        self.UST.move(15 if type == "S" else 144, 33)
 
         self.PST = AbstractIndicatorSlim(
             parent=self, indicator_color=IndicatorColor.GREEN
         )
-        self.PST.move(139 if type == "S" else 15, 28)
+        self.PST.move(144 if type == "S" else 15, 33)
