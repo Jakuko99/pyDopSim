@@ -87,8 +87,10 @@ class SqliteHandler:
                 "train_number" INTEGER,
                 "train_type"	STR,
                 "origin_station"	STR,
+                "route_uid"	STR,
                 PRIMARY KEY("uid"),
-                FOREIGN KEY("origin_station") REFERENCES "stations"("uid")
+                FOREIGN KEY("origin_station") REFERENCES "stations"("uid"),
+                FOREIGN KEY("route_uid") REFERENCES "routes"("uid")
                 );
                 """
             )

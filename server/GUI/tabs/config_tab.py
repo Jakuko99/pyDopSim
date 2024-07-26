@@ -39,3 +39,8 @@ class ConfigTab(QWidget):
         self.clear_db_button.move(5, 75)
         self.clear_db_button.setFont(self._font)
         self.clear_db_button.setFixedWidth(150)
+
+        self.delete_trains_button = QPushButton("Vymazať vlaky", self)
+        self.delete_trains_button.move(160, 75)
+        self.delete_trains_button.setFont(self._font)
+        self.delete_trains_button.setFixedWidth(150)

@@ -43,6 +43,7 @@ class ServerGUI(QMainWindow):
         self.config_tab = tabs.ConfigTab(self)
         self.tab_view.addTab(self.config_tab, "Nastavenia servera")
         self.config_tab.clear_db_button.clicked.connect(self.clear_db)
+        self.config_tab.delete_trains_button.clicked.connect(self.delete_trains)
 
         self.start_button = QPushButton("Spustiť server", self)
         self.start_button.move(5, 567)
@@ -69,7 +70,7 @@ class ServerGUI(QMainWindow):
         question_box = QMessageBox.question(
             self,
             "Vymazanie databázy",
-            "Naozaj chcete vymazať databázu?",
+            "Naozaj chcete vymazať obsah databázy?",
             QMessageBox.Yes | QMessageBox.No,
             QMessageBox.No,
         )
@@ -82,3 +83,17 @@ class ServerGUI(QMainWindow):
 
             self.station_tab.fetch_data_from_db()
             self.logger.info("Database cleared")
+
+    def delete_trains(self):
+        question_box = QMessageBox.question(
+            self,
+            "Vymazanie vlakov",
+            "Naozaj chcete odstrániť všetky vlaky?",
+            QMessageBox.Yes | QMessageBox.No,
+            QMessageBox.No,
+        )
+        if question_box == QMessageBox.Yes:
+            with sqlite_handler.get_cursor() as cursor:
+                cursor.execute("DELETE FROM trains")
+
+            self.logger.info("Trains deleted")

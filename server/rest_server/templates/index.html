@@ -32,6 +32,14 @@
         width: 10%;
     }
 
+    p {
+        font-size: 18px;
+    }
+
+    select {
+        font-size: 16px;
+    }
+
     table, th, td {
         text-align: center;
         vertical-align: middle;     
@@ -55,27 +63,28 @@
     
     <div class="row">
         <div class="column">
-            <h2 style="text-align: center;">Zoznam staníc</h2>
+            <h2 style="text-align: center;">Zoznam staníc</h2> 
+            <p>
+                Trať:
+            <select id="station_select">
+                {% for route in routes %}
+                <option value="{{ route }}">{{ route }}</option>
+                {% endfor %}
+            </select>
+            </p>
             {{ table_html | safe }}
         </div>
         <div class="column">
             <h2 style="text-align: center;">Zoznam vlakov</h2>
-            <table>
-                <tr>
-                    <th>ID</th>
-                    <th>Číslo vlaku</th>
-                    <th>Typ vlaku</th>
-                    <th>Stav</th>
-                </tr>
-                {% for train in trains %}
-                <tr>
-                    <td>{{ train.id }}</td>
-                    <td>{{ train.train_number }}</td>
-                    <td>{{ train.train_type }}</td>
-                    <td>{{ train.state }}</td>
-                </tr>
+            <p>
+                Trať:
+            <select id="train_select">
+                {% for route in routes %}
+                <option value="{{ route }}">{{ route }}</option>
                 {% endfor %}
-            </table>
+            </select>
+            </p>
+            {{ table_html_trains | safe }}
     </div>
        
     <!--- add other website elements -->
