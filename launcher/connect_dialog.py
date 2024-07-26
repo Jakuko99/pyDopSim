@@ -7,6 +7,7 @@ from PyQt5.QtWidgets import (
     QMessageBox,
     QDialog,
     QListWidget,
+    QComboBox,
 )
 from PyQt5.QtGui import QFont, QIntValidator
 import logging
@@ -63,6 +64,16 @@ class ConnectDialog(QDialog):
         self.cancel_button.move(120, 215)
         self.cancel_button.clicked.connect(self.closeEvent)
 
+        self.route_label = QLabel("Trať:", self)
+        self.route_label.setFont(self.font_obj)
+        self.route_label.move(5, 115)
+
+        self.route_combo = QComboBox(self)
+        self.route_combo.setFont(self.font_obj)
+        self.route_combo.move(70, 115)
+        self.route_combo.setFixedWidth(140)
+        self.route_combo.setEnabled(False)
+
         self.available_stations = QListWidget(self)
         self.available_stations.setFont(self.font_obj)
         self.available_stations.move(230, 30)
@@ -85,7 +96,7 @@ class ConnectDialog(QDialog):
             if request.status_code == 200:
                 self.available_stations.clear()
                 for station in request.json():
-                    self.available_stations.addItem(station)
+                    self.available_stations.addItem(station.get("station_name"))
 
         except requests.exceptions.ConnectionError:
             self.logger.error("Failed to get available stations, server not reachable")

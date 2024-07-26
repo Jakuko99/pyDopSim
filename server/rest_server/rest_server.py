@@ -134,23 +134,46 @@ class RESTServer:
             if station:
                 return {
                     "station_name": station[1],
-                    "status": station[2],
-                    "station_type": station[3],
-                    "player_name": station[4],
-                    "left_station": station[5],
-                    "right_station": station[6],
-                    "turn_station": station[7],
+                    "status": station[6],
+                    "station_type": station[5],
+                    "player_name": station[7],
+                    "left_station": station[2],
+                    "right_station": station[3],
+                    "turn_station": station[4],
                     "route": curr.execute(
                         f"SELECT route_name FROM routes WHERE uid = '{station[8]}';"
                     ).fetchone()[0],
                 }
+            return {"error": "Station not found"}
 
-    async def get_available_stations(self) -> dict:
-        return {
-            station_name: station.status.name
-            for station_name, station in self.stations.items()
-            if station.status == StationStatus.OFFLINE
-        }
+    async def get_available_stations(self) -> JSONResponse:
+        with sqlite_handler.get_connection() as curr:
+            stations_df = pd.read_sql(
+                "SELECT * FROM stations WHERE stations.status == 'OFFLINE'", curr
+            )
+            stations_df.drop(
+                columns=[
+                    "uid",
+                    "station_inflections",
+                    "left_station",
+                    "right_station",
+                    "turn_station",
+                    "player_name",
+                ],
+                inplace=True,
+            )
+            stations_df["route"] = stations_df["route_uid"].apply(
+                lambda x: curr.execute(
+                    f"SELECT route_name FROM routes WHERE uid = '{x}';"
+                ).fetchone()[0]
+            )
+            stations_df.drop(columns=["route_uid"], inplace=True)
+
+            return json.loads(
+                str(stations_df.to_dict(orient="records"))
+                .replace("'", '"')
+                .encode("utf-8")
+            )
 
     async def register_train(
         self, train_id: str, train_type: TrainType, origin_station: str
@@ -206,27 +229,52 @@ class RESTServer:
             }
 
     async def take_station(self, station_name: str, client_name: str) -> JSONResponse:
-        if self.stations.get(station_name, None):
-            if self.stations.get(station_name).status == StationStatus.OFFLINE:
-                self.stations[station_name].status = StationStatus.ONLINE
-                self.stations[station_name].player_name = client_name
-                return_dict: dict = {
-                    "server_tcp_port": self.tcp_port,
-                    "server_rest_port": self.port,
-                }
-                return_dict.update(self.stations[station_name].__dict__)
-                return return_dict
-            return {"error": "TAKEN"}
-        raise HTTPException(status_code=404, detail="Station not found")
+        with sqlite_handler.get_cursor() as curr:
+            curr.execute(
+                f"SELECT * FROM stations WHERE station_name = '{station_name}';"
+            )
+            station = curr.fetchone()
+            if station:
+                if station[6] == StationStatus.OFFLINE.value:
+                    curr.execute(
+                        f"UPDATE stations SET status = '{StationStatus.ONLINE.value}', player_name = '{client_name}' WHERE station_name = '{station_name}';"
+                    )
+                    return_dict: dict = {
+                        "server_tcp_port": self.tcp_port,
+                        "server_rest_port": self.port,
+                    }
+                    return_dict.update(
+                        {
+                            "station_name": station[1],
+                            "status": station[6],
+                            "station_type": station[5],
+                            "player_name": station[7],
+                            "left_station": station[2],
+                            "right_station": station[3],
+                            "turn_station": station[4],
+                            "route": curr.execute(
+                                f"SELECT route_name FROM routes WHERE uid = '{station[8]}';"
+                            ).fetchone()[0],
+                        }
+                    )
+                    return return_dict
+                return {"error": "TAKEN"}
+            raise HTTPException(status_code=404, detail="Station not found")
 
     async def release_station(self, station_name: str) -> JSONResponse:
-        if self.stations.get(station_name, None):
-            if self.stations.get(station_name, None).status == StationStatus.ONLINE:
-                self.stations[station_name].status = StationStatus.OFFLINE
-                self.stations[station_name].player_name = None
-                return {"message": "Station released successfully"}
-            return {"error": "Station not taken"}
-        raise HTTPException(status_code=404, detail="Station not found")
+        with sqlite_handler.get_cursor() as curr:
+            curr.execute(
+                f"SELECT * FROM stations WHERE station_name = '{station_name}';"
+            )
+            station = curr.fetchone()
+            if station:
+                if station[6] == StationStatus.ONLINE.value:
+                    curr.execute(
+                        f"UPDATE stations SET status = '{StationStatus.OFFLINE.value}', player_name = NULL WHERE station_name = '{station_name}';"
+                    )
+                    return {"message": "Station released successfully"}
+                return {"error": "Station not taken"}
+            raise HTTPException(status_code=404, detail="Station not found")
 
     def _assign_routes(self):
         self.router.add_api_route("/", self.root, methods=["GET"])
