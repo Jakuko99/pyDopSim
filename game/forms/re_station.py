@@ -65,6 +65,7 @@ class REStation(QMainWindow):
         self._button_click_callback = button_click_callback
         self.station_platforms = StationPlatforms(station_name=station_name)
         self.telephone_dialog = dialogs.TelephoneDialog()
+        self.traffic_diary = dialogs.TrafficDiary()
 
         self.station_name = station_name
         self.station_name_left: str = self.station_name
@@ -89,6 +90,7 @@ class REStation(QMainWindow):
 
         self.diary_button = AbstractDiaryButton(parent=self)
         self.diary_button.move(205, 690)
+        self.diary_button.set_click_function(self.traffic_diary.show)
 
         self.path_build = AbstractIndicatorSlim(
             indicator_color=IndicatorColor.RED, parent=self
