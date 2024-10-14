@@ -7,6 +7,7 @@ from queue import Queue
 from client.api_package import Client
 from game.tests.api_package import StationTest
 from game.forms.api_package import LogWindow
+from dispatcher.api_package import DispatcherGUI
 from .game_info import GameInfo
 from .game_tab import GameTab
 from .settings_tab import SettingsTab
@@ -19,6 +20,7 @@ class Launcher(QMainWindow):
         self.log_pipe: Queue = log_pipe
         self.logger = logging.getLogger("App.Launcher")
         self.connect_dialog = ConnectDialog(self, self.run_client)
+        self.dispatcher_window = DispatcherGUI(self)
 
         self.setWindowIcon(QIcon("assets/app_icon.png"))
         self.setWindowTitle("PyDopSim Launcher")
@@ -46,6 +48,7 @@ class Launcher(QMainWindow):
         self.game_tab.log_button.clicked.connect(
             lambda: LogWindow(parent=self, queue=self.log_pipe).show()
         )
+        self.game_tab.dispatcher_button.clicked.connect(self.dispatcher_window.show)
         self.tab_widget.addTab(self.game_tab, "Simulácia")
 
         self.settings_tab = SettingsTab(self)
