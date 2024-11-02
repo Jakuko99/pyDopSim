@@ -1,16 +1,23 @@
 from PyQt5.QtWidgets import QWidget, QLabel, QMessageBox
-from PyQt5.QtGui import QFont, QPixmap
+from PyQt5.QtGui import QFont, QPixmap, QIcon
 from PyQt5.QtCore import Qt
+import logging
 
 from .qt_components import api_package as components
 
 
 class ControlledStation(QWidget):
-    def __init__(self, station_name: str, parent=None):
+    def __init__(self, station_name: str, parent=None, standalone: bool = False):
         super().__init__(parent)
         self.setFixedSize(640, 208)
         self.setFont(QFont("Consolas", 10))
         self.station_name: str = station_name
+
+        if standalone:
+            self.logger = logging.getLogger(f"App.DOZ.{station_name}")
+            self.logger.setLevel(logging.DEBUG)
+            self.setWindowTitle(f"DOZ - {station_name}")
+            self.setWindowIcon(QIcon("assets/doz_icon.png"))
 
         self.track_layout = QLabel(self)
         self.track_layout.setPixmap(QPixmap("assets/jop_dispatcher.bmp"))
@@ -21,3 +28,8 @@ class ControlledStation(QWidget):
         self.station_label.setFixedSize(640, 25)
         self.station_label.setStyleSheet("color: white")
         self.station_label.setAlignment(Qt.AlignCenter)
+
+    def show(self):
+        if hasattr(self, "logger"):
+            self.logger.debug("Starting DOZ GUI")
+        super().show()

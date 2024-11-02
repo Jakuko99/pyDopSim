@@ -65,5 +65,6 @@ class DispatcherGUI(QMainWindow):
 
     def show(self):
         self.logger.info("DispatcherGUI started")
-        # self.showFullScreen()
-        self.logger.debug(f"Current screen size: {self.size()}")
+        self.showFullScreen()
+        self.logger.info(f"Current screen size: {self.size()}")
+        self.logger.debug(f"Possible grid: {self.width()/640}x{self.height()/208}")

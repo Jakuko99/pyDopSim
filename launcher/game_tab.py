@@ -28,6 +28,11 @@ class GameTab(QWidget):
         self.dispatcher_button.setFixedSize(200, 25)
         self.dispatcher_button.setFont(self._font)
 
+        self.doz_button = QPushButton("DOZ test", self)
+        self.doz_button.move(200, 130)
+        self.doz_button.setFixedSize(200, 25)
+        self.doz_button.setFont(self._font)
+
         self.allow_debug_checkbox = QCheckBox("Povoliť debug", self)
         self.allow_debug_checkbox.setFont(self._font)
         self.allow_debug_checkbox.move(465, 170)
