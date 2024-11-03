@@ -22,7 +22,7 @@ class Launcher(QMainWindow):
         self.connect_dialog = ConnectDialog(self, self.run_client)
         self.dispatcher_window = DispatcherGUI(self)
         self.doz_test = ControlledStation("Vrútky", standalone=True)
-        self.log_window = LogWindow(parent=self, queue=self.log_pipe)
+        self.log_window = LogWindow(queue=self.log_pipe)
 
         # self.toolbar = QToolBar(self)	# toolbar usecase idea
         # self.addToolBar(Qt.ToolBarArea.BottomToolBarArea, self.toolbar)

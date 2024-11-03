@@ -13,15 +13,18 @@ class ControlledStation(QWidget):
         self.setFont(QFont("Consolas", 10))
         self.station_name: str = station_name
 
+        self.track_layout = QLabel(self)
+        self.track_layout.setPixmap(QPixmap("assets/jop_dispatcher.bmp"))
+        self.track_layout.setGeometry(0, 0, 640, 208)
+
         if standalone:
             self.logger = logging.getLogger(f"App.DOZ.{station_name}")
             self.logger.setLevel(logging.DEBUG)
             self.setWindowTitle(f"DOZ - {station_name}")
             self.setWindowIcon(QIcon("assets/doz_icon.png"))
 
-        self.track_layout = QLabel(self)
-        self.track_layout.setPixmap(QPixmap("assets/jop_dispatcher.bmp"))
-        self.track_layout.setGeometry(0, 0, 640, 208)
+            self.alive_indicator = components.AliveIndicator(self)
+            self.alive_indicator.move(10, 158)
 
         self.station_label = QLabel(self.station_name, self)
         self.station_label.move(0, 0)
@@ -31,5 +34,6 @@ class ControlledStation(QWidget):
 
     def show(self):
         if hasattr(self, "logger"):
-            self.logger.debug("Starting DOZ GUI")
+            self.logger.info("Starting DOZ GUI")
+
         super().show()

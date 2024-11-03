@@ -3,6 +3,7 @@ from PyQt5.QtGui import QFont, QIcon, QPixmap
 import logging
 
 from .controlled_station import ControlledStation
+import dispatcher.qt_components.api_package as components
 
 
 class DispatcherGUI(QMainWindow):
@@ -59,6 +60,7 @@ class DispatcherGUI(QMainWindow):
         self.station15 = ControlledStation(parent=self, station_name="Stanica 15")
         self.station15.move(1280, 832)
 
+        self.alive_indicator = components.AliveIndicator(self)
         self.full_screen_button = QPushButton("Ukončiť", self)
         self.full_screen_button.move(0, 0)
         self.full_screen_button.clicked.connect(self.close)
@@ -68,3 +70,5 @@ class DispatcherGUI(QMainWindow):
         self.showFullScreen()
         self.logger.info(f"Current screen size: {self.size()}")
         self.logger.debug(f"Possible grid: {self.width()/640}x{self.height()/208}")
+
+        self.alive_indicator.move(10, self.height() - 50)
